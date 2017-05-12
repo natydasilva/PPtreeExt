@@ -1,0 +1,35 @@
+Package: PPtreeExt
+Type: Package
+Version: 0.1.0
+Title: Projection Pursuit Classification Tree extensions
+Author: Natalia da Silva, Heike Hofmann, Eun-Kyung Lee, Di Cook
+Maintainer: Natalia da Silva <ndasilva@iastate.edu>
+Description: Projection pursuit classification tree algorithm extensions.
+LazyData: yes
+Depends:
+    R (>= 3.2.0)
+Imports:
+    Rcpp (>= 0.12.7),
+    RcppArmadillo,
+    ggplot2,
+    magrittr,
+    plyr,
+    purrr,
+    dplyr,
+    tidyr,
+    doMC,
+    plotly
+License: LGPL-2.1
+Suggests:
+    knitr,
+    randomForest,
+    rpart,
+    gridExtra,
+    GGally,
+    RColorBrewer,
+    roxygen2 (>= 3.0.0),
+    rmarkdown,
+    PPtreeViz
+VignetteBuilder: knitr
+LinkingTo: Rcpp,RcppArmadillo
+RoxygenNote: 6.0.1
