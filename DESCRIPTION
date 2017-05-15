@@ -12,6 +12,7 @@ Imports:
     Rcpp (>= 0.12.7),
     RcppArmadillo,
     ggplot2,
+    PPforest,
     magrittr,
     plyr,
     purrr,
