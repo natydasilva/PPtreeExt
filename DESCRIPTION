@@ -14,23 +14,28 @@ Imports:
     ggplot2,
     PPforest,
     magrittr,
+    shiny,
+    MASS,
     plyr,
     purrr,
     dplyr,
     tidyr,
+    gridExtra,
     doMC,
-    plotly
+    plotly,
+    PPtreeViz
 License: LGPL-2.1
 Suggests:
     knitr,
     randomForest,
     rpart,
-    gridExtra,
     GGally,
     RColorBrewer,
     roxygen2 (>= 3.0.0),
-    rmarkdown,
-    PPtreeViz
+    rmarkdown
 VignetteBuilder: knitr
 LinkingTo: Rcpp,RcppArmadillo
 RoxygenNote: 6.0.1
+
+
+
