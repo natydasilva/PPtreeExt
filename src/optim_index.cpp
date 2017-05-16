@@ -474,7 +474,7 @@ int n = origdata.n_rows;
 }
 ////NEW////
 
-///Compute impurity
+///Compute entropy
 // [[Rcpp::export]]
 double entropy(arma::vec origclass){
   int n = origclass.size();
