@@ -503,7 +503,7 @@ double entropy(arma::vec origclass){
 
 //--------First split, redefine the problem in a two class problem, this is used inside findproj
 // [[Rcpp::export]]
-List split_relMOD(arma::vec origclass,  arma::colvec  projdata, bool entro){
+List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool entroindiv){
   //origdata here are after variable selection (varselect and datenode functions)
   
   int n = origclass.size();
@@ -519,6 +519,8 @@ List split_relMOD(arma::vec origclass,  arma::colvec  projdata, bool entro){
   arma::vec msort(g);
   arma::colvec sm(g);
   arma::vec pmall(g-1);
+  arma::uvec ordproj = sort_index(projdata);
+  arma::vec entiall(n -1, fill::zeros);
   
   if (g == 2) {
     //IntegerVector class_rel = origclass;
@@ -540,7 +542,7 @@ List split_relMOD(arma::vec origclass,  arma::colvec  projdata, bool entro){
     double pm = 0.0;
     
     if(entro == true){
-    for (int k = 0; k < (g-1); k++) {
+    for (int k = 0; k < (g - 1); k++) {
       // compute all the mid points
       pmall(k) = (sm(k) + sm( (k + 1) ))  / 2.0;
       double e1 = entropy( origclass( find(projdata <= pmall(k)) ) );
@@ -554,6 +556,17 @@ List split_relMOD(arma::vec origclass,  arma::colvec  projdata, bool entro){
          pm = (sm(mm) + sm( (mm + 1) ) ) / 2.0;
         
       }
+
+      
+      if(entroindiv == true){
+        for(int j = 0; j < n-1; j++){
+         int p = projdata(ordproj(j));
+          double ei1 = entropy( origclass( find( projdata<=p) ) );
+          double ei2 = entropy( origclass( find( projdata > p) ) );
+           entiall(j) = ei1 + ei2;
+        }
+        
+              }
       
     //----------
     //arma::vec newclass(n);
@@ -580,7 +593,7 @@ List split_relMOD(arma::vec origclass,  arma::colvec  projdata, bool entro){
     }
   }
   
-  return  Rcpp::List::create(Rcpp::Named("newclass") = newclass, Rcpp::Named("idxcl") = idxcl, Rcpp::Named("pmall") = pmall); 
+  return  Rcpp::List::create(Rcpp::Named("newclass") = newclass, Rcpp::Named("idxcl") = idxcl, Rcpp::Named("pmall") = pmall, Rcpp::Named("entiall") = entiall); 
 
 }
 
@@ -641,7 +654,7 @@ List findproj(arma::vec origclass,
 // [[Rcpp::export]]
 List findprojMOD(arma::vec origclass,
               arma::mat origdata, std::string PPmethod, 
-              double lambda = 0.1, bool entro=true){
+              double lambda = 0.1, bool entro=true, bool entroindiv = false){
   
   arma::vec a1(origdata.n_cols, fill::zeros) , a2(origdata.n_cols, fill::zeros), a(origdata.n_cols, fill::zeros);
   arma::vec ng = tableC(origclass); 
@@ -659,7 +672,7 @@ List findprojMOD(arma::vec origclass,
   
   int  index = arma::index_max( arma::abs(a1) );
   double sign = signC( a1(index) );
- List split = split_relMOD(origclass, origdata*a1, entro); 
+ List split = split_relMOD(origclass, origdata*a1, entro, entroindiv); 
   arma::vec classe = as<vec>(split["newclass"]);
   arma::uvec idxcl = as<uvec>(split["idxcl"]);
   
@@ -895,14 +908,14 @@ return Rcpp::List::create(Rcpp::Named("Index") = indexbest,Rcpp::Named("Alpha") 
 
 //[[Rcpp::export]]
 List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmethod,
-                  double sizep = 1, double lambda = .1, bool entro=true){
+                  double sizep = 1, double lambda = .1, bool entro=true, bool entroindiv = false){
   
   int pp = origdata.n_cols;
   List dataspl = datanode(origdata, sizep );
   origdata = as<mat>(dataspl["data"]);
   arma::uvec vrnd = as<uvec>(dataspl["varselected"]);
   
-  List oneDproj = findprojMOD(origclass, origdata, PPmethod, lambda, entro);
+  List oneDproj = findprojMOD(origclass, origdata, PPmethod, lambda, entro, entroindiv);
   arma::vec projdata = as<vec>(oneDproj["projdata"]);
   
   arma::vec classe = split_rel(origclass, origdata, projdata);
