@@ -45,16 +45,16 @@ entropy <- function(origclass) {
     .Call('PPtreeExt_entropy', PACKAGE = 'PPtreeExt', origclass)
 }
 
-split_relMOD <- function(origclass, projdata, entro) {
-    .Call('PPtreeExt_split_relMOD', PACKAGE = 'PPtreeExt', origclass, projdata, entro)
+split_relMOD <- function(origclass, projdata, entro, entroindiv) {
+    .Call('PPtreeExt_split_relMOD', PACKAGE = 'PPtreeExt', origclass, projdata, entro, entroindiv)
 }
 
 findproj <- function(origclass, origdata, PPmethod, lambda = 0.1) {
     .Call('PPtreeExt_findproj', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, lambda)
 }
 
-findprojMOD <- function(origclass, origdata, PPmethod, lambda = 0.1, entro = TRUE) {
-    .Call('PPtreeExt_findprojMOD', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, lambda, entro)
+findprojMOD <- function(origclass, origdata, PPmethod, lambda = 0.1, entro = TRUE, entroindiv = FALSE) {
+    .Call('PPtreeExt_findprojMOD', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, lambda, entro, entroindiv)
 }
 
 arma_sub_cond <- function(x, val) {
@@ -77,8 +77,8 @@ findprojwrap <- function(origclass, origdata, PPmethod, sizep = 1, lambda = .1) 
     .Call('PPtreeExt_findprojwrap', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, sizep, lambda)
 }
 
-findprojwrapMOD <- function(origclass, origdata, PPmethod, sizep = 1, lambda = .1, entro = TRUE) {
-    .Call('PPtreeExt_findprojwrapMOD', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, sizep, lambda, entro)
+findprojwrapMOD <- function(origclass, origdata, PPmethod, sizep = 1, lambda = .1, entro = TRUE, entroindiv = FALSE) {
+    .Call('PPtreeExt_findprojwrapMOD', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, sizep, lambda, entro, entroindiv)
 }
 
 treeconstruct <- function(origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda = 0.1, sizep = 1) {

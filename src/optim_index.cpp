@@ -516,6 +516,7 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
   arma::uvec idxcl(n, fill::ones); 
   arma::uvec ids(2, fill::zeros);
   int mm;
+  int mmi;
   arma::vec msort(g);
   arma::colvec sm(g);
   arma::vec pmall(g-1);
@@ -560,12 +561,12 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
       
       if(entroindiv == true){
         for(int j = 0; j < n-1; j++){
-         int p = projdata(ordproj(j));
+         double p = projdata(ordproj(j));
           double ei1 = entropy( origclass( find( projdata<=p) ) );
           double ei2 = entropy( origclass( find( projdata > p) ) );
            entiall(j) = ei1 + ei2;
         }
-        
+        mmi = entiall.index_min();
               }
       
     //----------
