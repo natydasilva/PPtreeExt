@@ -421,57 +421,6 @@ List datanode(arma::mat origdata, double sizep){
                              Rcpp::Named("varselected") = vrnd);
 }
 
-//--------First split, redefine the problem in a two class problem,this is used inside findproj
-// [[Rcpp::export]]
-arma::vec split_rel(arma::vec origclass, arma::mat origdata, arma::colvec  projdata){
-  //origdata here are after variable selection (varselect and datenode functions)  
-  
-  int n = origdata.n_rows;
-  
-  // group totals, group means and overall mean
-  arma::vec ng = tableC(origclass); 
-  int g = ng.size();
-  arma::vec clval = arma::unique(origclass);
-  arma::colvec mean_g(g);
-  arma::vec newclass(n, fill::zeros);
-  
-  if (g==2) {
-    //IntegerVector class_rel = origclass;
-    newclass = origclass;
-    
-  } else { 
-    for (int k=0; k < g; k++) {
-      double tot=0.0;
-      for (int j=0; j<n; j++) {
-        if (origclass(j) == clval(k) ) tot += projdata(j);  
-      }
-      mean_g(k) = tot/ng(k) ; 
-    }
-    
-    arma::uvec mlist = sort_index(mean_g);
-    arma::vec sm = sort(mean_g);
-    arma::vec msort = diff(sm);
-    
-    int mm = msort.index_max();
-    double pm = (sm(mm)+sm((mm+1)))/2.0;
-    //arma::vec newclass(n);
-    
-    for (int k=0; k < g; k++) {
-      for(int i=0; i<n;i++){
-        if (origclass(i) == clval(k) ) {
-          if((mean_g(k)-pm)>0){
-            newclass(i)=2;
-          }else{
-            newclass(i)=1;
-          }
-        }
-      }
-    }
-  }
-  
-  return newclass;
-  
-}
 
 
 ///Compute entropy 
@@ -822,19 +771,27 @@ int n = projdata.n_rows;
 
 
 
-
+//it is  a wrap of findprojMOD or findproj1D and split_relMOD
 //[[Rcpp::export]]
 List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmethod,
-                  double sizep = 1, double lambda = .1, bool entro=true, bool entroindiv = false){
+                  double sizep = 1, double lambda = .1, bool entro = true, bool entroindiv = false){
   
   int pp = origdata.n_cols;
   List dataspl = datanode(origdata, sizep );
   origdata = as<mat>(dataspl["data"]);
+  int nd = origclass.size();
   arma::uvec vrnd = as<uvec>(dataspl["varselected"]);
-  
+  arma::vec projdata(origdata.n_rows, fill::zeros);
+  arma::mat projbest(nd,pp);
+  if(entroindiv){
+    List oneDproj = findproj1D(origclass, origdata, PPmethod, lambda, entro, entroindiv);
+    projdata = as<vec>(oneDproj["projdata"]);
+  projbest = as<mat>(oneDproj["projbest"]); 
+  }else{
   List oneDproj = findprojMOD(origclass, origdata, PPmethod, lambda, entro, entroindiv);
-  arma::vec projdata = as<vec>(oneDproj["projdata"]);
-  arma::mat projbest = as<mat>(oneDproj["projbest"]);
+   projdata = as<vec>(oneDproj["projdata"]);
+   projbest = as<mat>(oneDproj["projbest"]);
+  }
   
   List split = split_relMOD(origclass, projdata, entro, entroindiv); 
   arma::vec classe = as<vec>(split["newclass"]);
