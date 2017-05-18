@@ -37,10 +37,6 @@ datanode <- function(origdata, sizep) {
     .Call('PPtreeExt_datanode', PACKAGE = 'PPtreeExt', origdata, sizep)
 }
 
-split_rel <- function(origclass, origdata, projdata) {
-    .Call('PPtreeExt_split_rel', PACKAGE = 'PPtreeExt', origclass, origdata, projdata)
-}
-
 entropy <- function(origclass) {
     .Call('PPtreeExt_entropy', PACKAGE = 'PPtreeExt', origclass)
 }
@@ -49,12 +45,12 @@ split_relMOD <- function(origclass, projdata, entro, entroindiv) {
     .Call('PPtreeExt_split_relMOD', PACKAGE = 'PPtreeExt', origclass, projdata, entro, entroindiv)
 }
 
-findproj <- function(origclass, origdata, PPmethod, lambda = 0.1) {
-    .Call('PPtreeExt_findproj', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, lambda)
-}
-
 findprojMOD <- function(origclass, origdata, PPmethod, lambda = 0.1, entro = TRUE, entroindiv = FALSE) {
     .Call('PPtreeExt_findprojMOD', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, lambda, entro, entroindiv)
+}
+
+findproj1D <- function(origclass, origdata, PPmethod, lambda = 0.1, entro = TRUE, entroindiv = FALSE) {
+    .Call('PPtreeExt_findproj1D', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, lambda, entro, entroindiv)
 }
 
 arma_sub_cond <- function(x, val) {
@@ -73,16 +69,8 @@ nodestr <- function(classe, projdata) {
     .Call('PPtreeExt_nodestr', PACKAGE = 'PPtreeExt', classe, projdata)
 }
 
-findprojwrap <- function(origclass, origdata, PPmethod, sizep = 1, lambda = .1) {
-    .Call('PPtreeExt_findprojwrap', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, sizep, lambda)
-}
-
 findprojwrapMOD <- function(origclass, origdata, PPmethod, sizep = 1, lambda = .1, entro = TRUE, entroindiv = FALSE) {
     .Call('PPtreeExt_findprojwrapMOD', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, sizep, lambda, entro, entroindiv)
-}
-
-treeconstruct <- function(origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda = 0.1, sizep = 1) {
-    .Call('PPtreeExt_treeconstruct', PACKAGE = 'PPtreeExt', origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda, sizep)
 }
 
 treeconstructMOD <- function(origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda = 0.1, sizep = 1, entro = TRUE) {
