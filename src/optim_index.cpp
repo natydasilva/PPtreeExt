@@ -421,60 +421,60 @@ List datanode(arma::mat origdata, double sizep){
                              Rcpp::Named("varselected") = vrnd);
 }
 
-//--------First split, redefine the problem in a two class problem, this is used inside findproj
+//--------First split, redefine the problem in a two class problem,this is used inside findproj
 // [[Rcpp::export]]
 arma::vec split_rel(arma::vec origclass, arma::mat origdata, arma::colvec  projdata){
-//origdata here are after variable selection (varselect and datenode functions)  
+  //origdata here are after variable selection (varselect and datenode functions)  
   
-int n = origdata.n_rows;
+  int n = origdata.n_rows;
   
-// group totals, group means and overall mean
+  // group totals, group means and overall mean
   arma::vec ng = tableC(origclass); 
   int g = ng.size();
   arma::vec clval = arma::unique(origclass);
   arma::colvec mean_g(g);
   arma::vec newclass(n, fill::zeros);
   
-  if (g == 2) {
+  if (g==2) {
     //IntegerVector class_rel = origclass;
     newclass = origclass;
     
   } else { 
-    for (int k = 0; k < g; k++) {
-      double tot = 0.0;
-      for (int j = 0; j < n; j++) {
+    for (int k=0; k < g; k++) {
+      double tot=0.0;
+      for (int j=0; j<n; j++) {
         if (origclass(j) == clval(k) ) tot += projdata(j);  
       }
-      mean_g(k) = tot / ng(k) ; 
+      mean_g(k) = tot/ng(k) ; 
     }
-
-  arma::uvec mlist = sort_index(mean_g);
-  arma::vec sm = sort(mean_g);
-  arma::vec msort = diff(sm);
-  
-  int mm = msort.index_max();
-  double pm = (sm(mm) + sm( (mm + 1) ) ) / 2.0;
-  //arma::vec newclass(n);
-  
-  for (int k = 0; k < g; k++) {
-    for(int i = 0; i < n; i++){
-      if (origclass(i) == clval(k) ) {
-        if( (mean_g(k) - pm) > 0){
-          newclass(i) = 2;
-        }else{
-          newclass(i) = 1;
+    
+    arma::uvec mlist = sort_index(mean_g);
+    arma::vec sm = sort(mean_g);
+    arma::vec msort = diff(sm);
+    
+    int mm = msort.index_max();
+    double pm = (sm(mm)+sm((mm+1)))/2.0;
+    //arma::vec newclass(n);
+    
+    for (int k=0; k < g; k++) {
+      for(int i=0; i<n;i++){
+        if (origclass(i) == clval(k) ) {
+          if((mean_g(k)-pm)>0){
+            newclass(i)=2;
+          }else{
+            newclass(i)=1;
+          }
         }
       }
     }
-  }
   }
   
   return newclass;
   
 }
-////NEW////
 
-///Compute entropy
+
+///Compute entropy 
 // [[Rcpp::export]]
 double entropy(arma::vec origclass){
   int n = origclass.size();
@@ -501,7 +501,10 @@ double entropy(arma::vec origclass){
   
 }
 
-//--------First split, redefine the problem in a two class problem, this is used inside findproj
+//--------First split,
+//--------the old algotithm redefine the problem in a two class problem, using the group mean to find the first partition (this is used inside findproj old versio)
+//--------if entro = true use the entropy to define the best partition (only consider g-1 partitions based on middle point between group means)
+//-------- if entroindiv = true compute the best partition based on entropy between each observation.
 // [[Rcpp::export]]
 List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool entroindiv){
   //origdata here are after variable selection (varselect and datenode functions)
@@ -558,10 +561,11 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
         
       }
 
-      
+//sum entropy for all possible partition between each observation
       if(entroindiv == true){
         for(int j = 0; j < n-1; j++){
-         double p = projdata(ordproj(j));
+         //double p = projdata(ordproj(j));
+         double p = projdata(j);
           double ei1 = entropy( origclass( find( projdata<=p) ) );
           double ei2 = entropy( origclass( find( projdata > p) ) );
            entiall(j) = ei1 + ei2;
@@ -571,6 +575,7 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
       
     //----------
     //arma::vec newclass(n);
+    //Keep the info from the groups closest to the partition
     ids = find( (mean_g == sm(mm))|| (mean_g == sm(mm + 1 )));
      arma::vec clclos = clval(ids);
     idxcl = find( (origclass == clclos(0)) || origclass == clclos(1) );
@@ -599,63 +604,11 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
 }
 
 
-
-//Finds the 1D projection for separating all classes
-// [[Rcpp::export]]
-List findproj(arma::vec origclass,
-              arma::mat origdata, std::string PPmethod, 
-              double lambda = 0.1){
-  
-  arma::vec a1(origdata.n_cols, fill::zeros) , a2(origdata.n_cols, fill::zeros), a(origdata.n_cols, fill::zeros);
-  arma::vec ng = tableC(origclass); 
-  int g = ng.size();
-  arma::vec projdata(origclass.size() );
- 
-  if(PPmethod.compare("LDA") == 0){
-    //Rcout << "LDA\n";
-    a1 = LDAopt(origclass, origdata,  1, "LDA", true);
-    //Rcout << a1;
-   }else{
-    //Rcout << "PDA\n";
-     a1 = PDAopt(origclass, origdata, 1, "PDA", true, lambda);
-     }
-
-  int  index = arma::index_max( arma::abs(a1) );
-  double sign = signC( a1(index) );
-  arma::vec classe = split_rel(origclass, origdata,  origdata*a1 ); 
-
-  if (g > 2) {
-        if (PPmethod.compare("LDA") == 0){
-          //Rcout << "still LDA\n";
-          
-      a2 = LDAopt(classe, origdata, 1, "LDA", true);
-          //Rcout<< a2;
-      } else {
-        //Rcout << "still PDA\n";
-      a2 = PDAopt(classe, origdata, 1, "PDA", true, lambda);
-    }
-      
-    double sign2 = signC(a2(index));
-      if (sign != sign2) {
-        a  = -1*a2;
-      } else {
-        a = a2;
-      }
-  } else {
-    a = a1;
-  }
- 
- 
-  projdata = origdata*a;
-  return Rcpp::List::create(Rcpp::Named("projdata") = projdata,
-                           Rcpp::Named("projbest") = a);
-}
-
-//Finds the 1D projection for separating all classes
+//Finds the 1D projection for separating all classes, two step projection if multiclass problem 
 // [[Rcpp::export]]
 List findprojMOD(arma::vec origclass,
               arma::mat origdata, std::string PPmethod, 
-              double lambda = 0.1, bool entro=true, bool entroindiv = false){
+              double lambda = 0.1, bool entro = true, bool entroindiv = false){
   
   arma::vec a1(origdata.n_cols, fill::zeros) , a2(origdata.n_cols, fill::zeros), a(origdata.n_cols, fill::zeros);
   arma::vec ng = tableC(origclass); 
@@ -677,7 +630,7 @@ List findprojMOD(arma::vec origclass,
   arma::vec classe = as<vec>(split["newclass"]);
   arma::uvec idxcl = as<uvec>(split["idxcl"]);
   
-  if (g > 2) {
+  if ((g > 2 & entroindiv ==false) ) {
     if (PPmethod.compare("LDA") == 0){
       //Rcout << "still LDA\n";
       
@@ -703,6 +656,51 @@ List findprojMOD(arma::vec origclass,
   return Rcpp::List::create(Rcpp::Named("projdata") = projdata,
                             Rcpp::Named("projbest") = a);
 }
+
+
+
+//Finds the 1D projection for separating all classes, lates MOD only 1 step projection even in multiclass problem 
+// [[Rcpp::export]]
+List findproj1D(arma::vec origclass,
+                 arma::mat origdata, std::string PPmethod, 
+                 double lambda = 0.1, bool entro = true, bool entroindiv = false){
+  
+  arma::vec a1(origdata.n_cols, fill::zeros) , a2(origdata.n_cols, fill::zeros), a(origdata.n_cols, fill::zeros);
+  arma::vec ng = tableC(origclass); 
+
+  arma::vec projdata(origclass.size() );
+  
+  if(PPmethod.compare("LDA") == 0){
+    //Rcout << "LDA\n";
+    a1 = LDAopt(origclass, origdata,  1, "LDA", true);
+    //Rcout << a1;
+  }else{
+    //Rcout << "PDA\n";
+    a1 = PDAopt(origclass, origdata, 1, "PDA", true, lambda);
+  }
+  
+  int  index = arma::index_max( arma::abs(a1) );
+  double sign = signC( a1(index) );
+  List split = split_relMOD(origclass, origdata*a1, entro, entroindiv); 
+  arma::vec classe = as<vec>(split["newclass"]);
+  arma::uvec idxcl = as<uvec>(split["idxcl"]);
+  
+  
+    double sign2 = signC(a2(index));
+    if (sign != sign2) {
+      a  = -1*a2;
+    } else {
+      a = a2;
+    }
+  
+  
+  
+  projdata = origdata*a;
+  return Rcpp::List::create(Rcpp::Named("projdata") = projdata,
+                            Rcpp::Named("projbest") = a);
+}
+
+
 //subseting a vector based on a condition == val
 // [[Rcpp::export]]
 arma::uvec arma_sub_cond(arma::vec x, int val) {
@@ -822,88 +820,6 @@ int n = projdata.n_rows;
  }
 
 
-//[[Rcpp::export]]
-List findprojwrap(arma::vec origclass, arma::mat origdata, std::string PPmethod,
-                  double sizep = 1, double lambda = .1){
-
-  int pp = origdata.n_cols;
-  List dataspl = datanode(origdata, sizep );
-  origdata = as<mat>(dataspl["data"]);
-  arma::uvec vrnd = as<uvec>(dataspl["varselected"]);
-
-  List oneDproj = findproj(origclass, origdata, PPmethod, lambda);
-  arma::vec projdata = as<vec>(oneDproj["projdata"]);
-  
-  arma::vec classe = split_rel(origclass, origdata, projdata);
- 
-  arma::mat projbest = as<mat>(oneDproj["projbest"]);
-
-       arma::vec C = nodestr(classe, projdata);
-
-       arma::mat Alpha = zeros<mat>(pp);
-      
-       for(int i = 0; i < vrnd.size(); i++){
-            int v = vrnd(i);
-           Alpha(v) = projbest(i, 0);
-
-       }
-
-  arma::vec indexbest(1, fill::zeros);
-       
-if(PPmethod.compare("LDA") == 0){
- //if(PPmethod == "LDA"){
- indexbest = LDAindex2(classe, origdata, projbest );
-  }else{
-
-  //if(PPmethod == "PDA"){
-    indexbest = PDAindex2(classe, origdata, projbest );
-  }
-       int n = projdata.n_rows;
-         // group totals, group means and overall mean
-         arma::vec clval = arma::unique(classe);
-         arma::vec ng(clval.size(), fill::zeros);
-         ng = tableC(classe);
-         int g = ng.size();
-         arma::colvec mean_g(g, fill::zeros);
-         
-         for (int k = 0; k < g; k++) {
-           double tot = 0.0;
-           for (int j = 0; j < n; j++) {
-             if (classe(j) == clval(k) ) {
-               tot += projdata(j);
-               }
-           }
-          
-          mean_g(k) = tot / ng(k);
-          
-         }
-         
-           arma::colvec mLR = sort(mean_g);
-           arma::uvec sortLR  = sort_index(mean_g);
-           
-         arma::vec IOindexL(classe.size(), fill::zeros);
-         arma::vec IOindexR(classe.size(), fill::zeros);
-
-        
-         for(int i = 0; i < classe.size(); i++){
-           if(classe(i) == ( clval(sortLR(0) ) ) ){
-           IOindexL(i) = true;
-           }else{
-             IOindexL(i) = false;
-           }
-           if(classe(i) == (clval(sortLR(1) ) ) ){
-           IOindexR(i) = true;
-           }else{
-             IOindexR(i) = false;
-            }
-           }
-
-
-return Rcpp::List::create(Rcpp::Named("Index") = indexbest,Rcpp::Named("Alpha") = Alpha, Rcpp::Named("C") = C,
-                          Rcpp::Named("IOindexL")=IOindexL, Rcpp::Named("IOindexR") = IOindexR,Rcpp::Named("classe") = classe,
-                                      Rcpp::Named("projdata") = projdata );
-
-}
 
 
 
@@ -918,11 +834,12 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
   
   List oneDproj = findprojMOD(origclass, origdata, PPmethod, lambda, entro, entroindiv);
   arma::vec projdata = as<vec>(oneDproj["projdata"]);
-  
-  arma::vec classe = split_rel(origclass, origdata, projdata);
- //arma::vec classe = as<vec>(split["newclass"]);
- //arma::uvec idxcl = as<uvec>(split["idxcl"]);
   arma::mat projbest = as<mat>(oneDproj["projbest"]);
+  
+  List split = split_relMOD(origclass, projdata, entro, entroindiv); 
+  arma::vec classe = as<vec>(split["newclass"]);
+  arma::uvec idxcl = as<uvec>(split["idxcl"]);
+  
   
   arma::vec C = nodestr(classe, projdata);
   
@@ -991,106 +908,6 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
   
 }
 
-//tree structure
-// [[Rcpp::export]]
-List treeconstruct(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::mat  splitCutoffnode,
-                   std::string PPmethod, double lambda = 0.1, double sizep = 1) {
-  
-  int n = origdata.n_rows;
-  arma::vec cl2 = unique(origclass);
-  arma::vec g(cl2.size(), fill::zeros); 
-  g = tableC(origclass);
-
-  int G = g.size();
-  
-  List a;
-  List b;
-  
-  arma::vec C(8, fill::zeros);
-  arma::vec classe(n, fill::zeros);
-
-  if(G == 1){
-    //check as.numeric group names
-  
-   Treestruct(id, 2) = cl2(0);
-
-  return Rcpp::List::create( Rcpp::Named("Treestruct") = Treestruct,  Rcpp::Named("projbestnode") = projbestnode,
-                               Rcpp::Named("splitCutoffnode") = splitCutoffnode, Rcpp::Named("rep") = rep,
-                               Rcpp::Named("rep1") = rep1, Rcpp::Named("rep2") = rep2 );
-  }else{
-    Treestruct(id, 1) = rep1;
-    rep1 = rep1 + 1;
-    Treestruct(id, 2) = rep1;
-    rep1 = rep1 + 1;
-    Treestruct(id, 3) = rep2;
-    rep2 = rep2 + 1;
-    
-    // Rcout<< Treestruct;
-    a = findprojwrap(origclass, origdata, PPmethod, sizep, lambda);
-    classe = as<vec>(a["classe"]);
-    C = nodestr(classe, as<vec>(a["projdata"]) );
-   
-    splitCutoffnode.insert_rows( splitCutoffnode.n_rows, C.t());
-    
-  }
-      Treestruct(id, 4) = as<double>(a["Index"]);
-
-      arma::mat Alpha = as<mat>( a["Alpha"] );
-      projbestnode.insert_rows( projbestnode.n_rows, Alpha.t() );
-       
-        arma::vec tclass = origclass;
-        arma::mat tdata = origdata;
-        arma::vec IOindexL = as<vec>(a["IOindexL"]);
-        tclass = tclass%IOindexL;
-
-      arma::uvec tnaux = find(tclass > 0);
-      arma::uvec tindex = sort(tnaux);
-         
-      tclass = tclass(tindex);
-      tdata = tdata.rows(tindex);
-        
-       b = treeconstruct(tclass, tdata,  Treestruct, Treestruct(id, 1)-1, rep,
-                        rep1, rep2,  projbestnode,
-                         splitCutoffnode, PPmethod,  lambda, sizep);
-
-
-       Treestruct = as<mat>(b["Treestruct"]);
-
-        projbestnode = as<mat>(b["projbestnode"]);
-        splitCutoffnode = as<mat>(b["splitCutoffnode"]);
-        rep = as<int>(b["rep"]);
-        rep1 =  as<int>(b["rep1"]);
-        rep2 =  as<int>(b["rep2"]);
-
-        tclass = origclass;
-        tdata =  origdata;
-        arma::vec IOindexR = as<vec>(a["IOindexR"]);
-        tclass = tclass%IOindexR;
-
-        tnaux= find(tclass>0);
-        tindex = sort(tnaux);
-        tclass = tclass(tindex);
-        tdata = tdata.rows(tindex);
-          
-        n =  tdata.n_rows;
-        g.zeros();
-        g = tableC(tclass);
-        G = g.size();
-        
-        b = treeconstruct(tclass, tdata, Treestruct,
-                            Treestruct(id, 2)-1, rep, rep1, rep2, projbestnode,
-                            splitCutoffnode, PPmethod, lambda,sizep);
-
-        Treestruct = as<mat>(b["Treestruct"]);
-        projbestnode = as<mat>(b["projbestnode"]);
-        splitCutoffnode = as<mat>(b["splitCutoffnode"]);
-        rep = as<int>(b["rep"]);
-        rep1 =  as<int>(b["rep1"]);
-        rep2 =  as<int>(b["rep2"]);
-        
-       return b; 
-        
-  }
 
 //tree structure
 // [[Rcpp::export]]
