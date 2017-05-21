@@ -875,7 +875,7 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
   }
   return Rcpp::List::create(Rcpp::Named("Index") = indexbest,Rcpp::Named("Alpha") = Alpha, Rcpp::Named("C") = C,
                                         Rcpp::Named("IOindexL")=IOindexL, Rcpp::Named("IOindexR") = IOindexR,Rcpp::Named("classe") = classe,
-                                                    Rcpp::Named("projdata") = projdata);
+                                                    Rcpp::Named("projdata") = projdata, Rcpp::Named("mmi") = mmi);
   
 }
 
@@ -990,33 +990,45 @@ List treeconstructMOD(arma::vec origclass, arma::mat origdata, arma::mat Treestr
 
 
 
+
+
 //tree structure
 // [[Rcpp::export]]
-List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::mat  splitCutoffnode,
+List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::vec  splitCutoffnode,
                       std::string PPmethod, double lambda = 0.1, double sizep = 1, bool entro =true, bool entroindiv = false) {
   
   int n = origdata.n_rows;
   arma::vec cl2 = unique(origclass);
   arma::vec g(cl2.size(), fill::zeros); 
   g = tableC(origclass);
-  
   int G = g.size();
+  
+  int nc = Treestruct.n_cols;
+  arma::rowvec aux(nc, fill::zeros);
+  Treestruct.insert_rows(id, aux );
+  Treestruct(id, 0) = id;
+  int nsplitcut = splitCutoffnode.size();
   
   List a;
   List b;
-  
+   
   arma::vec C(8, fill::zeros);
   //now we are not defining the problem in a two clas problem 
   //arma::vec classe(n, fill::zeros);
-  
-  if(G == 1){
+  // if(n/tot<0.1){
+  // 
+  // }
+ 
+  if(id == 8){
     //check as.numeric group names
     
     Treestruct(id, 2) = cl2(0);
+    //Treestruct.insert_rows( Treeconstruct.n_rows, projdata(mmi) );
     
     return Rcpp::List::create( Rcpp::Named("Treestruct") = Treestruct,  Rcpp::Named("projbestnode") = projbestnode,
                                Rcpp::Named("splitCutoffnode")=splitCutoffnode, Rcpp::Named("rep")=rep,
                                Rcpp::Named("rep1") = rep1, Rcpp::Named("rep2") = rep2);
+
   }else{
     Treestruct(id, 1) = rep1;
     rep1 = rep1 + 1;
@@ -1029,10 +1041,18 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
     a = findprojwrapMOD(origclass, origdata, PPmethod, sizep, lambda, entro, entroindiv); 
    // classe = as<vec>(a["classe"]);// relabel classes into 2 classes
     //C = nodestr(classe,as<vec>(a["projdata"])); // define rules
+    arma::vec projdata = as<vec>(a["projdata"]);
+    int mmi = as<int>(a["mmi"]);
+
     
-    splitCutoffnode.insert_rows( splitCutoffnode.n_rows, C.t() );
+    splitCutoffnode.resize(nsplitcut + 1);
+    splitCutoffnode(nsplitcut) = projdata(mmi) ;
+   
+   Rcout<< splitCutoffnode;
+    //splitCutoffnode.insert_rows( splitCutoffnode.n_rows,  projdata(mmi) );
     
   }
+  Rcout<< Treestruct;
   Treestruct(id, 4) = as<double>(a[ "Index" ]);
   //arma::uvec idxcl = as<uvec>(a["idxcl"]);
   arma::mat Alpha = as<mat>(a["Alpha"]);
@@ -1054,7 +1074,7 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   
   b = treeconstructMOD(tclass, tdata,  Treestruct, Treestruct(id, 1) - 1, rep,
                        rep1, rep2,  projbestnode,
-                       splitCutoffnode, PPmethod,  lambda, sizep);
+                       splitCutoffnode, PPmethod,  lambda, sizep,entro, entroindiv);
   
   
   Treestruct = as<mat>(b["Treestruct"]);
@@ -1086,7 +1106,7 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   
   b = treeconstructMOD(tclass, tdata, Treestruct,
                        Treestruct(id, 2) - 1, rep, rep1, rep2, projbestnode,
-                       splitCutoffnode, PPmethod, lambda,sizep);
+                       splitCutoffnode, PPmethod, lambda,sizep, entro, entroindiv);
   
   Treestruct = as<mat>(b["Treestruct"]);
   projbestnode = as<mat>(b["projbestnode"]);

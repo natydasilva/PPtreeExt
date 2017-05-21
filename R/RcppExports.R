@@ -49,7 +49,7 @@ findprojMOD <- function(origclass, origdata, PPmethod, lambda = 0.1, entro = TRU
     .Call('PPtreeExt_findprojMOD', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, lambda, entro, entroindiv)
 }
 
-findproj1D <- function(origclass, origdata, PPmethod, lambda = 0.1, entro = TRUE, entroindiv = FALSE) {
+findproj1D <- function(origclass, origdata, PPmethod, lambda = 0.1, entro = FALSE, entroindiv = TRUE) {
     .Call('PPtreeExt_findproj1D', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, lambda, entro, entroindiv)
 }
 
@@ -73,8 +73,12 @@ findprojwrapMOD <- function(origclass, origdata, PPmethod, sizep = 1, lambda = .
     .Call('PPtreeExt_findprojwrapMOD', PACKAGE = 'PPtreeExt', origclass, origdata, PPmethod, sizep, lambda, entro, entroindiv)
 }
 
-treeconstructMOD <- function(origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda = 0.1, sizep = 1, entro = TRUE) {
-    .Call('PPtreeExt_treeconstructMOD', PACKAGE = 'PPtreeExt', origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda, sizep, entro)
+treeconstructMOD <- function(origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda = 0.1, sizep = 1, entro = TRUE, entroindiv = FALSE) {
+    .Call('PPtreeExt_treeconstructMOD', PACKAGE = 'PPtreeExt', origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda, sizep, entro, entroindiv)
+}
+
+treeconstructIND <- function(origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda = 0.1, sizep = 1, entro = TRUE, entroindiv = FALSE) {
+    .Call('PPtreeExt_treeconstructIND', PACKAGE = 'PPtreeExt', origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda, sizep, entro, entroindiv)
 }
 
 csample_num <- function(x, size, replace, prob) {

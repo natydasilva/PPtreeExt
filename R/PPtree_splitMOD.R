@@ -9,6 +9,7 @@
 #' @param size.p proportion of variables randomly sampled in each split, default is 1, returns a PPtree.
 #' @param lambda penalty parameter in PDA index and is between 0 to 1 . If \code{lambda = 0}, no penalty parameter is added and the PDA index is the same as LDA index. If \code{lambda = 1} all variables are treated as uncorrelated. The default value is \code{lambda = 0.1}.
 #' @param entro TRUE, compute the entropy method
+#' @param entroindiv TRUE, compute the entropy for each obs...clarify this
 #' @param ... arguments to be passed to methods
 #' @return An object of class \code{PPtreeclass} with components
 #' \item{Tree.Struct}{Tree structure of projection pursuit classification tree}
@@ -28,7 +29,7 @@
 #' \dontrun{
 #' train<- sample(1:200,150)
 #' Tree.crab <- PPtree_splitMOD("Type~.", data = PPforest::crab[train, ],
-#'  PPmethod = "LDA", size.p = 1, entro = TRUE)
+#'  PPmethod = "LDA", size.p = 1, entro = TRUE,entroindiv=FALSE)
 #' Tree.crab
 #' 
 #'  Tree.result <- PPtreeViz::PPTreeclass(Type~.,data = PPforest::crab[train,],"LDA")
@@ -36,9 +37,9 @@
 #' 
 #' PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
 
-#' Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", size.p = 1, entro = FALSE)
+#' Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", size.p = 1, entro = FALSE, entroindiv=TRUE)
 #' Tree.iris}
-PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro, ...) {
+PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro, entroindiv,...) {
   
      formula <- stats::as.formula(form)
      mf <- stats::model.frame(formula, data = data)
@@ -57,7 +58,12 @@ PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda =
     
     Tree.final <- treeconstructMOD(origclass, origdata, Treestruct = cbind( 1:(2*G - 1), matrix(0, ncol = 4, nrow = 2*G-1) ), 
                   id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
-                  splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro)
+                  splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro, entroindiv)
+   
+     Tree.final <- treeconstructIND(origclass, origdata, Treestruct =  matrix(0, ncol=5, nrow=1), 
+                                   id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
+                                   splitCutoffnode = as.vector(0), PPmethod, lambda, size.p, entro, entroindiv)
+    
     
     Tree.Struct <- Tree.final$Treestruct
     colnames(Tree.Struct) <- c("id", "L.node.ID", "R.F.node.ID", 

@@ -20,6 +20,8 @@ size.p=1,  lambda=0.1, entro ,...)
 
 \item{entro}{TRUE, compute the entropy method}
 
+\item{entroindiv}{TRUE, compute the entropy for each obs...clarify this}
+
 \item{...}{arguments to be passed to methods}
 }
 \value{
@@ -38,14 +40,14 @@ Find tree structure using various projection pursuit indices of classification i
 \dontrun{
 train<- sample(1:200,150)
 Tree.crab <- PPtree_splitMOD("Type~.", data = PPforest::crab[train, ],
- PPmethod = "LDA", size.p = 1, entro = TRUE)
+ PPmethod = "LDA", size.p = 1, entro = TRUE,entroindiv=FALSE)
 Tree.crab
 
  Tree.result <- PPtreeViz::PPTreeclass(Type~.,data = PPforest::crab[train,],"LDA")
 Tree.result
 
 PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
-Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", size.p = 1, entro = FALSE)
+Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", size.p = 1, entro = FALSE, entroindiv=TRUE)
 Tree.iris}
 }
 \references{
