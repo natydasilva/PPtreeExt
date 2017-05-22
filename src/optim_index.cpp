@@ -467,8 +467,8 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
   arma::vec newclass(n, fill::zeros);
   arma::uvec idxcl(n, fill::ones); 
   arma::uvec ids(2, fill::zeros);
-  int mm;
-  int mmi;
+  int mm = 1;
+  int mmi = 1;
   arma::vec msort(g);
   arma::colvec sm(g);
   arma::vec pmall(g-1);
@@ -548,7 +548,9 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
     }
   }
   
-  return  Rcpp::List::create(Rcpp::Named("newclass") = newclass, Rcpp::Named("idxcl") = idxcl, Rcpp::Named("pmall") = pmall, Rcpp::Named("entiall") = entiall, Rcpp::Named("mmi") = mmi); 
+  return  Rcpp::List::create(Rcpp::Named("newclass") = newclass, Rcpp::Named("idxcl") = idxcl,
+                             Rcpp::Named("pmall") = pmall, Rcpp::Named("entiall") = entiall, 
+                             Rcpp::Named("mmi") = mmi); 
 
 }
 
@@ -614,37 +616,29 @@ List findproj1D(arma::vec origclass,
                  arma::mat origdata, std::string PPmethod, 
                  double lambda = 0.1, bool entro = false, bool entroindiv = true){
   
-  arma::vec a1(origdata.n_cols, fill::zeros) , a(origdata.n_cols, fill::zeros);
+  arma::vec  a(origdata.n_cols, fill::zeros);
   arma::vec ng = tableC(origclass); 
-  int mmi;
+  int mmi =1;
   arma::vec projdata(origclass.size() );
   
   
   if(PPmethod.compare("LDA") == 0){
     //Rcout << "LDA\n";
-    a1 = LDAopt(origclass, origdata,  1, "LDA", true);
+    a = LDAopt(origclass, origdata,  1, "LDA", true);
     //Rcout << a1;
   }else{
     //Rcout << "PDA\n";
-    a1 = PDAopt(origclass, origdata, 1, "PDA", true, lambda);
+    a = PDAopt(origclass, origdata, 1, "PDA", true, lambda);
   }
   
-  int  index = arma::index_max( arma::abs(a1) );
-  double sign = signC( a1(index) );
-  List split = split_relMOD(origclass, origdata*a1, entro, entroindiv); 
-  arma::vec entiall = as<vec>(split["entiall"]);
-   mmi = as<int>(split["mmi"]);
-   
-    double sign2 = signC(a1(index));
-    if (sign != sign2) {
-      a  = -1*a1;
-    } else {
-      a = a1;
-    }
-  
+
   projdata = origdata*a;
+  List split = split_relMOD(origclass, projdata, entro, entroindiv); 
+  mmi = as<int>(split["mmi"]);
+  double cp = projdata(mmi); 
+   
   return Rcpp::List::create(Rcpp::Named("projdata") = projdata,
-                            Rcpp::Named("projbest") = a, Rcpp::Named("mmi") = mmi);
+                            Rcpp::Named("projbest") = a, Rcpp::Named("cp") = cp);
 }
 
 
@@ -777,20 +771,21 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
   int pp = origdata.n_cols;
   List dataspl = datanode(origdata, sizep );
   origdata = as<mat>(dataspl["data"]);
-  int nd = origclass.size();
   arma::uvec vrnd = as<uvec>(dataspl["varselected"]);
   arma::vec projdata(origdata.n_rows, fill::zeros);
-  arma::mat projbest(nd,pp);
+  arma::mat projbest(pp,1);
   arma::vec classe(origdata.n_rows, fill::zeros);
-  int mmi;
+  double cp = 0.0;
   arma::vec C(8);
 
-  if(entroindiv){
+  Rcout << pp;
+  
+  if(entroindiv ){
     List oneDproj = findproj1D(origclass, origdata, PPmethod, lambda, entro, entroindiv);
     projdata = as<vec>(oneDproj["projdata"]);
     projbest = as<mat>(oneDproj["projbest"]); 
-    mmi = as<int>(oneDproj["mmi"]);
-  
+    cp = as<double>(oneDproj["cp"]);
+    classe = origclass;
   }else{
   List oneDproj = findprojMOD(origclass, origdata, PPmethod, lambda, entro, entroindiv);
    projdata = as<vec>(oneDproj["projdata"]);
@@ -803,8 +798,6 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
   }
   
   
-    
-
   arma::mat Alpha = zeros<mat>(pp);
   //Rcout<< Alpha;
   for(int i = 0; i < vrnd.size(); i++){
@@ -823,6 +816,8 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
     //if(PPmethod == "PDA"){
     indexbest = PDAindex2(classe, origdata, projbest );
   }
+  
+ 
   int n = projdata.n_rows;
   // group totals, group means and overall mean
   arma::vec clval = arma::unique(classe);
@@ -838,9 +833,7 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
         tot += projdata(j);
       }
     }
-    
     mean_g(k) = tot / ng(k);
-    
   }
  
   
@@ -853,12 +846,12 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
 //right and left node for observarions not groups if entroindiv=true
   if(entroindiv){
     for(int j = 0; j< projdata.size(); j++){
-      if(projdata(j)<= projdata(mmi)){
+      if(projdata(j) <= cp) {
         IOindexL(j) = true;
       }else{
         IOindexL(j) = false; 
       }
-      if(projdata(j) > projdata(mmi)){
+      if(projdata(j) > cp ){
         IOindexR(j) = true;
       }else{
         IOindexR(j) = false;
@@ -881,7 +874,7 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
   }
   return Rcpp::List::create(Rcpp::Named("Index") = indexbest,Rcpp::Named("Alpha") = Alpha, Rcpp::Named("C") = C,
                                         Rcpp::Named("IOindexL")=IOindexL, Rcpp::Named("IOindexR") = IOindexR,Rcpp::Named("classe") = classe,
-                                                    Rcpp::Named("projdata") = projdata, Rcpp::Named("mmi") = mmi);
+                                                    Rcpp::Named("projdata") = projdata, Rcpp::Named("cp") = cp);
   
 }
 
@@ -995,46 +988,33 @@ List treeconstructMOD(arma::vec origclass, arma::mat origdata, arma::mat Treestr
 }
 
 
-
-
-
 //tree structure
 // [[Rcpp::export]]
-List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::vec splitCutoffnode,
-                      std::string PPmethod, double lambda = 0.1, double sizep = 1, bool entro = true, bool entroindiv = false) {
+List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, 
+                      int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::mat  splitCutoffnode,
+                      std::string PPmethod, double lambda = 0.1, double sizep = 1, bool entro =false, 
+                      bool entroindiv = true) {
   
   int n = origdata.n_rows;
   arma::vec cl2 = unique(origclass);
   arma::vec g(cl2.size(), fill::zeros); 
   g = tableC(origclass);
-  int G = g.size();
   
-  int nc = Treestruct.n_cols;
-  arma::rowvec aux(nc, fill::zeros);
-  Treestruct.insert_rows(id, aux );
-  Treestruct(id, 0) = id;
-  int nsplitcut = splitCutoffnode.size();
+  //double cp;
+  arma::mat newC(1,1, fill::zeros);
+  int G = g.size();
   
   List a;
   List b;
-
-  arma::vec C(8, fill::zeros);
-  //now we are not defining the problem in a two clas problem 
-  //arma::vec classe(n, fill::zeros);
-  // if(n/tot<0.1){
-  // 
-  // }
- 
-  if(id== 8){
+  Rcout << Treestruct; 
+  Rcout <<  '\n';
+  if(G <= 1|| n <= 10){
     //check as.numeric group names
-    
     Treestruct(id, 2) = cl2(0);
-    //Treestruct.insert_rows( Treeconstruct.n_rows, projdata(mmi) );
     
     return Rcpp::List::create( Rcpp::Named("Treestruct") = Treestruct,  Rcpp::Named("projbestnode") = projbestnode,
-                               Rcpp::Named("splitCutoffnode") = splitCutoffnode, Rcpp::Named("rep") = rep,
+                               Rcpp::Named("splitCutoffnode")=splitCutoffnode, Rcpp::Named("rep")=rep,
                                Rcpp::Named("rep1") = rep1, Rcpp::Named("rep2") = rep2);
-   
   }else{
     Treestruct(id, 1) = rep1;
     rep1 = rep1 + 1;
@@ -1043,60 +1023,43 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
     Treestruct(id, 3) = rep2;
     rep2 = rep2 + 1;
     
-    
-    //Rcout<< Treestruct;
     a = findprojwrapMOD(origclass, origdata, PPmethod, sizep, lambda, entro, entroindiv); 
-   // classe = as<vec>(a["classe"]);// relabel classes into 2 classes
-    //C = nodestr(classe,as<vec>(a["projdata"])); // define rules
+    // classe = as<vec>(a["classe"]);// relabel classes into 2 classes
+    // C = nodestr(classe,as<vec>(a["projdata"])); // define rules
+    //arma::vec projdata = as<vec>(a["projdata"]);
     
-    arma::vec projdata = as<vec>(a["projdata"]);
-    
-    int mmi = as<int>(a["mmi"]);
- 
-    splitCutoffnode.resize(nsplitcut + 1);
-    splitCutoffnode(nsplitcut) = projdata(mmi) ;
-  
-    //splitCutoffnode.insert_rows( splitCutoffnode.n_rows,  projdata(mmi) );
-   
+    newC(0,0) = as<double>(a["cp"]);
+    splitCutoffnode.insert_rows( splitCutoffnode.n_rows, newC.t() );
   }
-
   Treestruct(id, 4) = as<double>(a[ "Index" ]);
- 
   //arma::uvec idxcl = as<uvec>(a["idxcl"]);
   arma::mat Alpha = as<mat>(a["Alpha"]);
- 
   projbestnode.insert_rows( projbestnode.n_rows, Alpha.t() );
- 
+  
   arma::vec tclass = origclass;
- 
   arma::mat tdata = origdata;
- 
   arma::vec IOindexL = as<vec>( a["IOindexL"] );
   ////
-  
   tclass = (tclass%IOindexL);
   //tclass = tclass( idxcl);
   
   arma::uvec tnaux = find(tclass > 0);
- 
   arma::uvec tindex = sort(tnaux);
   tclass = tclass( tindex);
   
   //arma::vec tclassred = tclass(tindexaux);
   tdata = tdata.rows(tindex);
-  Rcout << splitCutoffnode;
-  b = treeconstructMOD(tclass, tdata,  Treestruct, Treestruct(id, 1) - 1, rep,
-                       rep1, rep2,  projbestnode,
-                       splitCutoffnode, PPmethod,  lambda, sizep,entro, entroindiv);
   
- 
-  Treestruct = as<mat>(b["Treestruct"]);
-
+  b = treeconstructIND(tclass, tdata,  Treestruct, Treestruct(id, 1) - 1, rep,
+                       rep1, rep2,  projbestnode,
+                       splitCutoffnode, PPmethod,  lambda, sizep, entro, entroindiv);
+  
+  
+  Treestruct =  as<mat>(b["Treestruct"]);
+  
   projbestnode = as<mat>(b["projbestnode"]);
-  splitCutoffnode = as<vec>(b["splitCutoffnode"]);
-  Rcout << splitCutoffnode;
+  splitCutoffnode = as<mat>(b["splitCutoffnode"]);
   rep = as<int>(b["rep"]);
-
   rep1 =  as<int>(b["rep1"]);
   rep2 =  as<int>(b["rep2"]);
   
@@ -1110,7 +1073,7 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   tnaux = find(tclass > 0);
   tindex = sort(tnaux);
   tclass = tclass( tindex);
- 
+  
   //arma::vec tclassred = tclass(tindexaux);
   tdata = tdata.rows(tindex);
   
@@ -1119,7 +1082,7 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   g = tableC(tclass);
   G = g.size();
   
-  b = treeconstructMOD(tclass, tdata, Treestruct,
+  b = treeconstructIND(tclass, tdata, Treestruct,
                        Treestruct(id, 2) - 1, rep, rep1, rep2, projbestnode,
                        splitCutoffnode, PPmethod, lambda,sizep, entro, entroindiv);
   
@@ -1129,7 +1092,7 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   rep = as<int>(b["rep"]);
   rep1 =  as<int>(b["rep1"]);
   rep2 =  as<int>(b["rep2"]);
- 
+  
   return b; 
   
 }
