@@ -467,7 +467,7 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
   arma::vec newclass(n, fill::zeros);
   arma::uvec idxcl(n, fill::ones); 
   arma::uvec ids(2, fill::zeros);
-  int mm = 1;
+  int mm ;
   int mmi = 1;
   arma::vec msort(g);
   arma::colvec sm(g);
@@ -778,7 +778,7 @@ List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmeth
   double cp = 0.0;
   arma::vec C(8);
 
-  Rcout << pp;
+  //Rcout << pp;
   
   if(entroindiv ){
     List oneDproj = findproj1D(origclass, origdata, PPmethod, lambda, entro, entroindiv);
@@ -993,7 +993,7 @@ List treeconstructMOD(arma::vec origclass, arma::mat origdata, arma::mat Treestr
 List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, 
                       int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::mat  splitCutoffnode,
                       std::string PPmethod, double lambda = 0.1, double sizep = 1, bool entro =false, 
-                      bool entroindiv = true) {
+                      bool entroindiv = true, int tot =10) {
   
   int n = origdata.n_rows;
   arma::vec cl2 = unique(origclass);
@@ -1006,15 +1006,23 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   
   List a;
   List b;
-  Rcout << Treestruct; 
-  Rcout <<  '\n';
-  if(G <= 1|| n <= 10){
+  // Rcout << Treestruct;
+  // Rcout <<  '\n';
+  if(G <= 1||(n/tot < 0.05)){
     //check as.numeric group names
-    Treestruct(id, 2) = cl2(0);
+    Treestruct(id, 2) = cl2(g.index_max());
     
     return Rcpp::List::create( Rcpp::Named("Treestruct") = Treestruct,  Rcpp::Named("projbestnode") = projbestnode,
                                Rcpp::Named("splitCutoffnode")=splitCutoffnode, Rcpp::Named("rep")=rep,
                                Rcpp::Named("rep1") = rep1, Rcpp::Named("rep2") = rep2);
+  // } 
+  // if((n/tot < 0.05)&&(G!=1)){
+  //   Treestruct(id, 2) =  cl2(g.index_max());
+  //   
+  //   return Rcpp::List::create( Rcpp::Named("Treestruct") = Treestruct,  Rcpp::Named("projbestnode") = projbestnode,
+  //                              Rcpp::Named("splitCutoffnode")=splitCutoffnode, Rcpp::Named("rep")=rep,
+  //                              Rcpp::Named("rep1") = rep1, Rcpp::Named("rep2") = rep2);
+  
   }else{
     Treestruct(id, 1) = rep1;
     rep1 = rep1 + 1;
@@ -1022,6 +1030,7 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
     rep1 = rep1 + 1;
     Treestruct(id, 3) = rep2;
     rep2 = rep2 + 1;
+    Rcout << id;
     
     a = findprojwrapMOD(origclass, origdata, PPmethod, sizep, lambda, entro, entroindiv); 
     // classe = as<vec>(a["classe"]);// relabel classes into 2 classes
@@ -1049,7 +1058,7 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   
   //arma::vec tclassred = tclass(tindexaux);
   tdata = tdata.rows(tindex);
-  
+ 
   b = treeconstructIND(tclass, tdata,  Treestruct, Treestruct(id, 1) - 1, rep,
                        rep1, rep2,  projbestnode,
                        splitCutoffnode, PPmethod,  lambda, sizep, entro, entroindiv);

@@ -60,9 +60,9 @@ PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda =
                   id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
                   splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro, entroindiv)
    
-     Tree.final <- treeconstructIND(origclass, origdata, Treestruct = cbind( 1:(2*G - 1), matrix(0, ncol = 4, nrow = 2*G-1) ), 
+     Tree.final <- treeconstructIND(origclass, origdata, Treestruct = cbind( 1:15, matrix(0, ncol = 4, nrow = 15) ), 
                                     id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
-                                    splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro=FALSE, entroindiv=TRUE)
+                                    splitCutoffnode = matrix(0, ncol = 1, nrow = 1), PPmethod, lambda, size.p, entro=FALSE, entroindiv=TRUE, tot =150)
     
     
     Tree.Struct <- Tree.final$Treestruct
