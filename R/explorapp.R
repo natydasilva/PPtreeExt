@@ -73,6 +73,38 @@ ppbound <- function(ru, leg = TRUE, data , meth, entro ){
 }
 
 
+ppboundMOD <- function(leg = TRUE, data , meth="MOD", entro=FALSE,entroindiv=TRUE){
+  grilla <- base::expand.grid(X1 = seq((min(data$X1) + sign( min(data$X1))*.5) , (max(data$X1) + sign(max(data$X1))*.5), , 100),
+                              X2 = seq((min(data$X2 ) + sign( min(data$X2))*.5), (max(data$X2) + sign(max(data$X2))*.5), , 100))
+
+  
+  
+  pptree<- PPTreeclass_MOD(Sim~. ,  data=data, PPmethod='LDA')
+  
+  ppred.sim <- PPclassify_MOD(pptree, test.data = grilla)
+  grilla$ppred <-ppred.sim[[2]]
+  ruleid <- pptree$splitCutoff.node
+
+  
+  p <- ggplot2::ggplot(data = grilla ) + ggplot2::geom_point( ggplot2::aes(x = X1, y = X2, color = ppred, shape = ppred ), alpha = .20) +
+  ggplot2::scale_colour_brewer(name = "Class",type = "qual", palette = "Dark2" ) + ggplot2::theme_bw() +
+ ggplot2::scale_shape_discrete(name='Class')
+  
+  if(leg){
+    pl.pp <- p + ggplot2::geom_point(data = data, ggplot2::aes(x = X1 , y = X2, group = Sim, shape = Sim, color = Sim), size = I(3)  ) + 
+      ggplot2::theme(legend.position = "bottom", legend.text = ggplot2::element_text(size = 6)) + 
+      ggplot2::scale_y_continuous(expand = c(0, 0) ) + ggplot2::scale_x_continuous(expand = c(0, 0) ) + 
+      ggplot2::labs(title = paste(paste(meth, 3, sep = "" ) ) )
+  }else{
+    pl.pp <- p + ggplot2::geom_point(data = data, ggplot2::aes(x = X1 , y = X2, group = Sim, shape = Sim, color = Sim), size = I(3)  ) + 
+      ggplot2::theme(legend.position = "none",aspect.ratio = 1) + 
+      ggplot2::scale_y_continuous(expand = c(0, 0) ) + ggplot2::scale_x_continuous(expand = c(0, 0)) + 
+      ggplot2::labs(x = " ", y = "", title = paste( paste(meth, 3, sep = "") ) )
+  }
+  
+  pl.pp
+}
+
 ui <- shiny::fluidPage(
 
     shiny::mainPanel(
@@ -90,14 +122,14 @@ ui <- shiny::fluidPage(
      
    
     shiny::fluidRow(
-      shiny::plotOutput("distPlot", width = "150%", height = "400px" ) ) ),
+      shiny::plotOutput("distPlot" ) ) ),
     shiny::tabPanel("SIM 2",
                     shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ) ),
                     shiny::fluidRow( shiny::column(4, shiny::textInput( inputId = 'mean2', label = 'Group means ', value = 
                                            "-1, 0.6, 0, -0.6, 2,-1" )),
-                      shiny::column(4, shiny::textInput(inputId = "cor2", label = "Correlations",
+                      shiny:: column(4, shiny::textInput(inputId = "cor2", label = "Correlations",
                                            value = "0.95, 0.95, 0.95")) ,
-                      shiny::column(4, shiny::textInput(inputId = "sample2", label = "Group sample",
+                       shiny::column(4, shiny::textInput(inputId = "sample2", label = "Group sample",
                                            value = "100, 100, 100") )),
                     shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "group",label ="Add outliers to class", choices = 1:3, selected = 1 ))),
                     shiny::fluidRow(shiny::column(4, shiny::textInput( inputId = 'meanout', label = 'Out. X1, X2 means ', value = 
@@ -109,7 +141,7 @@ ui <- shiny::fluidPage(
                       shiny::fluidRow(shiny::actionButton("do2", label = "OK"))), 
              
                     shiny::fluidRow(
-                      shiny::plotOutput("distPlot2", width = "150%", height = "400px" ) )
+                      shiny::plotOutput("distPlot2") )
              )
   )))
 
@@ -126,11 +158,12 @@ server <- function(input, output) {
     dat.pl2 <- simu3(x1[1], x1[2], x1[3],x1[4],x1[5],x1[6],
                      x2[1], x2[2], x2[3], x3[1], x3[2], x3[3])
     
-
+   
     
    gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule), leg = FALSE, data = dat.pl2, meth = "Original", entro = TRUE ),
                  ppbound(ru =  as.numeric(input$rule), FALSE, data = dat.pl2, meth = "Modified" , entro = FALSE), 
-                 ppbound(ru =  as.numeric(input$rule), FALSE, data = dat.pl2, meth = "Modified" , entro = TRUE), ncol = 3)
+                 ppbound(ru =  as.numeric(input$rule), FALSE, data = dat.pl2, meth = "Modified" , entro = TRUE),
+                 ppboundMOD(leg=FALSE,data=dat.pl2,meth="MOD",entro=FALSE,entroindiv = TRUE), ncol = 2)
   })
 
   
@@ -157,7 +190,8 @@ server <- function(input, output) {
       
       gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule2), leg = FALSE, data = dat.pl2, meth = "Original", entro = TRUE ),
                    ppbound(ru =  as.numeric(input$rule2), FALSE, data = dat.pl2, meth = "Modified" , entro = FALSE), 
-                   ppbound(ru =  as.numeric(input$rule2), FALSE, data = dat.pl2, meth = "Modified" , entro = TRUE), ncol = 3)
+                   ppbound(ru =  as.numeric(input$rule2), FALSE, data = dat.pl2, meth = "Modified" , entro = TRUE),
+                   ppboundMOD(leg=FALSE,data=dat.pl2,meth="MOD",entro=FALSE,entroindiv = TRUE), ncol = 2)
     })
   
   
