@@ -6,14 +6,17 @@
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
-
+#' @examples
+#' \dontrun{
+#' explorapp(ui,server)
+#' }
 explorapp <-function(ui,server){
   
   X1 <- NULL
   X2<- NULL
   ppred <- NULL
   Sim <- NULL
-  column <- NULL
+  #column <- NULL
 simu3 <- function(mux1, mux2, muy1, muy2, muz1, muz2,  cor1,cor2,cor3, n1 = 100, n2 = 100, n3 = 100) {
   set.seed(666)
   bivn <- MASS::mvrnorm(n1, mu = c(mux1, mux2), Sigma = matrix(c(1, cor1, cor1, 1), 2))
@@ -76,32 +79,32 @@ ui <- shiny::fluidPage(
     shiny::tabsetPanel(
       shiny::tabPanel(
         "SIM 1", 
-        shiny::fluidRow(column(3, shiny::selectInput(inputId = "rule", label ="Rule", choices = 1:8, selected = 1 ) ) ),
-        shiny::fluidRow( column(4,
+        shiny::fluidRow(shiny::column(3, shiny::selectInput(inputId = "rule", label ="Rule", choices = 1:8, selected = 1 ) ) ),
+        shiny::fluidRow( shiny::column(4,
       shiny::textInput( inputId = 'mean', label = 'Group means ', value = 
                    "-1, 0.6, 0, -0.6, 2,-1" )),
-      column(4, shiny::textInput(inputId = "cor", label = "Correlations",
+      shiny::column(4, shiny::textInput(inputId = "cor", label = "Correlations",
                 value = "0.95, 0.95, 0.95")) ,
-      column(4, shiny::textInput(inputId = "sample", label = "Group sample",
+      shiny::column(4, shiny::textInput(inputId = "sample", label = "Group sample",
         value = "100, 100, 100") ), shiny::fluidRow(shiny::actionButton("do", label = "OK"))), 
      
    
     shiny::fluidRow(
       shiny::plotOutput("distPlot", width = "150%", height = "400px" ) ) ),
     shiny::tabPanel("SIM 2",
-                    shiny::fluidRow(column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ) ),
-                    shiny::fluidRow( column(4, shiny::textInput( inputId = 'mean2', label = 'Group means ', value = 
+                    shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ) ),
+                    shiny::fluidRow( shiny::column(4, shiny::textInput( inputId = 'mean2', label = 'Group means ', value = 
                                            "-1, 0.6, 0, -0.6, 2,-1" )),
-                       column(4, shiny::textInput(inputId = "cor2", label = "Correlations",
+                      shiny::column(4, shiny::textInput(inputId = "cor2", label = "Correlations",
                                            value = "0.95, 0.95, 0.95")) ,
-                       column(4, shiny::textInput(inputId = "sample2", label = "Group sample",
+                      shiny::column(4, shiny::textInput(inputId = "sample2", label = "Group sample",
                                            value = "100, 100, 100") )),
-                    shiny::fluidRow(column(4, shiny::selectInput(inputId = "group",label ="Add outliers to class", choices = 1:3, selected = 1 ))),
-                    shiny::fluidRow(column(4, shiny::textInput( inputId = 'meanout', label = 'Out. X1, X2 means ', value = 
+                    shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "group",label ="Add outliers to class", choices = 1:3, selected = 1 ))),
+                    shiny::fluidRow(shiny::column(4, shiny::textInput( inputId = 'meanout', label = 'Out. X1, X2 means ', value = 
                                              "-3, 3" )),
-                      column(4, shiny::textInput( inputId = 'sdout', label = 'Out. X1, X2 sd ', value =".2,.2" 
+                    shiny::column(4, shiny::textInput( inputId = 'sdout', label = 'Out. X1, X2 sd ', value =".2,.2" 
                                              )),
-                      column(4, shiny::textInput(inputId = "sampleout", label = "Out. sample size",
+                    shiny::column(4, shiny::textInput(inputId = "sampleout", label = "Out. sample size",
                                           value = "10") ),
                       shiny::fluidRow(shiny::actionButton("do2", label = "OK"))), 
              

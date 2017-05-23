@@ -48,7 +48,7 @@ Tree.result
 
 PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
 Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", 
-size.p = 1, entro = FALSE, entroindiv=TRUE)
+size.p = 1, entro = TURE, entroindiv = FALSE)
 Tree.iris}
 }
 \references{

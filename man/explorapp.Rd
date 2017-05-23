@@ -14,3 +14,8 @@ explorapp(ui, server)
 \description{
 Shiny app to explore PPtree algirith partitions
 }
+\examples{
+\dontrun{
+explorapp(ui,server)
+}
+}
