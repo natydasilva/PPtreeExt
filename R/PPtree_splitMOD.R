@@ -2,7 +2,7 @@
 #' 
 #' Find tree structure using various projection pursuit indices of classification in each split.
 #' @usage PPtree_splitMOD(form, data, PPmethod='LDA', 
-#' size.p=1,  lambda=0.1, entro ,...) 
+#' size.p=1,  lambda=0.1, entro ,entroindiv,...) 
 #' @param form A character with the name of the class variable.
 #' @param data Data frame with the complete data set.
 #' @param PPmethod index to use for projection pursuit: 'LDA', 'PDA'
@@ -36,8 +36,8 @@
 #' Tree.result
 #' 
 #' PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
-
-#' Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", size.p = 1, entro = FALSE, entroindiv=TRUE)
+#' Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", 
+#' size.p = 1, entro = TURE, entroindiv = FALSE)
 #' Tree.iris}
 PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro, entroindiv,...) {
   
@@ -58,12 +58,12 @@ PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda =
     
     Tree.final <- treeconstructMOD(origclass, origdata, Treestruct = cbind( 1:(2*G - 1), matrix(0, ncol = 4, nrow = 2*G-1) ), 
                   id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
-                  splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro, entroindiv)
+                  splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro = TRUE, entroindiv=FALSE)
    
-     Tree.final <- treeconstructIND(origclass, origdata, Treestruct = cbind( 1:15, matrix(0, ncol = 4, nrow = 15) ), 
-                                    id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
-                                    splitCutoffnode = matrix(0, ncol = 1, nrow = 1), PPmethod, lambda, size.p, entro=FALSE, entroindiv=TRUE, tot =150)
-    
+     # Tree.final <- treeconstructIND(origclass, origdata, Treestruct =  matrix(0, ncol = 5, nrow = 1) , 
+     #                                id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
+     #                                splitCutoffnode = matrix(0, ncol = 1, nrow = 1), PPmethod, lambda, size.p, entro=FALSE, entroindiv=TRUE, tot =150)
+     # 
     
     Tree.Struct <- Tree.final$Treestruct
     colnames(Tree.Struct) <- c("id", "L.node.ID", "R.F.node.ID", 

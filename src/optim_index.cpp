@@ -450,6 +450,30 @@ double entropy(arma::vec origclass){
   
 }
 
+// [[Rcpp::export]]
+double split_entro(arma::vec origclass, arma::colvec  projdata){
+  int n = origclass.size();
+  arma::vec entiall(n -1, fill::zeros);
+  int mmi = 1;
+  
+    for(int j = 0; j < n-1; j++){
+      //double p = projdata(ordproj(j));
+      double p = projdata(j);
+      arma::vec ei1aux = origclass( find( projdata <= p) );
+      int ei1siz = ei1aux.size();
+      arma::vec ei2aux = origclass( find( projdata > p) );
+      int ei2siz = ei2aux.size();
+      double ei1 = (ei1siz/n)*entropy( ei1aux );
+      double ei2 = (ei2siz/n)*entropy( ei2aux) ;
+      entiall(j) = ei1 + ei2;
+    }
+    mmi = entiall.index_min();
+  
+  
+  double cp = projdata(mmi);
+  return cp;
+  
+  }
 //--------First split,
 //--------the old algotithm redefine the problem in a two class problem, using the group mean to find the first partition (this is used inside findproj old versio)
 //--------if entro = true use the entropy to define the best partition (only consider g-1 partitions based on middle point between group means)
@@ -893,6 +917,11 @@ List treeconstructMOD(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   
   List a;
   List b;
+  // Rcout<< Treestruct;
+  // Rcout << "\n";
+  // Rcout << id;
+  // Rcout << "\n";
+  
   
   arma::vec C(8, fill::zeros);
   arma::vec classe(n, fill::zeros);
@@ -992,28 +1021,45 @@ List treeconstructMOD(arma::vec origclass, arma::mat origdata, arma::mat Treestr
 // [[Rcpp::export]]
 List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, 
                       int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::mat  splitCutoffnode,
-                      std::string PPmethod, double lambda = 0.1, double sizep = 1, bool entro =false, 
-                      bool entroindiv = true, int tot =10) {
+                      std::string PPmethod, double lambda = 0.1, double sizep = 1, bool entro = false, 
+                      bool entroindiv = true, int tot=10, int iter = 0) {
+  iter = iter + 1;
   
   int n = origdata.n_rows;
   arma::vec cl2 = unique(origclass);
   arma::vec g(cl2.size(), fill::zeros); 
   g = tableC(origclass);
-  
+  //int nc = Treestruct.n_rows;
   //double cp;
   arma::mat newC(1,1, fill::zeros);
   int G = g.size();
+
   
   List a;
   List b;
-  // Rcout << Treestruct;
+  
+  // if( (id + 1) > nc){
+  //   arma::mat Treestraux((id+1 -nc), 5, fill::zeros);
+  //   Treestruct = join_cols(Treestruct, Treestraux);
+  // }
+
+  bool cnd = (G == 1) | ( n < 56);
+  // Rcout <<  n ;
   // Rcout <<  '\n';
-  if(G <= 1||(n/tot < 0.05)){
+  // 
+  // Rcout << G ;
+  // Rcout <<  '\n';
+  
+  if( cnd==1 ) {
+  //if( n/tot < 0.05){
     //check as.numeric group names
     Treestruct(id, 2) = cl2(g.index_max());
+    // 
+    // Rcout << Treestruct;
+    // Rcout <<  '\n';
     
     return Rcpp::List::create( Rcpp::Named("Treestruct") = Treestruct,  Rcpp::Named("projbestnode") = projbestnode,
-                               Rcpp::Named("splitCutoffnode")=splitCutoffnode, Rcpp::Named("rep")=rep,
+                               Rcpp::Named("splitCutoffnode") = splitCutoffnode, Rcpp::Named("rep") = rep,
                                Rcpp::Named("rep1") = rep1, Rcpp::Named("rep2") = rep2);
   // } 
   // if((n/tot < 0.05)&&(G!=1)){
@@ -1024,14 +1070,15 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   //                              Rcpp::Named("rep1") = rep1, Rcpp::Named("rep2") = rep2);
   
   }else{
+    //Treestruct(id, 0) = id+1;
     Treestruct(id, 1) = rep1;
     rep1 = rep1 + 1;
     Treestruct(id, 2) = rep1;
     rep1 = rep1 + 1;
     Treestruct(id, 3) = rep2;
     rep2 = rep2 + 1;
-    Rcout << id;
-    
+    //Rcout << id;
+    //Rcout << Treestruct;
     a = findprojwrapMOD(origclass, origdata, PPmethod, sizep, lambda, entro, entroindiv); 
     // classe = as<vec>(a["classe"]);// relabel classes into 2 classes
     // C = nodestr(classe,as<vec>(a["projdata"])); // define rules
@@ -1058,14 +1105,14 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   
   //arma::vec tclassred = tclass(tindexaux);
   tdata = tdata.rows(tindex);
+
  
-  b = treeconstructIND(tclass, tdata,  Treestruct, Treestruct(id, 1) - 1, rep,
+  b = treeconstructIND(tclass, tdata,  Treestruct, id=Treestruct(id, 1) - 1, rep,
                        rep1, rep2,  projbestnode,
                        splitCutoffnode, PPmethod,  lambda, sizep, entro, entroindiv);
   
   
   Treestruct =  as<mat>(b["Treestruct"]);
-  
   projbestnode = as<mat>(b["projbestnode"]);
   splitCutoffnode = as<mat>(b["splitCutoffnode"]);
   rep = as<int>(b["rep"]);
@@ -1085,7 +1132,6 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   
   //arma::vec tclassred = tclass(tindexaux);
   tdata = tdata.rows(tindex);
-  
   n =  tdata.n_rows;
   g.zeros();
   g = tableC(tclass);
@@ -1094,7 +1140,11 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   b = treeconstructIND(tclass, tdata, Treestruct,
                        Treestruct(id, 2) - 1, rep, rep1, rep2, projbestnode,
                        splitCutoffnode, PPmethod, lambda,sizep, entro, entroindiv);
-  
+  // Rcout << Treestruct;
+  // Rcout <<  '\n';
+  // 
+  // Rcout << id;
+  // Rcout <<  '\n';
   Treestruct = as<mat>(b["Treestruct"]);
   projbestnode = as<mat>(b["projbestnode"]);
   splitCutoffnode = as<mat>(b["splitCutoffnode"]);

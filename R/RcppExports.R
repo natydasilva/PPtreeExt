@@ -41,6 +41,10 @@ entropy <- function(origclass) {
     .Call('PPtreeExt_entropy', PACKAGE = 'PPtreeExt', origclass)
 }
 
+split_entro <- function(origclass, projdata) {
+    .Call('PPtreeExt_split_entro', PACKAGE = 'PPtreeExt', origclass, projdata)
+}
+
 split_relMOD <- function(origclass, projdata, entro, entroindiv) {
     .Call('PPtreeExt_split_relMOD', PACKAGE = 'PPtreeExt', origclass, projdata, entro, entroindiv)
 }
@@ -77,8 +81,8 @@ treeconstructMOD <- function(origclass, origdata, Treestruct, id, rep, rep1, rep
     .Call('PPtreeExt_treeconstructMOD', PACKAGE = 'PPtreeExt', origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda, sizep, entro, entroindiv)
 }
 
-treeconstructIND <- function(origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda = 0.1, sizep = 1, entro = TRUE, entroindiv = FALSE) {
-    .Call('PPtreeExt_treeconstructIND', PACKAGE = 'PPtreeExt', origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda, sizep, entro, entroindiv)
+treeconstructIND <- function(origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda = 0.1, sizep = 1, entro = FALSE, entroindiv = TRUE, tot = 10L, iter = 0L) {
+    .Call('PPtreeExt_treeconstructIND', PACKAGE = 'PPtreeExt', origclass, origdata, Treestruct, id, rep, rep1, rep2, projbestnode, splitCutoffnode, PPmethod, lambda, sizep, entro, entroindiv, tot, iter)
 }
 
 csample_num <- function(x, size, replace, prob) {

@@ -5,7 +5,7 @@
 \title{Projection pursuit classification tree with random variable selection in each split}
 \usage{
 PPtree_splitMOD(form, data, PPmethod='LDA', 
-size.p=1,  lambda=0.1, entro ,...)
+size.p=1,  lambda=0.1, entro ,entroindiv,...)
 }
 \arguments{
 \item{form}{A character with the name of the class variable.}
@@ -47,7 +47,8 @@ Tree.crab
 Tree.result
 
 PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
-Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", size.p = 1, entro = FALSE, entroindiv=TRUE)
+Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", 
+size.p = 1, entro = FALSE, entroindiv=TRUE)
 Tree.iris}
 }
 \references{
