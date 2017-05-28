@@ -30,51 +30,6 @@ simu3 <- function(mux1, mux2, muy1, muy2, muz1, muz2,  cor1,cor2,cor3, n1 = 100,
 }
 
 
-
-##
-dat.pl2 <- simu3(-1,0.6,0,-0.6, 2,-1,0.95, 0.95, 0.95)
-
-
-
-p <- ggplot(data = grilla ) +
-  geom_point(aes(x = X1, y = X2,
-                 color = as.factor(ppred),
-                 shape=as.factor(ppred)),
-             alpha = .20) +
-  #geom_abline(intercept=bnds$a[1], slope=bnds$b[1], size=1) +
-  scale_colour_brewer(name="Class", type="qual",
-                      palette="Dark2") +
-  #geom_abline(intercept = bnds$a[2], slope = bnds$b[2], size=1) +
-  scale_shape_discrete(name='Class') +
-  theme_bw() +
-  theme(aspect.ratio = 1, legend.position="none")
-
-pl.pp <- p + geom_point(data = dat.pl2,
-                        aes(x = X1, y = X2,
-                            group = Sim,
-                            shape = Sim, color = Sim), size = 3) +
-  scale_y_continuous(expand = c(0,0)) +
-  scale_x_continuous(expand = c(0,0))
-
-p2 <- ggplot(data = grilla) +
-  geom_point(aes(x = X1, y = X2,
-                 color = as.factor(rpart.pred),
-                 shape =  as.factor(rpart.pred)), alpha = .2) +
-  scale_colour_brewer(name = "Class",
-                      labels = levels(dat.pl2$Sim),
-                      type="qual",palette="Dark2") +
-  theme_bw() + scale_shape_discrete(name='Class') +
-  scale_y_continuous(expand = c(0,0)) +
-  scale_x_continuous(expand = c(0,0)) +
-  theme(aspect.ratio=1, legend.position="none")
-
-pl.rpart <- p2 + geom_point(data = dat.pl2,
-                            aes(x = X1 , y = X2,
-                                group = Sim, shape = Sim,
-                                color = Sim), size = 3)
-
-grid.arrange(pl.rpart, pl.pp, ncol=2)
-##
 ppbound <- function(ru, data , meth, entro ,title){
   grilla <- base::expand.grid(X1 = seq((min(data$X1) + sign( min(data$X1))*.5) , (max(data$X1) + sign(max(data$X1))*.5), , 100),
                               X2 = seq((min(data$X2 ) + sign( min(data$X2))*.5), (max(data$X2) + sign(max(data$X2))*.5), , 100))
@@ -129,9 +84,7 @@ ppboundMOD <- function( data , meth = "MOD", entro = FALSE, entroindiv = TRUE, t
   
   ppred.sim <- PPclassify_MOD(pptree, test.data = grilla)
   grilla$ppred <-ppred.sim[[2]]
-  ruleid <- pptree$splitCutoff.node
 
-  
   p <- ggplot2::ggplot(data = grilla ) + ggplot2::geom_point( ggplot2::aes(x = X1, y = X2, color = ppred, shape = ppred ), alpha = .20) +
   ggplot2::scale_colour_brewer(name = "Class",type = "qual", palette = "Dark2" ) + ggplot2::theme_bw() +
  ggplot2::scale_shape_discrete(name='Class')
@@ -150,7 +103,7 @@ ui <- shiny::fluidPage(
     shiny::mainPanel(
     shiny::tabsetPanel(
       shiny::tabPanel(
-        "SIM 1", 
+        "SIM", 
         shiny::fluidRow(shiny::column(3, shiny::selectInput(inputId = "rule", label ="Rule", choices = 1:8, selected = 1 ) ), shiny::column(3, shiny::selectInput(inputId = "modi", label ="Modification", choices = 1:3, selected = 1 )  )),
         shiny::fluidRow( shiny::column(4,
       shiny::textInput( inputId = 'mean', label = 'Group means ', value = 
@@ -161,7 +114,7 @@ ui <- shiny::fluidPage(
         value = "100, 100, 100") )), shiny::fluidRow(shiny::actionButton("do", label = "OK")), 
     shiny::fluidRow(
       shiny::plotOutput("distPlot" ) ) ),
-    shiny::tabPanel("SIM 2",
+    shiny::tabPanel("SIM uotliers",
                     shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ), shiny::column(3, shiny::selectInput(inputId = "modi2", label ="Modification", choices = 1:3, selected = 1 ) )),
                     shiny::fluidRow( shiny::column(4, shiny::textInput( inputId = 'mean2', label = 'Group means ', value = 
                                            "-1, 0.6, 0, -0.6, 2,-1" )),
