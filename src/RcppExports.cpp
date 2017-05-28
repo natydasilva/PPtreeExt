@@ -485,3 +485,46 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+
+static const R_CallMethodDef CallEntries[] = {
+    {"PPtreeExt_tableC", (DL_FUNC) &PPtreeExt_tableC, 1},
+    {"PPtreeExt_roundme", (DL_FUNC) &PPtreeExt_roundme, 1},
+    {"PPtreeExt_LDAindex2", (DL_FUNC) &PPtreeExt_LDAindex2, 4},
+    {"PPtreeExt_signC", (DL_FUNC) &PPtreeExt_signC, 1},
+    {"PPtreeExt_LDAopt", (DL_FUNC) &PPtreeExt_LDAopt, 5},
+    {"PPtreeExt_PDAindex2", (DL_FUNC) &PPtreeExt_PDAindex2, 5},
+    {"PPtreeExt_PDAopt", (DL_FUNC) &PPtreeExt_PDAopt, 6},
+    {"PPtreeExt_varselect", (DL_FUNC) &PPtreeExt_varselect, 2},
+    {"PPtreeExt_datanode", (DL_FUNC) &PPtreeExt_datanode, 2},
+    {"PPtreeExt_entropy", (DL_FUNC) &PPtreeExt_entropy, 1},
+    {"PPtreeExt_split_entro", (DL_FUNC) &PPtreeExt_split_entro, 2},
+    {"PPtreeExt_split_relMOD", (DL_FUNC) &PPtreeExt_split_relMOD, 4},
+    {"PPtreeExt_findprojMOD", (DL_FUNC) &PPtreeExt_findprojMOD, 6},
+    {"PPtreeExt_findproj1D", (DL_FUNC) &PPtreeExt_findproj1D, 6},
+    {"PPtreeExt_arma_sub_cond", (DL_FUNC) &PPtreeExt_arma_sub_cond, 2},
+    {"PPtreeExt_quantileCpp", (DL_FUNC) &PPtreeExt_quantileCpp, 2},
+    {"PPtreeExt_quant", (DL_FUNC) &PPtreeExt_quant, 2},
+    {"PPtreeExt_nodestr", (DL_FUNC) &PPtreeExt_nodestr, 2},
+    {"PPtreeExt_findprojwrapMOD", (DL_FUNC) &PPtreeExt_findprojwrapMOD, 7},
+    {"PPtreeExt_treeconstructMOD", (DL_FUNC) &PPtreeExt_treeconstructMOD, 14},
+    {"PPtreeExt_treeconstructIND", (DL_FUNC) &PPtreeExt_treeconstructIND, 16},
+    {"PPtreeExt_csample_num", (DL_FUNC) &PPtreeExt_csample_num, 4},
+    {"PPtreeExt_boot", (DL_FUNC) &PPtreeExt_boot, 2},
+    {"PPtreeExt_trainfn", (DL_FUNC) &PPtreeExt_trainfn, 3},
+    {"PPtreeExt_proximi", (DL_FUNC) &PPtreeExt_proximi, 2},
+    {"PPtreeExt_mvote", (DL_FUNC) &PPtreeExt_mvote, 1},
+    {"PPtreeExt_oobindex", (DL_FUNC) &PPtreeExt_oobindex, 2},
+    {"PPtreeExt_oobobs", (DL_FUNC) &PPtreeExt_oobobs, 1},
+    {"PPtreeExt_mvoteoob", (DL_FUNC) &PPtreeExt_mvoteoob, 2},
+    {"PPtreeExt_ooberrortree", (DL_FUNC) &PPtreeExt_ooberrortree, 4},
+    {"PPtreeExt_PPclassification", (DL_FUNC) &PPtreeExt_PPclassification, 6},
+    {"PPtreeExt_PPclassindex", (DL_FUNC) &PPtreeExt_PPclassindex, 8},
+    {"PPtreeExt_PPpred", (DL_FUNC) &PPtreeExt_PPpred, 4},
+    {"PPtreeExt_imposoon", (DL_FUNC) &PPtreeExt_imposoon, 9},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_PPtreeExt(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
+}

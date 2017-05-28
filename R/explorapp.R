@@ -30,14 +30,63 @@ simu3 <- function(mux1, mux2, muy1, muy2, muz1, muz2,  cor1,cor2,cor3, n1 = 100,
 }
 
 
-ppbound <- function(ru, leg = TRUE, data , meth, entro ){
+
+##
+dat.pl2 <- simu3(-1,0.6,0,-0.6, 2,-1,0.95, 0.95, 0.95)
+
+
+
+p <- ggplot(data = grilla ) +
+  geom_point(aes(x = X1, y = X2,
+                 color = as.factor(ppred),
+                 shape=as.factor(ppred)),
+             alpha = .20) +
+  #geom_abline(intercept=bnds$a[1], slope=bnds$b[1], size=1) +
+  scale_colour_brewer(name="Class", type="qual",
+                      palette="Dark2") +
+  #geom_abline(intercept = bnds$a[2], slope = bnds$b[2], size=1) +
+  scale_shape_discrete(name='Class') +
+  theme_bw() +
+  theme(aspect.ratio = 1, legend.position="none")
+
+pl.pp <- p + geom_point(data = dat.pl2,
+                        aes(x = X1, y = X2,
+                            group = Sim,
+                            shape = Sim, color = Sim), size = 3) +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0))
+
+p2 <- ggplot(data = grilla) +
+  geom_point(aes(x = X1, y = X2,
+                 color = as.factor(rpart.pred),
+                 shape =  as.factor(rpart.pred)), alpha = .2) +
+  scale_colour_brewer(name = "Class",
+                      labels = levels(dat.pl2$Sim),
+                      type="qual",palette="Dark2") +
+  theme_bw() + scale_shape_discrete(name='Class') +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_x_continuous(expand = c(0,0)) +
+  theme(aspect.ratio=1, legend.position="none")
+
+pl.rpart <- p2 + geom_point(data = dat.pl2,
+                            aes(x = X1 , y = X2,
+                                group = Sim, shape = Sim,
+                                color = Sim), size = 3)
+
+grid.arrange(pl.rpart, pl.pp, ncol=2)
+##
+ppbound <- function(ru, data , meth, entro ,title){
   grilla <- base::expand.grid(X1 = seq((min(data$X1) + sign( min(data$X1))*.5) , (max(data$X1) + sign(max(data$X1))*.5), , 100),
                               X2 = seq((min(data$X2 ) + sign( min(data$X2))*.5), (max(data$X2) + sign(max(data$X2))*.5), , 100))
   if(meth == "Original"){
     pptree <- PPtreeViz::PPTreeclass(Sim~., data = data, "LDA")
     ppred.sim <- PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
-    grilla$ppred <- ppred.sim[[2]]
+    grilla$pred <- ppred.sim[[2]]
   }
+  if(meth == "Rpart"){
+    rpart.crab <- rpart(Sim ~., data = data)
+    grilla$pred <- predict(rpart.crab, newdata = grilla, type = "class")
+    }
   
   if(entro) {mod = 2
   }else{
@@ -47,39 +96,36 @@ ppbound <- function(ru, leg = TRUE, data , meth, entro ){
   if(meth == "Modified"){
     pptree <- PPtree_splitMOD(Sim~., data = data, "LDA", entro = entro)
     ppred.sim <- PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
-    grilla$ppred <- paste("sim", ppred.sim[[2]], sep = "")
+    grilla$pred <- paste("sim", ppred.sim[[2]], sep = "")
     
   }
   
-  ruleid <- pptree$splitCutoff.node[,ru]
+  #ruleid <- pptree$splitCutoff.node[,ru]
   
-  p <- ggplot2::ggplot(data = grilla ) + ggplot2::geom_point( ggplot2::aes(x = X1, y = X2, color = as.factor(ppred), shape = as.factor(ppred) ), alpha = .20) +
-    ggplot2::geom_abline(intercept = ruleid[[1]] / pptree$projbest.node[[3]], slope = -pptree$projbest.node[[1]]/pptree$projbest.node[[3]], size = 1 )+ ggplot2::scale_colour_brewer(name = "Class",type = "qual", palette = "Dark2" ) + ggplot2::theme_bw() +
-    ggplot2::geom_abline(intercept = ruleid[[2]] / pptree$projbest.node[[4]], slope = -pptree$projbest.node[[2]] / pptree$projbest.node[[4]], size = 1) + ggplot2::scale_shape_discrete(name='Class')
+  p <- ggplot2::ggplot(data = grilla ) + ggplot2::geom_point( ggplot2::aes(x = X1, y = X2, color = as.factor(pred), shape = as.factor(pred) ), alpha = .20) +
+    #ggplot2::geom_abline(intercept = ruleid[[1]] / pptree$projbest.node[[3]], slope = -pptree$projbest.node[[1]]/pptree$projbest.node[[3]], size = 1 )+
+    ggplot2::scale_colour_brewer(name = "Class",type = "qual", palette = "Dark2" ) + ggplot2::theme_bw() +
+   # ggplot2::geom_abline(intercept = ruleid[[2]] / pptree$projbest.node[[4]], slope = -pptree$projbest.node[[2]] / pptree$projbest.node[[4]], size = 1) + 
+    ggplot2::scale_shape_discrete(name='Class')
   
-  if(leg){
-    pl.pp <- p + ggplot2::geom_point(data = data, ggplot2::aes(x = X1 , y = X2, group = Sim, shape = Sim, color = Sim), size = I(3)  ) + 
-      ggplot2::theme(legend.position = "bottom", legend.text = ggplot2::element_text(size = 6)) + 
-      ggplot2::scale_y_continuous(expand = c(0, 0) ) + ggplot2::scale_x_continuous(expand = c(0, 0) ) + 
-      ggplot2::labs(title = paste("Rule", ru, paste(meth, mod, sep = "" ) ) )
-  }else{
+
     pl.pp <- p + ggplot2::geom_point(data = data, ggplot2::aes(x = X1 , y = X2, group = Sim, shape = Sim, color = Sim), size = I(3)  ) + 
       ggplot2::theme(legend.position = "none",aspect.ratio = 1) + 
       ggplot2::scale_y_continuous(expand = c(0, 0) ) + ggplot2::scale_x_continuous(expand = c(0, 0)) + 
-      ggplot2::labs(x = " ", y = "", title = paste("Rule", ru, paste(meth, mod, sep = "") ) )
-  }
+      ggplot2::labs(x = " ", y = "", title = title )
+  
   
   pl.pp
 }
 
 
-ppboundMOD <- function(leg = TRUE, data , meth="MOD", entro=FALSE,entroindiv=TRUE){
+ppboundMOD <- function( data , meth = "MOD", entro = FALSE, entroindiv = TRUE, title ){
   grilla <- base::expand.grid(X1 = seq((min(data$X1) + sign( min(data$X1))*.5) , (max(data$X1) + sign(max(data$X1))*.5), , 100),
                               X2 = seq((min(data$X2 ) + sign( min(data$X2))*.5), (max(data$X2) + sign(max(data$X2))*.5), , 100))
 
   
   
-  pptree<- PPTreeclass_MOD(Sim~. ,  data=data, PPmethod='LDA')
+  pptree <- PPTreeclass_MOD(Sim~. ,  data = data, PPmethod = 'LDA')
   
   ppred.sim <- PPclassify_MOD(pptree, test.data = grilla)
   grilla$ppred <-ppred.sim[[2]]
@@ -90,18 +136,12 @@ ppboundMOD <- function(leg = TRUE, data , meth="MOD", entro=FALSE,entroindiv=TRU
   ggplot2::scale_colour_brewer(name = "Class",type = "qual", palette = "Dark2" ) + ggplot2::theme_bw() +
  ggplot2::scale_shape_discrete(name='Class')
   
-  if(leg){
-    pl.pp <- p + ggplot2::geom_point(data = data, ggplot2::aes(x = X1 , y = X2, group = Sim, shape = Sim, color = Sim), size = I(3)  ) + 
-      ggplot2::theme(legend.position = "bottom", legend.text = ggplot2::element_text(size = 6)) + 
-      ggplot2::scale_y_continuous(expand = c(0, 0) ) + ggplot2::scale_x_continuous(expand = c(0, 0) ) + 
-      ggplot2::labs(title = paste(paste(meth, 3, sep = "" ) ) )
-  }else{
+
     pl.pp <- p + ggplot2::geom_point(data = data, ggplot2::aes(x = X1 , y = X2, group = Sim, shape = Sim, color = Sim), size = I(3)  ) + 
       ggplot2::theme(legend.position = "none",aspect.ratio = 1) + 
       ggplot2::scale_y_continuous(expand = c(0, 0) ) + ggplot2::scale_x_continuous(expand = c(0, 0)) + 
-      ggplot2::labs(x = " ", y = "", title = paste( paste(meth, 3, sep = "") ) )
-  }
-  
+      ggplot2::labs(x = " ", y = "", title = title )
+
   pl.pp
 }
 
@@ -111,20 +151,18 @@ ui <- shiny::fluidPage(
     shiny::tabsetPanel(
       shiny::tabPanel(
         "SIM 1", 
-        shiny::fluidRow(shiny::column(3, shiny::selectInput(inputId = "rule", label ="Rule", choices = 1:8, selected = 1 ) ) ),
+        shiny::fluidRow(shiny::column(3, shiny::selectInput(inputId = "rule", label ="Rule", choices = 1:8, selected = 1 ) ), shiny::column(3, shiny::selectInput(inputId = "modi", label ="Modification", choices = 1:3, selected = 1 )  )),
         shiny::fluidRow( shiny::column(4,
       shiny::textInput( inputId = 'mean', label = 'Group means ', value = 
                    "-1, 0.6, 0, -0.6, 2,-1" )),
       shiny::column(4, shiny::textInput(inputId = "cor", label = "Correlations",
                 value = "0.95, 0.95, 0.95")) ,
       shiny::column(4, shiny::textInput(inputId = "sample", label = "Group sample",
-        value = "100, 100, 100") ), shiny::fluidRow(shiny::actionButton("do", label = "OK"))), 
-     
-   
+        value = "100, 100, 100") )), shiny::fluidRow(shiny::actionButton("do", label = "OK")), 
     shiny::fluidRow(
       shiny::plotOutput("distPlot" ) ) ),
     shiny::tabPanel("SIM 2",
-                    shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ) ),
+                    shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ), shiny::column(3, shiny::selectInput(inputId = "modi2", label ="Modification", choices = 1:3, selected = 1 ) )),
                     shiny::fluidRow( shiny::column(4, shiny::textInput( inputId = 'mean2', label = 'Group means ', value = 
                                            "-1, 0.6, 0, -0.6, 2,-1" )),
                       shiny:: column(4, shiny::textInput(inputId = "cor2", label = "Correlations",
@@ -149,28 +187,38 @@ ui <- shiny::fluidPage(
 server <- function(input, output) {
 
   output$distPlot <- shiny::renderPlot({
-    input$do
+    if(input$do){
    
     x1 <- shiny::isolate(as.numeric(unlist(strsplit(input$mean, ",") ) ))
     x2 <- shiny::isolate(as.numeric(unlist(strsplit(input$cor, ",") ) ))
     x3 <- shiny::isolate(as.numeric(unlist(strsplit(input$sample, ",") ) ))
     
-    dat.pl2 <- simu3(x1[1], x1[2], x1[3],x1[4],x1[5],x1[6],
-                     x2[1], x2[2], x2[3], x3[1], x3[2], x3[3])
+    dat.pl2 <-  shiny::isolate(simu3(x1[1], x1[2], x1[3],x1[4],x1[5],x1[6],
+                     x2[1], x2[2], x2[3], x3[1], x3[2], x3[3]))
     
    
+    if(  shiny::isolate(input$modi==1)){
+     modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = FALSE, title="Modified subset")
+    }
+    if(  shiny::isolate(input$modi==2)){
+      modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title="Modified entropy groups")
+    }
+    if(  shiny::isolate(input$modi==3)){
+      modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified ind entropy")
+    }
     
-   gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule), leg = FALSE, data = dat.pl2, meth = "Original", entro = TRUE ),
-                 ppbound(ru =  as.numeric(input$rule), FALSE, data = dat.pl2, meth = "Modified" , entro = FALSE), 
-                 ppbound(ru =  as.numeric(input$rule), FALSE, data = dat.pl2, meth = "Modified" , entro = TRUE),
-                 ppboundMOD(leg=FALSE,data=dat.pl2,meth="MOD",entro=FALSE,entroindiv = TRUE), ncol = 2)
+     gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule),data = dat.pl2, meth = "Rpart", entro = TRUE ,title ="Rpart"),
+                 ppbound(ru =  as.numeric(input$rule), data = dat.pl2, meth = "Original" , entro = FALSE, title ="Original"), 
+                 #ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE),
+                modpl, ncol = 3)
+    }
   })
 
   
   
 
     output$distPlot2 <- shiny::renderPlot({
-      input$do2
+      if(input$do2){
       x1 <- shiny::isolate(as.numeric(unlist(strsplit(input$mean2, ",") ) ) )
       x2 <- shiny::isolate(as.numeric(unlist(strsplit(input$cor2, ",") ) ) )
       x3 <- shiny::isolate(as.numeric(unlist(strsplit(input$sample2, ",") ) ) )
@@ -181,18 +229,29 @@ server <- function(input, output) {
                        x2[1], x2[2], x2[3], x3[1], x3[2], x3[3])
       
       
-      
        set.seed(123)
        aux <- data.frame(Sim = rep(paste("sim",as.numeric(input$group),sep=""), x6), X1 = stats::rnorm( n = x6, mean = x4[1], sd = x5[1]), X2 = stats::rnorm( n = x6, mean = x4[2], sd =x5[2]))
       dat.pl2 <- rbind(dat.pl2, aux) 
       
+      if(  shiny::isolate(input$modi2==1)){
+        modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = FALSE, title="Modified subset")
+      }
+      if(  shiny::isolate(input$modi2==2)){
+        modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title="Modified entropy groups")
+      }
+      if(  shiny::isolate(input$modi2==3)){
+        modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified ind entropy")
+      }
       
+      gridExtra::grid.arrange( ppbound(ru =  as.numeric(input$rule2),  data = dat.pl2, meth = "Rpart" , entro = FALSE, title ="Rpart" ),
+                               ppbound(ru =  as.numeric(input$rule2), data = dat.pl2, meth = "Original", entro = TRUE, title= "Original" ),
+                   
+                  # ppbound(ru =  as.numeric(input$rule2), FALSE, data = dat.pl2, meth = "Modified" , entro = TRUE),
+                  modpl, ncol = 3)
+    
       
-      gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule2), leg = FALSE, data = dat.pl2, meth = "Original", entro = TRUE ),
-                   ppbound(ru =  as.numeric(input$rule2), FALSE, data = dat.pl2, meth = "Modified" , entro = FALSE), 
-                   ppbound(ru =  as.numeric(input$rule2), FALSE, data = dat.pl2, meth = "Modified" , entro = TRUE),
-                   ppboundMOD(leg=FALSE,data=dat.pl2,meth="MOD",entro=FALSE,entroindiv = TRUE), ncol = 2)
-    })
+      }
+      })
   
   
   
