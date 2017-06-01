@@ -16,6 +16,8 @@ explorapp <-function(ui,server){
   X2<- NULL
   ppred <- NULL
   Sim <- NULL
+  pred <- NULL
+  predict <- NULL
   #column <- NULL
 simu3 <- function(mux1, mux2, muy1, muy2, muz1, muz2,  cor1, cor2, cor3, n1 = 100, n2 = 100, n3 = 100) {
   set.seed(666)
@@ -37,7 +39,7 @@ ppbound <- function(ru, data , meth, entro ,title){
     pptree <- PPtreeViz::PPTreeclass(Sim~., data = data, "LDA")
     ppred.sim <- PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
     grilla$pred <- ppred.sim[[2]]
-    err <- round(PPtreeViz::PPclassify(pptree, test.data=data[,-1], true.class = data[,1])[[1]]/nrow(data[,-1]),3)*100
+    err <- round(PPtreeViz::PPclassify(pptree, test.data=data[,-1], true.class = data[,1], Rule=ru)[[1]]/nrow(data[,-1]),3)*100
   }
   if(meth == "Rpart"){
     rpart.mod<- rpart::rpart(Sim ~., data = data)
@@ -55,16 +57,14 @@ ppbound <- function(ru, data , meth, entro ,title){
     pptree <- PPtree_splitMOD(Sim~., data = data, "LDA", entro = entro)
     ppred.sim <- PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
     grilla$pred <- paste("sim", ppred.sim[[2]], sep = "")
-    err <- round(PPtreeViz::PPclassify(pptree, test.data=data[,-1], true.class = data[,1])[[1]]/nrow(data[,-1]),3)*100
+    err <- round(PPtreeViz::PPclassify(pptree, test.data=data[,-1], true.class = data[,1], Rule=ru)[[1]]/nrow(data[,-1]),3)*100
     
   }
   
   #ruleid <- pptree$splitCutoff.node[,ru]
   
   p <- ggplot2::ggplot(data = grilla ) + ggplot2::geom_point( ggplot2::aes(x = X1, y = X2, color = as.factor(pred), shape = as.factor(pred) ), alpha = .20) +
-    #ggplot2::geom_abline(intercept = ruleid[[1]] / pptree$projbest.node[[3]], slope = -pptree$projbest.node[[1]]/pptree$projbest.node[[3]], size = 1 )+
-    ggplot2::scale_colour_brewer(name = "Class",type = "qual", palette = "Dark2" ) + ggplot2::theme_bw() +
-   # ggplot2::geom_abline(intercept = ruleid[[2]] / pptree$projbest.node[[4]], slope = -pptree$projbest.node[[2]] / pptree$projbest.node[[4]], size = 1) + 
+       ggplot2::scale_colour_brewer(name = "Class",type = "qual", palette = "Dark2" ) + ggplot2::theme_bw() +
     ggplot2::scale_shape_discrete(name='Class')
   
 

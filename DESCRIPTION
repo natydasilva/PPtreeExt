@@ -21,7 +21,6 @@ Imports:
     dplyr,
     tidyr,
     gridExtra,
-    doMC,
     plotly,
     PPtreeViz
 License: LGPL-2.1
