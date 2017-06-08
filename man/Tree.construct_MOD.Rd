@@ -6,7 +6,7 @@
 \usage{
 Tree.construct_MOD(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,
 projbest.node,splitCutoff.node,PPmethod,r = NULL, 
-lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,...)
+lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule = 1,tot,...)
 }
 \arguments{
 \item{origclass}{original class}
@@ -43,6 +43,10 @@ lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,...)
 
 \item{tol}{something}
 
+\item{strule}{select the stoping rule rule based in G=1 pure node}
+
+\item{tot}{total obs original class}
+
 \item{...}{something}
 }
 \description{
@@ -51,9 +55,4 @@ Construct the projection pursuit classification tree MOD (NEW)
 \details{
 Find tree structure using various projection pursuit indices of 
 classification in each split.
-}
-\examples{
-data(iris)
-Tree.result <- PPtreeViz::PPTreeclass(Species~.,data = iris,"LDA")
-Tree.result
 }

@@ -4,7 +4,7 @@
 #' classification in each split.
 #' @title Projection pursuit classification tree 
 #' @usage PPTreeclass_MOD(formula,data, PPmethod="LDA",weight=TRUE,
-#'                      r=1,lambda=0.1,energy=0,maxiter=50000,...) 
+#'                      r=1,lambda=0.1,energy=0,maxiter=50000,strule = 1,tot,...) 
 #' @param formula an object of class "formula"
 #' @param data data frame
 #' @param PPmethod method for projection pursuit; "LDA", "PDA", "Lr", 
@@ -14,6 +14,8 @@
 #' @param lambda lambda in PDA index
 #' @param energy parameter for the probability to take new projection
 #' @param maxiter maximum iteration number
+#' @param strule select the stoping rule rule based in G=1 pure node
+#' @param tot total obs original class
 #' @param ... arguments to be passed to methods
 #' @return Tree.Struct tree structure of projection pursuit classification tree
 #' @return projbest.node 1 dimensional optimal projections of each node split
@@ -30,7 +32,7 @@
 #' Tree.result <- PPTreeclass_MOD(Species~.,data = iris,"LDA")
 #' Tree.result
 PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1,
-                         lambda = 0.1, energy = 0, maxiter = 50000, ...){
+                         lambda = 0.1, energy = 0, maxiter = 50000, strule = 1, tot, ...){
   Call <- match.call()
   indx<-match(c("formula", "data"), names(Call), nomatch=0L)
   if(indx[1] == 0L) 
@@ -72,7 +74,7 @@ PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 
   rep<-1
   Tree.final <- Tree.construct_MOD(origclass, origdata, Tree.Struct, id, rep, rep1, 
                                       rep2, projbest.node, splitCutoff.node,
-                                      PPmethod, r, lambda, TOL, maxiter, ...)                            
+                                      PPmethod, r, lambda, TOL, maxiter,strule,tot, ...)                            
   Tree.Struct <- Tree.final$Tree.Struct
   colnames(Tree.Struct)<-c("id","L.node.ID","R.F.node.ID","Coef.ID","Index")
   projbest.node<-Tree.final$projbest.node

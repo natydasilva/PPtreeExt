@@ -5,7 +5,7 @@
 #' @title Projection pursuit classification tree MOD
 #' @usage Tree.construct_MOD(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,
 #' projbest.node,splitCutoff.node,PPmethod,r = NULL, 
-#'lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,...) 
+#'lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule = 1,tot,...) 
 #' @param origclass original class 
 #' @param origdata original data
 #' @param Tree.Struct tree structure of projection pursuit classification tree
@@ -23,17 +23,17 @@
 #' @param q something
 #' @param weight weight flag in LDA, PDA 
 #' @param tol something
+#' @param strule select the stoping rule rule based in G=1 pure node
+#' @param tot total obs original class
 #' @param ... something
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
-#' @examples
-#' data(iris)
-#' Tree.result <- PPtreeViz::PPTreeclass(Species~.,data = iris,"LDA")
-#' Tree.result
+
+
 Tree.construct_MOD <- 
   function(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,projbest.node,splitCutoff.node,PPmethod,
-           r = NULL, lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,...) {
+           r = NULL, lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule=1,tot,...) {
     
     origclass <- as.integer(origclass)
     origdata <- as.matrix(origdata)
@@ -48,10 +48,22 @@ Tree.construct_MOD <-
     if (id > nrow(Tree.Struct) ) {
       Tree.Struct <- rbind(Tree.Struct, matrix(0, nrow=id - nrow(Tree.Struct), ncol=5) )
     }
+    ##To see the effect of diferent rules
+    #end.node = (G==1 | length(origclass)/tot <= .5| entropy(origclass)<tol)
+    end.node <- 0
+    if(strule==1) {
+        end.node <- (G == 1)
+        }
+     if(strule==2) {
+       end.node <- length(origclass)/tot <= .05
+     }else{
+     end.node <- entropy(origclass)<tol
+     }
+    #end.node = (G==1 | length(origclass) <= 30 | entropy(origclass)<tol)
+    #,pure=TRUE,nodesize=FALSE,entronode=FALSE,tot,
     
-    end.node = (G==1 | length(origclass) <= 30 | entropy(origclass)<tol)
-    if( end.node ){
-      Tree.Struct[id,3] <- as.integer( names(g)[which.max(g)] )
+    if( end.node){
+     Tree.Struct[id,3] <- as.integer( names(g)[which.max(g)] )
       Tree.Struct[,1] <- 1:nrow(Tree.Struct)
       list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
            splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)

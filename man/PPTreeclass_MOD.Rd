@@ -5,7 +5,7 @@
 \title{Projection pursuit classification tree}
 \usage{
 PPTreeclass_MOD(formula,data, PPmethod="LDA",weight=TRUE,
-                     r=1,lambda=0.1,energy=0,maxiter=50000,...)
+                     r=1,lambda=0.1,energy=0,maxiter=50000,strule = 1,tot,...)
 }
 \arguments{
 \item{formula}{an object of class "formula"}
@@ -24,6 +24,10 @@ PPTreeclass_MOD(formula,data, PPmethod="LDA",weight=TRUE,
 \item{energy}{parameter for the probability to take new projection}
 
 \item{maxiter}{maximum iteration number}
+
+\item{strule}{select the stoping rule rule based in G=1 pure node}
+
+\item{tot}{total obs original class}
 
 \item{...}{arguments to be passed to methods}
 }

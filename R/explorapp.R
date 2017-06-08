@@ -34,7 +34,7 @@ simu3 <- function(mux1, mux2, muy1, muy2, muz1, muz2,  cor1, cor2, cor3, n1 = 10
 
 
 
-ppbound <- function(ru, data , meth, entro ,title,simM=FALSE){
+ppbound <- function(ru, data , meth, entro ,title, simM = FALSE){
 
   grilla <- base::expand.grid(X1 = seq((min(data$X1) + sign( min(data$X1))*.5) , (max(data$X1) + sign(max(data$X1))*.5), , 100),
                               X2 = seq((min(data$X2 ) + sign( min(data$X2))*.5), (max(data$X2) + sign(max(data$X2))*.5), , 100))
@@ -86,14 +86,14 @@ ppbound <- function(ru, data , meth, entro ,title,simM=FALSE){
 }
 
 
-ppboundMOD <- function( data , meth = "MOD", entro = FALSE, entroindiv = TRUE, title, simM=FALSE ){
+ppboundMOD <- function( data , meth = "MOD", entro = FALSE, entroindiv = TRUE, title, simM = FALSE, strule, tot ){
   
    grilla <- base::expand.grid(X1 = seq((min(data$X1) + sign( min(data$X1))*.5) , (max(data$X1) + sign(max(data$X1))*.5), , 100),
                               X2 = seq((min(data$X2 ) + sign( min(data$X2))*.5), (max(data$X2) + sign(max(data$X2))*.5), , 100))
 
   
   
-  pptree <- PPTreeclass_MOD(Sim~. ,  data = data, PPmethod = 'LDA')
+  pptree <- PPTreeclass_MOD(Sim~. ,  data = data, PPmethod = 'LDA',strule = strule,tot=tot)
   
   ppred.sim <- PPclassify_MOD(pptree, test.data = grilla)
   grilla$ppred <-ppred.sim[[2]]
@@ -124,8 +124,10 @@ ui <- shiny::fluidPage(
     shiny::mainPanel(
     shiny::tabsetPanel(
       shiny::tabPanel(
-        "SIM", 
-        shiny::fluidRow(shiny::column(3, shiny::selectInput(inputId = "rule", label ="Rule", choices = 1:8, selected = 1 ) ), shiny::column(3, shiny::selectInput(inputId = "modi", label ="Modification", choices = 1:3, selected = 1 )  )),
+        "Basic-Sim", 
+        shiny::fluidRow(shiny::column(3, shiny::selectInput(inputId = "rule", label ="Rule", choices = 1:8, selected = 1 ) ),
+                        shiny::column(3, shiny::selectInput(inputId = "modi", label ="Modification", choices = 1:3, selected = 1 )),
+                        shiny::column(3, shiny::selectInput(inputId ="stop", label = "Stoping rule", choices =1:3))),
         shiny::fluidRow( shiny::column(4,
       shiny::textInput( inputId = 'mean', label = 'Group means ', value = 
                    "-1, 0.6, 0, -0.6, 2,-1" ) ),
@@ -135,7 +137,7 @@ ui <- shiny::fluidPage(
         value = "100, 100, 100") )), shiny::fluidRow(shiny::actionButton("do", label = "OK")), 
     shiny::fluidRow(
       shiny::plotOutput("distPlot" ) ) ),
-    shiny::tabPanel("SIM outliers",
+    shiny::tabPanel("SIM-Outliers",
                     shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ), shiny::column(3, shiny::selectInput(inputId = "modi2", label ="Modification", choices = 1:3, selected = 1 ) )),
                     shiny::fluidRow( shiny::column(4, shiny::textInput( inputId = 'mean2', label = 'Group means ', value = 
                                            "-1, 0.6, 0, -0.6, 2,-1" )),
@@ -197,7 +199,7 @@ server <- function(input, output) {
       modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title = "Modified entropy mp groups")
     }
     if(  input$modi==3){
-      modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions")
+      modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", strule = input$stop, tot= input$sample)
     }
     
      gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule),data = dat.pl2, meth = "Rpart", entro = TRUE ,title ="Rpart"),
@@ -252,7 +254,7 @@ server <- function(input, output) {
       if(input$simmaitra){
       
         #Q <- MixSim(BarOmega = 0.01, K = 4, p = 2)
-        set.seed(123)
+        
         repeat{
         Q <- MixSim::MixSim(BarOmega = shiny::isolate(as.numeric(input$BarOmega)), MaxOmega = shiny::isolate(as.numeric(input$MaxOmega)), K = shiny::isolate(as.numeric(input$K)),
                     p=2, sph = FALSE, hom = TRUE,
