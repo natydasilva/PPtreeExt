@@ -127,7 +127,7 @@ ui <- shiny::fluidPage(
         "Basic-Sim", 
         shiny::fluidRow(shiny::column(3, shiny::selectInput(inputId = "rule", label ="Rule", choices = 1:8, selected = 1 ) ),
                         shiny::column(3, shiny::selectInput(inputId = "modi", label ="Modification", choices = 1:3, selected = 1 )),
-                        shiny::column(3, shiny::selectInput(inputId ="stop", label = "Stoping rule", choices =1:3))),
+                        shiny::column(3, shiny::selectInput(inputId ="stop", label = "Stoping rule MOD 3", choices =1:3))),
         shiny::fluidRow( shiny::column(4,
       shiny::textInput( inputId = 'mean', label = 'Group means ', value = 
                    "-1, 0.6, 0, -0.6, 2,-1" ) ),
@@ -138,7 +138,9 @@ ui <- shiny::fluidPage(
     shiny::fluidRow(
       shiny::plotOutput("distPlot" ) ) ),
     shiny::tabPanel("SIM-Outliers",
-                    shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ), shiny::column(3, shiny::selectInput(inputId = "modi2", label ="Modification", choices = 1:3, selected = 1 ) )),
+                    shiny::fluidRow(shiny::column(4, shiny::selectInput(inputId = "rule2",label ="Rule", choices = 1:8, selected = 1 ) ),
+                                    shiny::column(3, shiny::selectInput(inputId = "modi2", label ="Modification", choices = 1:3, selected = 1 ) ),
+                                    shiny::column(3, shiny::selectInput(inputId ="stop2", label = "Stoping rule MOD 3", choices =1:3))),
                     shiny::fluidRow( shiny::column(4, shiny::textInput( inputId = 'mean2', label = 'Group means ', value = 
                                            "-1, 0.6, 0, -0.6, 2,-1" )),
                       shiny:: column(4, shiny::textInput(inputId = "cor2", label = "Correlations",
@@ -162,7 +164,8 @@ ui <- shiny::fluidPage(
       "MixSim",
       shiny::fluidRow(shiny::column(4,
           shiny::selectInput(inputId = "rule3", label ="Rule", choices = 1:8, selected = 1 )),
-          shiny::column(4,shiny::selectInput(inputId = "modi3", label ="Modification", choices = 1:3, selected = 1 ))),
+          shiny::column(4,shiny::selectInput(inputId = "modi3", label ="Modification", choices = 1:3, selected = 1 )),
+          shiny::column(3, shiny::selectInput(inputId ="stop3", label = "Stoping rule MOD 3", choices =1:3))),
       shiny::fluidRow(shiny::column(4, shiny::numericInput("size", label = "Sample size", value = 100)),
             shiny::column(4, shiny::numericInput("BarOmega", label = "BarOmega desired average overlap", value = 0.05))),
             shiny::fluidRow(shiny::column(4,shiny::numericInput("MaxOmega", label = "MaxOmega desired maximum overlap", value = 0.15)),
@@ -187,7 +190,7 @@ server <- function(input, output) {
     x1 <- shiny::isolate(as.numeric(unlist(strsplit(input$mean, ",") ) ))
     x2 <- shiny::isolate(as.numeric(unlist(strsplit(input$cor, ",") ) ))
     x3 <- shiny::isolate(as.numeric(unlist(strsplit(input$sample, ",") ) ))
-    
+    x4 <- shiny::isolate(as.numeric(input$stop) )
     dat.pl2 <-  shiny::isolate(simu3(x1[1], x1[2], x1[3],x1[4],x1[5],x1[6],
                      x2[1], x2[2], x2[3], x3[1], x3[2], x3[3]))
     
@@ -199,7 +202,7 @@ server <- function(input, output) {
       modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title = "Modified entropy mp groups")
     }
     if(  input$modi==3){
-      modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", strule = input$stop, tot= input$sample)
+      modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", strule = x4, tot= as.numeric(input$sample))
     }
     
      gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule),data = dat.pl2, meth = "Rpart", entro = TRUE ,title ="Rpart"),
@@ -220,6 +223,7 @@ server <- function(input, output) {
       x4 <- shiny::isolate(as.numeric(unlist(strsplit(input$meanout, ",") ) ) )
       x5 <- shiny::isolate(as.numeric(unlist(strsplit(input$sdout, ",") ) ) )
       x6 <- shiny::isolate(as.numeric(unlist(strsplit(input$sampleout, ",") ) ) )
+      x7 <- shiny::isolate(input$stop2) 
       dat.pl2 <- simu3(x1[1], x1[2], x1[3],x1[4],x1[5],x1[6],
                        x2[1], x2[2], x2[3], x3[1], x3[2], x3[3])
       
@@ -235,7 +239,7 @@ server <- function(input, output) {
         modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title="Modified entropy mp groups")
       }
       if(  input$modi2==3){
-        modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions")
+        modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", strule = x7, tot =x3+x6)
       }
       
       gridExtra::grid.arrange( ppbound(ru =  as.numeric(input$rule2),  data = dat.pl2, meth = "Rpart" , entro = FALSE, title ="Rpart"),
@@ -252,7 +256,7 @@ server <- function(input, output) {
     
     output$plotsmaitra <- shiny::renderPlot({
       if(input$simmaitra){
-      
+        x1 <- shiny::isolate(as.numeric(input$stop3) )
         #Q <- MixSim(BarOmega = 0.01, K = 4, p = 2)
         
         repeat{
@@ -273,7 +277,7 @@ server <- function(input, output) {
           modpl <- ppbound(ru =  as.numeric(input$rule3),  data = dat.pl2, meth = "Modified" , entro = TRUE, title="Modified entropy mp groups", simM = TRUE)
         }
         if(input$modi3 == 3){
-          modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", simM = TRUE)
+          modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", simM = TRUE, strule = x1, tot =input$size)
         }
         
         gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule3),data = dat.pl2, meth = "Rpart", entro = TRUE ,title ="Rpart",simM=TRUE),
