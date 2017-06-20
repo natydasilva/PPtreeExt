@@ -74,7 +74,7 @@ PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 
   rep<-1
   Tree.final <- Tree.construct_MOD(origclass, origdata, Tree.Struct, id, rep, rep1, 
                                       rep2, projbest.node, splitCutoff.node,
-                                      PPmethod, r, lambda, TOL, maxiter,strule,tot, ...)                            
+                                      PPmethod, r, lambda, TOL, maxiter,strule = strule, tot=tot, ...)                            
   Tree.Struct <- Tree.final$Tree.Struct
   colnames(Tree.Struct)<-c("id","L.node.ID","R.F.node.ID","Coef.ID","Index")
   projbest.node<-Tree.final$projbest.node

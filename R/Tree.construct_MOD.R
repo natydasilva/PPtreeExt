@@ -5,7 +5,7 @@
 #' @title Projection pursuit classification tree MOD
 #' @usage Tree.construct_MOD(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,
 #' projbest.node,splitCutoff.node,PPmethod,r = NULL, 
-#'lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule = 1,tot,...) 
+#'lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule ,tot,...) 
 #' @param origclass original class 
 #' @param origdata original data
 #' @param Tree.Struct tree structure of projection pursuit classification tree
@@ -33,7 +33,7 @@
 
 Tree.construct_MOD <- 
   function(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,projbest.node,splitCutoff.node,PPmethod,
-           r = NULL, lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule=1,tot,...) {
+           r = NULL, lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule, tot,...) {
     
     origclass <- as.integer(origclass)
     origdata <- as.matrix(origdata)
@@ -52,21 +52,26 @@ Tree.construct_MOD <-
     #end.node = (G==1 | length(origclass)/tot <= .5| entropy(origclass)<tol)
     end.node <- 0
     if(strule==1) {
-        end.node <- (G == 1)
-        }
-     if(strule==2) {
-       end.node <- length(origclass)/tot <= .05
+        end.node <- 1*(G == 1)
+        }else if(strule==2) {
+       end.node <- 1*(length(origclass)/tot <= .05)
      }else{
-     end.node <- entropy(origclass)<tol
+     end.node <- 1*(entropy(origclass) < tol)
      }
     #end.node = (G==1 | length(origclass) <= 30 | entropy(origclass)<tol)
     #,pure=TRUE,nodesize=FALSE,entronode=FALSE,tot,
+    cnd <- (end.node == 1) + (nrow(origdata) < 10)
     
-    if( end.node){
-     Tree.Struct[id,3] <- as.integer( names(g)[which.max(g)] )
+    if( cnd > 0 ){
+      #if (nrow(origdata) > 0 ) {
+      Tree.Struct[id,3] <- as.integer( names(g)[which.max(g)] )
       Tree.Struct[,1] <- 1:nrow(Tree.Struct)
       list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
            splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)
+      # } else {
+      #   list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
+      #        splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)
+      # }
     } else {
       
       Tree.Struct.row <- numeric(5)
@@ -99,7 +104,7 @@ Tree.construct_MOD <-
       
       b<-Tree.construct_MOD(t.class,t.data,Tree.Struct, 
                             Tree.Struct[id, 2],rep,rep1,rep2,projbest.node, 
-                            splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,...)
+                            splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,strule=strule,tot=tot,...)
       Tree.Struct<-b$Tree.Struct
       projbest.node<-b$projbest.node
       splitCutoff.node<-b$splitCutoff.node
@@ -118,7 +123,7 @@ Tree.construct_MOD <-
       G<-length(table(t.class))
       b<-Tree.construct_MOD(t.class,t.data,Tree.Struct, 
                             Tree.Struct[id,3],rep,rep1,rep2,projbest.node, 
-                            splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,...)
+                            splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,strule=strule,tot=tot,...)
       Tree.Struct<-b$Tree.Struct
       projbest.node<-b$projbest.node
       splitCutoff.node<-b$splitCutoff.node

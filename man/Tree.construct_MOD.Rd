@@ -6,7 +6,7 @@
 \usage{
 Tree.construct_MOD(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,
 projbest.node,splitCutoff.node,PPmethod,r = NULL, 
-lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule = 1,tot,...)
+lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule ,tot,...)
 }
 \arguments{
 \item{origclass}{original class}

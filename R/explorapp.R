@@ -96,7 +96,9 @@ ppboundMOD <- function( data , meth = "MOD", entro = FALSE, entroindiv = TRUE, t
   pptree <- PPTreeclass_MOD(Sim~. ,  data = data, PPmethod = 'LDA',strule = strule,tot=tot)
   
   ppred.sim <- PPclassify_MOD(pptree, test.data = grilla)
+  
   grilla$ppred <-ppred.sim[[2]]
+  
   err <- round(PPclassify_MOD(pptree, test.data=data[,-1], true.class = data[,1])[[1]]/nrow(data[,-1]),3)*100
   
 if(simM){
@@ -189,20 +191,20 @@ server <- function(input, output) {
    
     x1 <- shiny::isolate(as.numeric(unlist(strsplit(input$mean, ",") ) ))
     x2 <- shiny::isolate(as.numeric(unlist(strsplit(input$cor, ",") ) ))
-    x3 <- shiny::isolate(as.numeric(unlist(strsplit(input$sample, ",") ) ))
+    x3 <- shiny::isolate(as.numeric(unlist(strsplit(input$sample, ",")) ))
     x4 <- shiny::isolate(as.numeric(input$stop) )
     dat.pl2 <-  shiny::isolate(simu3(x1[1], x1[2], x1[3],x1[4],x1[5],x1[6],
                      x2[1], x2[2], x2[3], x3[1], x3[2], x3[3]))
     
    
     if(  input$modi==1){
-     modpl <- ppbound(ru = as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = FALSE, title = "Modified subset")
+     modpl <- ppbound(ru = as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = FALSE, title = "Modified  subset")
     }
-    if(  input$modi==2){
-      modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title = "Modified entropy mp groups")
+    if(  input$modi==2){#entropy mp groups
+      modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title = "Modified 2 ")
     }
     if(  input$modi==3){
-      modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", strule = x4, tot= as.numeric(input$sample))
+      modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified multi_sp", strule = x4, tot= sum(x3))
     }
     
      gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule),data = dat.pl2, meth = "Rpart", entro = TRUE ,title ="Rpart"),
@@ -236,10 +238,10 @@ server <- function(input, output) {
         modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = FALSE, title="Modified subset")
       }
       if(  input$modi2==2){
-        modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title="Modified entropy mp groups")
+        modpl <- ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE, title="Modified 2")
       }
       if(  input$modi2==3){
-        modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", strule = x7, tot =x3+x6)
+        modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified multi_sp", strule = x7, tot = sum(x3 + x6))
       }
       
       gridExtra::grid.arrange( ppbound(ru =  as.numeric(input$rule2),  data = dat.pl2, meth = "Rpart" , entro = FALSE, title ="Rpart"),
@@ -274,10 +276,10 @@ server <- function(input, output) {
           modpl <- ppbound(ru =  as.numeric(input$rule3),  data = dat.pl2, meth = "Modified" , entro = FALSE, title = "Modified subset", simM = TRUE )
         }
         if( input$modi3==2){
-          modpl <- ppbound(ru =  as.numeric(input$rule3),  data = dat.pl2, meth = "Modified" , entro = TRUE, title="Modified entropy mp groups", simM = TRUE)
+          modpl <- ppbound(ru =  as.numeric(input$rule3),  data = dat.pl2, meth = "Modified" , entro = TRUE, title="Modified 2", simM = TRUE)
         }
         if(input$modi3 == 3){
-          modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified entropy ind partitions", simM = TRUE, strule = x1, tot =input$size)
+          modpl <-  ppboundMOD(data = dat.pl2, meth = "MOD", entro = FALSE, entroindiv = TRUE, title = "Modified multi_sp", simM = TRUE, strule = x1, tot =input$size)
         }
         
         gridExtra::grid.arrange(ppbound(ru =  as.numeric(input$rule3),data = dat.pl2, meth = "Rpart", entro = TRUE ,title ="Rpart",simM=TRUE),
