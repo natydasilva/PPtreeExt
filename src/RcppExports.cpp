@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // tableC
 arma::vec tableC(arma::vec x);
-RcppExport SEXP PPtreeExt_tableC(SEXP xSEXP) {
+RcppExport SEXP _PPtreeExt_tableC(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,7 +19,7 @@ END_RCPP
 }
 // roundme
 double roundme(double x);
-RcppExport SEXP PPtreeExt_roundme(SEXP xSEXP) {
+RcppExport SEXP _PPtreeExt_roundme(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -30,7 +30,7 @@ END_RCPP
 }
 // LDAindex2
 arma::vec LDAindex2(arma::vec origclass, arma::mat origdata, arma::mat proj, bool weight);
-RcppExport SEXP PPtreeExt_LDAindex2(SEXP origclassSEXP, SEXP origdataSEXP, SEXP projSEXP, SEXP weightSEXP) {
+RcppExport SEXP _PPtreeExt_LDAindex2(SEXP origclassSEXP, SEXP origdataSEXP, SEXP projSEXP, SEXP weightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -44,7 +44,7 @@ END_RCPP
 }
 // signC
 double signC(double x);
-RcppExport SEXP PPtreeExt_signC(SEXP xSEXP) {
+RcppExport SEXP _PPtreeExt_signC(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,7 +55,7 @@ END_RCPP
 }
 // LDAopt
 arma::vec LDAopt(arma::vec origclass, arma::mat origdata, int q, std::string PPmethod, bool weight);
-RcppExport SEXP PPtreeExt_LDAopt(SEXP origclassSEXP, SEXP origdataSEXP, SEXP qSEXP, SEXP PPmethodSEXP, SEXP weightSEXP) {
+RcppExport SEXP _PPtreeExt_LDAopt(SEXP origclassSEXP, SEXP origdataSEXP, SEXP qSEXP, SEXP PPmethodSEXP, SEXP weightSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -70,7 +70,7 @@ END_RCPP
 }
 // PDAindex2
 double PDAindex2(arma::vec origclass, arma::mat origdata, arma::mat proj, bool weight, double lambda);
-RcppExport SEXP PPtreeExt_PDAindex2(SEXP origclassSEXP, SEXP origdataSEXP, SEXP projSEXP, SEXP weightSEXP, SEXP lambdaSEXP) {
+RcppExport SEXP _PPtreeExt_PDAindex2(SEXP origclassSEXP, SEXP origdataSEXP, SEXP projSEXP, SEXP weightSEXP, SEXP lambdaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -85,7 +85,7 @@ END_RCPP
 }
 // PDAopt
 arma::vec PDAopt(arma::vec origclass, arma::mat origdata, int q, std::string PPmethod, bool weight, double lambda);
-RcppExport SEXP PPtreeExt_PDAopt(SEXP origclassSEXP, SEXP origdataSEXP, SEXP qSEXP, SEXP PPmethodSEXP, SEXP weightSEXP, SEXP lambdaSEXP) {
+RcppExport SEXP _PPtreeExt_PDAopt(SEXP origclassSEXP, SEXP origdataSEXP, SEXP qSEXP, SEXP PPmethodSEXP, SEXP weightSEXP, SEXP lambdaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -101,7 +101,7 @@ END_RCPP
 }
 // varselect
 arma::uvec varselect(int p, int s);
-RcppExport SEXP PPtreeExt_varselect(SEXP pSEXP, SEXP sSEXP) {
+RcppExport SEXP _PPtreeExt_varselect(SEXP pSEXP, SEXP sSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -113,7 +113,7 @@ END_RCPP
 }
 // datanode
 List datanode(arma::mat origdata, double sizep);
-RcppExport SEXP PPtreeExt_datanode(SEXP origdataSEXP, SEXP sizepSEXP) {
+RcppExport SEXP _PPtreeExt_datanode(SEXP origdataSEXP, SEXP sizepSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -125,7 +125,7 @@ END_RCPP
 }
 // entropy
 double entropy(arma::vec origclass);
-RcppExport SEXP PPtreeExt_entropy(SEXP origclassSEXP) {
+RcppExport SEXP _PPtreeExt_entropy(SEXP origclassSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -136,7 +136,7 @@ END_RCPP
 }
 // split_entro
 double split_entro(arma::vec origclass, arma::colvec projdata);
-RcppExport SEXP PPtreeExt_split_entro(SEXP origclassSEXP, SEXP projdataSEXP) {
+RcppExport SEXP _PPtreeExt_split_entro(SEXP origclassSEXP, SEXP projdataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -148,7 +148,7 @@ END_RCPP
 }
 // split_relMOD
 List split_relMOD(arma::vec origclass, arma::colvec projdata, bool entro, bool entroindiv);
-RcppExport SEXP PPtreeExt_split_relMOD(SEXP origclassSEXP, SEXP projdataSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
+RcppExport SEXP _PPtreeExt_split_relMOD(SEXP origclassSEXP, SEXP projdataSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -162,7 +162,7 @@ END_RCPP
 }
 // findprojMOD
 List findprojMOD(arma::vec origclass, arma::mat origdata, std::string PPmethod, double lambda, bool entro, bool entroindiv);
-RcppExport SEXP PPtreeExt_findprojMOD(SEXP origclassSEXP, SEXP origdataSEXP, SEXP PPmethodSEXP, SEXP lambdaSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
+RcppExport SEXP _PPtreeExt_findprojMOD(SEXP origclassSEXP, SEXP origdataSEXP, SEXP PPmethodSEXP, SEXP lambdaSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -178,7 +178,7 @@ END_RCPP
 }
 // findproj1D
 List findproj1D(arma::vec origclass, arma::mat origdata, std::string PPmethod, double lambda, bool entro, bool entroindiv);
-RcppExport SEXP PPtreeExt_findproj1D(SEXP origclassSEXP, SEXP origdataSEXP, SEXP PPmethodSEXP, SEXP lambdaSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
+RcppExport SEXP _PPtreeExt_findproj1D(SEXP origclassSEXP, SEXP origdataSEXP, SEXP PPmethodSEXP, SEXP lambdaSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -194,7 +194,7 @@ END_RCPP
 }
 // arma_sub_cond
 arma::uvec arma_sub_cond(arma::vec x, int val);
-RcppExport SEXP PPtreeExt_arma_sub_cond(SEXP xSEXP, SEXP valSEXP) {
+RcppExport SEXP _PPtreeExt_arma_sub_cond(SEXP xSEXP, SEXP valSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -206,7 +206,7 @@ END_RCPP
 }
 // quantileCpp
 double quantileCpp(arma::vec x, double probs);
-RcppExport SEXP PPtreeExt_quantileCpp(SEXP xSEXP, SEXP probsSEXP) {
+RcppExport SEXP _PPtreeExt_quantileCpp(SEXP xSEXP, SEXP probsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -218,7 +218,7 @@ END_RCPP
 }
 // quant
 NumericVector quant(NumericVector x, NumericVector q);
-RcppExport SEXP PPtreeExt_quant(SEXP xSEXP, SEXP qSEXP) {
+RcppExport SEXP _PPtreeExt_quant(SEXP xSEXP, SEXP qSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -230,7 +230,7 @@ END_RCPP
 }
 // nodestr
 arma::vec nodestr(arma::vec classe, arma::vec projdata);
-RcppExport SEXP PPtreeExt_nodestr(SEXP classeSEXP, SEXP projdataSEXP) {
+RcppExport SEXP _PPtreeExt_nodestr(SEXP classeSEXP, SEXP projdataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -242,7 +242,7 @@ END_RCPP
 }
 // findprojwrapMOD
 List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmethod, double sizep, double lambda, bool entro, bool entroindiv);
-RcppExport SEXP PPtreeExt_findprojwrapMOD(SEXP origclassSEXP, SEXP origdataSEXP, SEXP PPmethodSEXP, SEXP sizepSEXP, SEXP lambdaSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
+RcppExport SEXP _PPtreeExt_findprojwrapMOD(SEXP origclassSEXP, SEXP origdataSEXP, SEXP PPmethodSEXP, SEXP sizepSEXP, SEXP lambdaSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -259,7 +259,7 @@ END_RCPP
 }
 // treeconstructMOD
 List treeconstructMOD(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::mat splitCutoffnode, std::string PPmethod, double lambda, double sizep, bool entro, bool entroindiv);
-RcppExport SEXP PPtreeExt_treeconstructMOD(SEXP origclassSEXP, SEXP origdataSEXP, SEXP TreestructSEXP, SEXP idSEXP, SEXP repSEXP, SEXP rep1SEXP, SEXP rep2SEXP, SEXP projbestnodeSEXP, SEXP splitCutoffnodeSEXP, SEXP PPmethodSEXP, SEXP lambdaSEXP, SEXP sizepSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
+RcppExport SEXP _PPtreeExt_treeconstructMOD(SEXP origclassSEXP, SEXP origdataSEXP, SEXP TreestructSEXP, SEXP idSEXP, SEXP repSEXP, SEXP rep1SEXP, SEXP rep2SEXP, SEXP projbestnodeSEXP, SEXP splitCutoffnodeSEXP, SEXP PPmethodSEXP, SEXP lambdaSEXP, SEXP sizepSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -283,7 +283,7 @@ END_RCPP
 }
 // treeconstructIND
 List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::mat splitCutoffnode, std::string PPmethod, double lambda, double sizep, bool entro, bool entroindiv, int tot, int iter);
-RcppExport SEXP PPtreeExt_treeconstructIND(SEXP origclassSEXP, SEXP origdataSEXP, SEXP TreestructSEXP, SEXP idSEXP, SEXP repSEXP, SEXP rep1SEXP, SEXP rep2SEXP, SEXP projbestnodeSEXP, SEXP splitCutoffnodeSEXP, SEXP PPmethodSEXP, SEXP lambdaSEXP, SEXP sizepSEXP, SEXP entroSEXP, SEXP entroindivSEXP, SEXP totSEXP, SEXP iterSEXP) {
+RcppExport SEXP _PPtreeExt_treeconstructIND(SEXP origclassSEXP, SEXP origdataSEXP, SEXP TreestructSEXP, SEXP idSEXP, SEXP repSEXP, SEXP rep1SEXP, SEXP rep2SEXP, SEXP projbestnodeSEXP, SEXP splitCutoffnodeSEXP, SEXP PPmethodSEXP, SEXP lambdaSEXP, SEXP sizepSEXP, SEXP entroSEXP, SEXP entroindivSEXP, SEXP totSEXP, SEXP iterSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -309,7 +309,7 @@ END_RCPP
 }
 // csample_num
 arma::vec csample_num(arma::vec x, int size, bool replace, arma::vec prob);
-RcppExport SEXP PPtreeExt_csample_num(SEXP xSEXP, SEXP sizeSEXP, SEXP replaceSEXP, SEXP probSEXP) {
+RcppExport SEXP _PPtreeExt_csample_num(SEXP xSEXP, SEXP sizeSEXP, SEXP replaceSEXP, SEXP probSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -323,7 +323,7 @@ END_RCPP
 }
 // boot
 arma::vec boot(arma::mat origclass, arma::mat origdata);
-RcppExport SEXP PPtreeExt_boot(SEXP origclassSEXP, SEXP origdataSEXP) {
+RcppExport SEXP _PPtreeExt_boot(SEXP origclassSEXP, SEXP origdataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -335,7 +335,7 @@ END_RCPP
 }
 // trainfn
 arma::vec trainfn(arma::mat origclass, arma::mat origdata, double sizetr);
-RcppExport SEXP PPtreeExt_trainfn(SEXP origclassSEXP, SEXP origdataSEXP, SEXP sizetrSEXP) {
+RcppExport SEXP _PPtreeExt_trainfn(SEXP origclassSEXP, SEXP origdataSEXP, SEXP sizetrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -348,7 +348,7 @@ END_RCPP
 }
 // proximi
 arma::mat proximi(arma::mat predtrnt, int m);
-RcppExport SEXP PPtreeExt_proximi(SEXP predtrntSEXP, SEXP mSEXP) {
+RcppExport SEXP _PPtreeExt_proximi(SEXP predtrntSEXP, SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -360,7 +360,7 @@ END_RCPP
 }
 // mvote
 arma::vec mvote(arma::mat votes);
-RcppExport SEXP PPtreeExt_mvote(SEXP votesSEXP) {
+RcppExport SEXP _PPtreeExt_mvote(SEXP votesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -371,7 +371,7 @@ END_RCPP
 }
 // oobindex
 NumericMatrix oobindex(List datab, int m);
-RcppExport SEXP PPtreeExt_oobindex(SEXP databSEXP, SEXP mSEXP) {
+RcppExport SEXP _PPtreeExt_oobindex(SEXP databSEXP, SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -383,7 +383,7 @@ END_RCPP
 }
 // oobobs
 arma::mat oobobs(arma::mat index);
-RcppExport SEXP PPtreeExt_oobobs(SEXP indexSEXP) {
+RcppExport SEXP _PPtreeExt_oobobs(SEXP indexSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -394,7 +394,7 @@ END_RCPP
 }
 // mvoteoob
 arma::mat mvoteoob(arma::mat votes, arma::mat oobobs);
-RcppExport SEXP PPtreeExt_mvoteoob(SEXP votesSEXP, SEXP oobobsSEXP) {
+RcppExport SEXP _PPtreeExt_mvoteoob(SEXP votesSEXP, SEXP oobobsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -406,7 +406,7 @@ END_RCPP
 }
 // ooberrortree
 arma::vec ooberrortree(arma::mat votes, arma::mat oobobs, arma::vec classe, int m);
-RcppExport SEXP PPtreeExt_ooberrortree(SEXP votesSEXP, SEXP oobobsSEXP, SEXP classeSEXP, SEXP mSEXP) {
+RcppExport SEXP _PPtreeExt_ooberrortree(SEXP votesSEXP, SEXP oobobsSEXP, SEXP classeSEXP, SEXP mSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -420,7 +420,7 @@ END_RCPP
 }
 // PPclassification
 List PPclassification(arma::mat Treestruct, arma::mat testclassindex, arma::vec IOindex, arma::vec testclass, int id, int rep);
-RcppExport SEXP PPtreeExt_PPclassification(SEXP TreestructSEXP, SEXP testclassindexSEXP, SEXP IOindexSEXP, SEXP testclassSEXP, SEXP idSEXP, SEXP repSEXP) {
+RcppExport SEXP _PPtreeExt_PPclassification(SEXP TreestructSEXP, SEXP testclassindexSEXP, SEXP IOindexSEXP, SEXP testclassSEXP, SEXP idSEXP, SEXP repSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -436,7 +436,7 @@ END_RCPP
 }
 // PPclassindex
 List PPclassindex(arma::vec classtemp, arma::mat testclassindex, arma::mat testdata, arma::mat Treestruct, arma::mat AlphaKeep, arma::mat CKeep, int id, int Rule);
-RcppExport SEXP PPtreeExt_PPclassindex(SEXP classtempSEXP, SEXP testclassindexSEXP, SEXP testdataSEXP, SEXP TreestructSEXP, SEXP AlphaKeepSEXP, SEXP CKeepSEXP, SEXP idSEXP, SEXP RuleSEXP) {
+RcppExport SEXP _PPtreeExt_PPclassindex(SEXP classtempSEXP, SEXP testclassindexSEXP, SEXP testdataSEXP, SEXP TreestructSEXP, SEXP AlphaKeepSEXP, SEXP CKeepSEXP, SEXP idSEXP, SEXP RuleSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -454,7 +454,7 @@ END_RCPP
 }
 // PPpred
 NumericVector PPpred(NumericMatrix TRstr, NumericMatrix TRprnode, NumericMatrix TRspl, NumericMatrix testdata);
-RcppExport SEXP PPtreeExt_PPpred(SEXP TRstrSEXP, SEXP TRprnodeSEXP, SEXP TRsplSEXP, SEXP testdataSEXP) {
+RcppExport SEXP _PPtreeExt_PPpred(SEXP TRstrSEXP, SEXP TRprnodeSEXP, SEXP TRsplSEXP, SEXP testdataSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -468,7 +468,7 @@ END_RCPP
 }
 // imposoon
 NumericMatrix imposoon(NumericMatrix train, NumericVector classes, List oobid, List permute, List trees, IntegerVector noob, List TRstrL, List TRsplL, List TRprnodeL);
-RcppExport SEXP PPtreeExt_imposoon(SEXP trainSEXP, SEXP classesSEXP, SEXP oobidSEXP, SEXP permuteSEXP, SEXP treesSEXP, SEXP noobSEXP, SEXP TRstrLSEXP, SEXP TRsplLSEXP, SEXP TRprnodeLSEXP) {
+RcppExport SEXP _PPtreeExt_imposoon(SEXP trainSEXP, SEXP classesSEXP, SEXP oobidSEXP, SEXP permuteSEXP, SEXP treesSEXP, SEXP noobSEXP, SEXP TRstrLSEXP, SEXP TRsplLSEXP, SEXP TRprnodeLSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -487,40 +487,40 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"PPtreeExt_tableC", (DL_FUNC) &PPtreeExt_tableC, 1},
-    {"PPtreeExt_roundme", (DL_FUNC) &PPtreeExt_roundme, 1},
-    {"PPtreeExt_LDAindex2", (DL_FUNC) &PPtreeExt_LDAindex2, 4},
-    {"PPtreeExt_signC", (DL_FUNC) &PPtreeExt_signC, 1},
-    {"PPtreeExt_LDAopt", (DL_FUNC) &PPtreeExt_LDAopt, 5},
-    {"PPtreeExt_PDAindex2", (DL_FUNC) &PPtreeExt_PDAindex2, 5},
-    {"PPtreeExt_PDAopt", (DL_FUNC) &PPtreeExt_PDAopt, 6},
-    {"PPtreeExt_varselect", (DL_FUNC) &PPtreeExt_varselect, 2},
-    {"PPtreeExt_datanode", (DL_FUNC) &PPtreeExt_datanode, 2},
-    {"PPtreeExt_entropy", (DL_FUNC) &PPtreeExt_entropy, 1},
-    {"PPtreeExt_split_entro", (DL_FUNC) &PPtreeExt_split_entro, 2},
-    {"PPtreeExt_split_relMOD", (DL_FUNC) &PPtreeExt_split_relMOD, 4},
-    {"PPtreeExt_findprojMOD", (DL_FUNC) &PPtreeExt_findprojMOD, 6},
-    {"PPtreeExt_findproj1D", (DL_FUNC) &PPtreeExt_findproj1D, 6},
-    {"PPtreeExt_arma_sub_cond", (DL_FUNC) &PPtreeExt_arma_sub_cond, 2},
-    {"PPtreeExt_quantileCpp", (DL_FUNC) &PPtreeExt_quantileCpp, 2},
-    {"PPtreeExt_quant", (DL_FUNC) &PPtreeExt_quant, 2},
-    {"PPtreeExt_nodestr", (DL_FUNC) &PPtreeExt_nodestr, 2},
-    {"PPtreeExt_findprojwrapMOD", (DL_FUNC) &PPtreeExt_findprojwrapMOD, 7},
-    {"PPtreeExt_treeconstructMOD", (DL_FUNC) &PPtreeExt_treeconstructMOD, 14},
-    {"PPtreeExt_treeconstructIND", (DL_FUNC) &PPtreeExt_treeconstructIND, 16},
-    {"PPtreeExt_csample_num", (DL_FUNC) &PPtreeExt_csample_num, 4},
-    {"PPtreeExt_boot", (DL_FUNC) &PPtreeExt_boot, 2},
-    {"PPtreeExt_trainfn", (DL_FUNC) &PPtreeExt_trainfn, 3},
-    {"PPtreeExt_proximi", (DL_FUNC) &PPtreeExt_proximi, 2},
-    {"PPtreeExt_mvote", (DL_FUNC) &PPtreeExt_mvote, 1},
-    {"PPtreeExt_oobindex", (DL_FUNC) &PPtreeExt_oobindex, 2},
-    {"PPtreeExt_oobobs", (DL_FUNC) &PPtreeExt_oobobs, 1},
-    {"PPtreeExt_mvoteoob", (DL_FUNC) &PPtreeExt_mvoteoob, 2},
-    {"PPtreeExt_ooberrortree", (DL_FUNC) &PPtreeExt_ooberrortree, 4},
-    {"PPtreeExt_PPclassification", (DL_FUNC) &PPtreeExt_PPclassification, 6},
-    {"PPtreeExt_PPclassindex", (DL_FUNC) &PPtreeExt_PPclassindex, 8},
-    {"PPtreeExt_PPpred", (DL_FUNC) &PPtreeExt_PPpred, 4},
-    {"PPtreeExt_imposoon", (DL_FUNC) &PPtreeExt_imposoon, 9},
+    {"_PPtreeExt_tableC", (DL_FUNC) &_PPtreeExt_tableC, 1},
+    {"_PPtreeExt_roundme", (DL_FUNC) &_PPtreeExt_roundme, 1},
+    {"_PPtreeExt_LDAindex2", (DL_FUNC) &_PPtreeExt_LDAindex2, 4},
+    {"_PPtreeExt_signC", (DL_FUNC) &_PPtreeExt_signC, 1},
+    {"_PPtreeExt_LDAopt", (DL_FUNC) &_PPtreeExt_LDAopt, 5},
+    {"_PPtreeExt_PDAindex2", (DL_FUNC) &_PPtreeExt_PDAindex2, 5},
+    {"_PPtreeExt_PDAopt", (DL_FUNC) &_PPtreeExt_PDAopt, 6},
+    {"_PPtreeExt_varselect", (DL_FUNC) &_PPtreeExt_varselect, 2},
+    {"_PPtreeExt_datanode", (DL_FUNC) &_PPtreeExt_datanode, 2},
+    {"_PPtreeExt_entropy", (DL_FUNC) &_PPtreeExt_entropy, 1},
+    {"_PPtreeExt_split_entro", (DL_FUNC) &_PPtreeExt_split_entro, 2},
+    {"_PPtreeExt_split_relMOD", (DL_FUNC) &_PPtreeExt_split_relMOD, 4},
+    {"_PPtreeExt_findprojMOD", (DL_FUNC) &_PPtreeExt_findprojMOD, 6},
+    {"_PPtreeExt_findproj1D", (DL_FUNC) &_PPtreeExt_findproj1D, 6},
+    {"_PPtreeExt_arma_sub_cond", (DL_FUNC) &_PPtreeExt_arma_sub_cond, 2},
+    {"_PPtreeExt_quantileCpp", (DL_FUNC) &_PPtreeExt_quantileCpp, 2},
+    {"_PPtreeExt_quant", (DL_FUNC) &_PPtreeExt_quant, 2},
+    {"_PPtreeExt_nodestr", (DL_FUNC) &_PPtreeExt_nodestr, 2},
+    {"_PPtreeExt_findprojwrapMOD", (DL_FUNC) &_PPtreeExt_findprojwrapMOD, 7},
+    {"_PPtreeExt_treeconstructMOD", (DL_FUNC) &_PPtreeExt_treeconstructMOD, 14},
+    {"_PPtreeExt_treeconstructIND", (DL_FUNC) &_PPtreeExt_treeconstructIND, 16},
+    {"_PPtreeExt_csample_num", (DL_FUNC) &_PPtreeExt_csample_num, 4},
+    {"_PPtreeExt_boot", (DL_FUNC) &_PPtreeExt_boot, 2},
+    {"_PPtreeExt_trainfn", (DL_FUNC) &_PPtreeExt_trainfn, 3},
+    {"_PPtreeExt_proximi", (DL_FUNC) &_PPtreeExt_proximi, 2},
+    {"_PPtreeExt_mvote", (DL_FUNC) &_PPtreeExt_mvote, 1},
+    {"_PPtreeExt_oobindex", (DL_FUNC) &_PPtreeExt_oobindex, 2},
+    {"_PPtreeExt_oobobs", (DL_FUNC) &_PPtreeExt_oobobs, 1},
+    {"_PPtreeExt_mvoteoob", (DL_FUNC) &_PPtreeExt_mvoteoob, 2},
+    {"_PPtreeExt_ooberrortree", (DL_FUNC) &_PPtreeExt_ooberrortree, 4},
+    {"_PPtreeExt_PPclassification", (DL_FUNC) &_PPtreeExt_PPclassification, 6},
+    {"_PPtreeExt_PPclassindex", (DL_FUNC) &_PPtreeExt_PPclassindex, 8},
+    {"_PPtreeExt_PPpred", (DL_FUNC) &_PPtreeExt_PPpred, 4},
+    {"_PPtreeExt_imposoon", (DL_FUNC) &_PPtreeExt_imposoon, 9},
     {NULL, NULL, 0}
 };
 
