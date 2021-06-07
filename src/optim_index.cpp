@@ -1017,7 +1017,7 @@ List treeconstructMOD(arma::vec origclass, arma::mat origdata, arma::mat Treestr
 }
 
 
-//tree structure
+//tree structure VER DIFERENCIA ENTRE treeconstructIND Y treeconstructMOD y EL CODIGO DE KHUN EN GITHUB
 // [[Rcpp::export]]
 List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestruct, 
                       int id, int rep, int rep1, int rep2, arma::mat projbestnode, arma::mat  splitCutoffnode,

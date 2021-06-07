@@ -29,7 +29,7 @@
 
 PDAopt_MOD <- function(origclass,origdata,q=1,weight=TRUE,lambda=0.1,...){ 
   data.std <- as.matrix(origdata)
-  class.table<-table(origclass)
+  class.table <- table(origclass)
   g<-length(class.table)
   class.name<-names(class.table)
   p<-ncol(data.std)

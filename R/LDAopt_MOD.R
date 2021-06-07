@@ -25,8 +25,7 @@ LDAopt_MOD <- function (origclass, origdata, q = 1, weight = TRUE, ...)
   class.table <- table(origclass)
   class.name <- names(class.table)
   p <- ncol(origdata)
-  mean.g <- matrix(apply(origdata, 2, function(x) tapply(x, 
-                                                         origclass, mean, na.rm = TRUE)), ncol = p)
+  mean.g <- matrix(apply(origdata, 2, function(x) tapply(x, origclass, mean, na.rm = TRUE)), ncol = p)
   mean.all <- matrix(apply(origdata, 2, mean), ncol = p)
   B <- matrix(0, ncol = p, nrow = p)
   W <- matrix(0, ncol = p, nrow = p)
@@ -35,8 +34,7 @@ LDAopt_MOD <- function (origclass, origdata, q = 1, weight = TRUE, ...)
   for (i in 1:g) {
     sel.id <- which(origclass == class.name[i])
     temp.m1 <- mean.g[i, ] - mean.all
-    temp.m2 <- origdata[sel.id, ] - matrix(1, length(sel.id), 
-                                           ncol = 1) %*% mean.g[i, , drop = FALSE]
+    temp.m2 <- origdata[sel.id, ] - matrix(1, length(sel.id), ncol = 1) %*% mean.g[i, , drop = FALSE]
     gn1 <- ifelse(weight, length(sel.id), n/g)
     B <- B + gn1 * t(temp.m1) %*% temp.m1
     W <- W + gn1 * t(temp.m2) %*% temp.m2/length(sel.id)
