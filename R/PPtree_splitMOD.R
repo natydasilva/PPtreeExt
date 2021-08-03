@@ -56,6 +56,7 @@ PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda =
     g <- table(origclass)
     G <- length(g)
     
+    # Tree structure (see optim_index.cpp)
     Tree.final <- treeconstructMOD(origclass, origdata, Treestruct = cbind( 1:(2*G - 1), matrix(0, ncol = 4, nrow = 2*G-1) ), 
                   id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
                   splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro = TRUE, entroindiv=FALSE)

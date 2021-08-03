@@ -513,12 +513,12 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
     //------------
     
     arma::uvec mlist = sort_index(mean_g);
-     sm = sort(mean_g);
+    sm = sort(mean_g);
     msort = diff(sm);
     arma::vec entall(g -1, fill::zeros);
     double pm = 0.0;
     
-    if(entro == true){
+    if(entro == true) {
     for (int k = 0; k < (g - 1); k++) {
       // compute all the mid points
       pmall(k) = (sm(k) + sm( (k + 1) ))  / 2.0;
@@ -528,10 +528,9 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
         }
     mm = entall.index_min();
     pm = pmall(mm);
-      }else{
-        mm = msort.index_max();
-         pm = (sm(mm) + sm( (mm + 1) ) ) / 2.0;
-        
+    } else { 
+      mm = msort.index_max();
+      pm = (sm(mm) + sm((mm + 1))) / 2.0;
       }
 
 //sum entropy for all possible partition between each observation
@@ -787,7 +786,7 @@ int n = projdata.n_rows;
 
 
 
-//it is  a wrap of findprojMOD or findproj1D and split_relMOD
+//it is a wrap of findprojMOD or findproj1D and split_relMOD
 //[[Rcpp::export]]
 List findprojwrapMOD(arma::vec origclass, arma::mat origdata, std::string PPmethod,
                   double sizep = 1, double lambda = .1, bool entro = true, bool entroindiv = false){

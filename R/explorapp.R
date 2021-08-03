@@ -47,8 +47,8 @@ simu3 <-
 }
 
 # Esto corre.
-# simu3(mux1 = 1, mux2 = 1, muy1 = 1, muy2 = 1, muz1 = 1, muz2 = 1, 
-#       cor1 = 0.95, cor2 = 0.95, cor3 = 0.95, n1 = 100, n2 = 100, n3 = 100)
+simu3(mux1 = 1, mux2 = 1, muy1 = 1, muy2 = 1, muz1 = 1, muz2 = 1,
+      cor1 = 0.95, cor2 = 0.95, cor3 = 0.95, n1 = 100, n2 = 100, n3 = 100)
 
 
 ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
@@ -276,18 +276,6 @@ ppboundMOD <-
     }
     pl.pp
   }
-
-# Comentó esto y lo agrego en el server.
-# Mejor dicho...Para qué esta esto si no se asigna a ningún objeto ???
-# ppboundMOD(
-#   data = dat.pl2, # Datos simulados en server. 
-#   meth = "MOD",
-#   entro = FALSE,
-#   entroindiv = TRUE,
-#   title = "Modified multi_sp",
-#   strule = x4,
-#   tot = sum(x3)
-# )
 
 # UI ----------------------------------------------------------------------
 ui <- shiny::fluidPage(shiny::mainPanel(
