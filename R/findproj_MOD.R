@@ -16,6 +16,33 @@
 #' @export
 
 findproj_MOD <- function(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,lambda =.1) {
+  
+  
+  
+  cat("\n\n ---- Corrida findproj_MOD PRE PDA_opt---- \n\n")
+  cat("dimensión de origdata: ", dim(origdata), "\n")
+  class.table <- table(origclass)
+  cat("class.table: ", class.table, "\n")
+  g <- length(class.table)
+  cat("g = ", g, "\n")
+  class.name <- names(class.table)
+  cat("class.name = ", class.name, "\n")
+  p <- ncol(origdata)
+  n <- nrow(origdata)
+  # comentarios
+  cat("p = ", p, "\n")
+  cat("n = ", n, "\n")
+  cat("dimensión origdata: ", dim(origdata), "\n")
+  cat("origclass = ", origclass, "\n")
+  rm(class.table)
+  rm(g)
+  rm(class.name)
+  rm(p)
+  rm(n)
+  cat("\n\n ------------- \n\n")
+  
+  
+  
   if(PPmethod=="LDA"){
     idx <- LDAopt_MOD(origclass, origdata)
   }else{
@@ -25,6 +52,33 @@ findproj_MOD <- function(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,la
   cp <- split_entro(origclass, projdata)
   #pm <- mean(projdata)
   if ( cp == max(projdata) ) cp <- sort(projdata)[ length(projdata) - 1]
+  
+  
+  
+  cat("\n\n ---- Corrida findproj_MOD POST PDA_opt ---- \n\n")
+  cat("dimensión de origdata: ", dim(origdata), "\n")
+  class.table <- table(origclass)
+  cat("class.table: ", class.table, "\n")
+  g <- length(class.table)
+  cat("g = ", g, "\n")
+  class.name <- names(class.table)
+  cat("class.name = ", class.name, "\n")
+  p <- ncol(origdata)
+  n <- nrow(origdata)
+  # comentarios
+  cat("p = ", p, "\n")
+  cat("n = ", n, "\n")
+  cat("dimensión origdata: ", dim(origdata), "\n")
+  cat("origclass = ", origclass, "\n")
+  rm(class.table)
+  rm(g)
+  rm(class.name)
+  rm(p)
+  rm(n)
+  cat("\n\n ------------- \n\n")
+  
+  
+  
   
   list(
     Index  = idx$indexbest, 

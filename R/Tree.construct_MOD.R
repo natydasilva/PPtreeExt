@@ -35,11 +35,55 @@ Tree.construct_MOD <-
   function(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,projbest.node,splitCutoff.node,PPmethod,
            r = NULL, lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule, tot,...) {
     
+    cat("\n\n ---- Corrida Tree.construc  INICIO ---- \n\n")
+    cat("dimensión de origdata: ", dim(origdata), "\n")
+    cat("Clase de origdata: ", class(origdata), "\n")
+    class.table <- table(origclass)
+    cat("class.table: ", class.table, "\n")
+    cat("g = ", length(class.table), "\n")
+    class.name <- names(class.table)
+    cat("class.name = ", class.name, "\n")
+    # comentarios
+    cat("p = ", ncol(origdata), "\n")
+    cat("n = ", nrow(origdata), "\n")
+    cat("dimensión origdata: ", dim(origdata), "\n")
+    cat("origclass = ", origclass, "\n")
+    rm(class.table)
+    rm(class.name)
+    cat("\n\n ------------- \n\n")
+    
+    
+    
+    
     origclass <- as.integer(origclass)
     origdata <- as.matrix(origdata)
     n <- nrow(origdata)
     g <- table(origclass)
     G <- length(g)
+    
+    
+    
+    cat("\n\n ---- Corrida Tree.construc  Post as.matrix(origdata) ---- \n\n")
+    cat("dimensión de origdata: ", dim(origdata), "\n")
+    cat("Clase de origdata: ", class(origdata), "\n")
+    class.table <- table(origclass)
+    cat("class.table: ", class.table, "\n")
+    cat("g = ", length(class.table), "\n")
+    class.name <- names(class.table)
+    cat("class.name = ", class.name, "\n")
+    # comentarios
+    cat("p = ", ncol(origdata), "\n")
+    cat("n = ", nrow(origdata), "\n")
+    cat("dimensión origdata: ", dim(origdata), "\n")
+    cat("origclass = ", origclass, "\n")
+    rm(class.table)
+    rm(class.name)
+    cat("\n\n ------------- \n\n")
+    
+    
+    
+    
+    
     if(length(Tree.Struct) == 0){
       #Tree.Struct<-matrix(1:(2*G-1),ncol=1)
       # Tree.Struct<- cbind(Tree.Struct,0,0,0,0)
@@ -53,21 +97,27 @@ Tree.construct_MOD <-
     end.node <- 0
     if(strule==1) {
         end.node <- 1*(G == 1)
-        }else if(strule==2) {
+    }else if(strule==2) {
        end.node <- 1*(length(origclass)/tot <= .05)
-     }else{
+    }else{
      end.node <- 1*(entropy(origclass) < tol)
-     }
+    }
     #end.node = (G==1 | length(origclass) <= 30 | entropy(origclass)<tol)
     #,pure=TRUE,nodesize=FALSE,entronode=FALSE,tot,
     cnd <- (end.node == 1) + (nrow(origdata) < 10)
     
+    cat("CONDICIÓN: ", cnd, "\n")
+    
     if( cnd > 0 ){
+      cat("SE CUMPLE LA CONDICIÓN ....\n")
       #if (nrow(origdata) > 0 ) {
       Tree.Struct[id,3] <- as.integer( names(g)[which.max(g)] )
       Tree.Struct[,1] <- 1:nrow(Tree.Struct)
+      return(
       list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
            splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)
+      )
+      stop("SE FRENA AL CUMPLIR CONDICIÓN\n")
       # } else {
       #   list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
       #        splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)
@@ -82,6 +132,34 @@ Tree.construct_MOD <-
       rep1<-rep1+1
       Tree.Struct.row[4]<-rep2
       rep2<-rep2+1
+      
+      
+      
+      
+      cat("\n\n ---- Corrida Tree.construc  PRE findproj---- \n\n")
+      cat("dimensión de origdata: ", dim(origdata), "\n")
+      cat("Clase de origdata: ", class(origdata), "\n")
+      class.table <- table(origclass)
+      cat("class.table: ", class.table, "\n")
+      cat("g = ", length(class.table), "\n")
+      class.name <- names(class.table)
+      cat("class.name = ", class.name, "\n")
+      # comentarios
+      cat("p = ", ncol(origdata), "\n")
+      cat("n = ", nrow(origdata), "\n")
+      cat("dimensión origdata: ", dim(origdata), "\n")
+      cat("origclass = ", origclass, "\n")
+      rm(class.table)
+      rm(class.name)
+      cat("\n\n ------------- \n\n")
+      
+      
+      
+      
+      
+      
+      
+      
       a<-findproj_MOD(origclass,origdata,PPmethod,q=1,weight=TRUE,lambda)
       #a<-findproj_modLDA(origclass,origdata )
       Tree.Struct.row[5]<-a$Index
@@ -102,9 +180,49 @@ Tree.construct_MOD <-
       
       #Tree.Struct<- Tree.Struct
       
+      
+      
+      cat("\n\n ---- Corrida Tree.construc  POST findproj---- \n\n")
+      cat("dimensión de origdata: ", dim(t.data), "\n")
+      cat("Clase de origdata: ", class(origdata), "\n")
+      class.table <- table(t.class)
+      cat("class.table: ", class.table, "\n")
+      cat("g = ", length(class.table), "\n")
+      class.name <- names(class.table)
+      cat("class.name = ", class.name, "\n")
+      # comentarios
+      cat("p = ", ncol(t.data), "\n")
+      cat("n = ", nrow(t.data), "\n")
+      cat("dimensión origdata: ", dim(t.data), "\n")
+      cat("origclass = ", t.class, "\n")
+      rm(class.table)
+      rm(class.name)
+      cat("\n\n ------------- \n\n")
+      
+      
+      
+      
+      
+      
       b<-Tree.construct_MOD(t.class,t.data,Tree.Struct, 
                             Tree.Struct[id, 2],rep,rep1,rep2,projbest.node, 
                             splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,strule=strule,tot=tot,...)
+      
+      cat("\n\n ---- Corrida Tree.construc  POST findproj PRE Tree.construct (1)---- \n\n")
+      cat("dimensión de origdata: ", dim(origdata), "\n")
+      cat("clase de origdata", class(origdata), "\n")
+      class.table <- table(origclass)
+      cat("class.table: ", class.table, "\n")
+      cat("g = ", length(class.table), "\n")
+      class.name <- names(class.table)
+      cat("class.name = ", class.name, "\n")
+      # comentarios
+      cat("origclass = ", t.class, "\n")
+      rm(class.table)
+      rm(class.name)
+      cat("\n\n ------------- \n\n")
+      
+      
       Tree.Struct<-b$Tree.Struct
       projbest.node<-b$projbest.node
       splitCutoff.node<-b$splitCutoff.node
@@ -121,6 +239,38 @@ Tree.construct_MOD <-
       t.data<-origdata[t.index,]
       n<-nrow(t.data)
       G<-length(table(t.class))
+      
+      
+      
+      
+      
+      cat("\n\n ---- Corrida Tree.construc  POST findproj POST Tree.construct (1)---- \n\n")
+      cat("dimensión de origdata: ", dim(t.data), "\n")
+      cat("clase de origdata", class(t.data), "\n")
+      class.table <- table(t.class)
+      cat("class.table: ", class.table, "\n")
+      cat("g = ", length(class.table), "\n")
+      class.name <- names(class.table)
+      cat("class.name = ", class.name, "\n")
+      # comentarios
+      cat("origclass = ", t.class, "\n")
+      rm(class.table)
+      rm(class.name)
+      cat("\n\n ------------- \n\n")
+      
+      
+      
+      
+      if(NCOL(t.data) == 1) {
+        cat("SE MODIFICARON FILAS POR COLUMNAS. Trasponemos la matriz")
+        t.data <- t(t.data)
+      }
+      
+      
+      
+      
+      
+      
       b<-Tree.construct_MOD(t.class,t.data,Tree.Struct, 
                             Tree.Struct[id,3],rep,rep1,rep2,projbest.node, 
                             splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,strule=strule,tot=tot,...)

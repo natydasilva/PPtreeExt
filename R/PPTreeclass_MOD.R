@@ -65,6 +65,23 @@ PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 
   TOL<-NULL
   origdata<-as.matrix(origdata)
   
+  
+  
+  
+  cat("\n\n ---- Corrida PPTreeclass_MOD ---- \n\n")
+  cat("dimensión de origdata: ", dim(origdata), "\n")
+  class.table <- table(origclass)
+  cat("class.table: ", class.table, "\n")
+  g <- length(class.table)
+  cat("g = ", g, "\n")
+  class.name <- names(class.table)
+  cat("class.name = ", class.name, "\n")
+  rm(class.table)
+  rm(g)
+  rm(class.name)
+  cat("\n\n ------------- \n\n")
+  
+  
   splitCutoff.node<-NULL
   projbest.node<-NULL
   Tree.Struct<-NULL
