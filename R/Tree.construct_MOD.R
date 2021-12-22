@@ -52,7 +52,10 @@ Tree.construct_MOD <-
     rm(class.name)
     cat("\n\n ------------- \n\n")
     
-    
+    flag = FALSE
+    if(!is.matrix(origdata)) {
+      flag <- TRUE
+    }
     
     
     origclass <- as.integer(origclass)
@@ -104,7 +107,7 @@ Tree.construct_MOD <-
     }
     #end.node = (G==1 | length(origclass) <= 30 | entropy(origclass)<tol)
     #,pure=TRUE,nodesize=FALSE,entronode=FALSE,tot,
-    cnd <- (end.node == 1) + (nrow(origdata) < 10)
+    cnd <- (end.node == 1) | (NROW(origdata) < 10) | !is.matrix(origdata) | flag
     
     cat("CONDICIÓN: ", cnd, "\n")
     
@@ -113,11 +116,8 @@ Tree.construct_MOD <-
       #if (nrow(origdata) > 0 ) {
       Tree.Struct[id,3] <- as.integer( names(g)[which.max(g)] )
       Tree.Struct[,1] <- 1:nrow(Tree.Struct)
-      return(
       list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
            splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)
-      )
-      stop("SE FRENA AL CUMPLIR CONDICIÓN\n")
       # } else {
       #   list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
       #        splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)
@@ -209,9 +209,9 @@ Tree.construct_MOD <-
                             splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,strule=strule,tot=tot,...)
       
       cat("\n\n ---- Corrida Tree.construc  POST findproj PRE Tree.construct (1)---- \n\n")
-      cat("dimensión de origdata: ", dim(origdata), "\n")
-      cat("clase de origdata", class(origdata), "\n")
-      class.table <- table(origclass)
+      cat("dimensión de origdata: ", dim(t.data), "\n")
+      cat("clase de origdata", class(t.data), "\n")
+      class.table <- table(t.class)
       cat("class.table: ", class.table, "\n")
       cat("g = ", length(class.table), "\n")
       class.name <- names(class.table)
@@ -261,10 +261,30 @@ Tree.construct_MOD <-
       
       
       
-      if(NCOL(t.data) == 1) {
-        cat("SE MODIFICARON FILAS POR COLUMNAS. Trasponemos la matriz")
-        t.data <- t(t.data)
-      }
+      
+      # if(NCOL(t.data) == 1) {
+      #   cat("SE MODIFICARON FILAS POR COLUMNAS. Trasponemos la matriz")
+      #   t.data <- t(t.data)
+      # }
+      
+      # cnd <- (end.node == 1) + (nrow(origdata) < 10)
+      
+      # cat("CONDICIÓN: ", cnd, "\n")
+      
+      # if( cnd > 0 ){
+      #   cat("SE CUMPLE LA CONDICIÓN ....\n")
+      #   #if (nrow(origdata) > 0 ) {
+      #   Tree.Struct[id,3] <- as.integer( names(g)[which.max(g)] )
+      #   Tree.Struct[,1] <- 1:nrow(Tree.Struct)
+      #   return(
+      #   list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
+      #        splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)
+      #   )
+      #   # } else {
+      #   #   list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
+      #   #        splitCutoff.node=splitCutoff.node,rep=rep,rep1=rep1,rep2=rep2)
+      #   # }
+      # }
       
       
       
