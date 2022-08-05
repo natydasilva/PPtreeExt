@@ -10,19 +10,11 @@ Depends:
     R (>= 3.2.0)
 Imports:
     Rcpp (>= 0.12.7),
-    RcppArmadillo,
     ggplot2,
-    PPforest,
-    magrittr,
     shiny,
     MASS,
-    plyr,
-    purrr,
-    dplyr,
-    tidyr,
     gridExtra,
     MixSim,
-    plotly,
     PPtreeViz
 License: LGPL-2.1
 Suggests:
@@ -35,7 +27,4 @@ Suggests:
     rmarkdown
 VignetteBuilder: knitr
 LinkingTo: Rcpp,RcppArmadillo
-RoxygenNote: 6.0.1
-
-
-
+RoxygenNote: 7.2.1

@@ -4,8 +4,7 @@
 \alias{print.PPtreeclassMOD}
 \title{Print PPtreeclassMOD object}
 \usage{
-\method{print}{PPtreeclassMOD}(x, coef.print = FALSE, cutoff.print = FALSE,
-  verbose = TRUE, ...)
+\method{print}{PPtreeclassMOD}(x, coef.print = FALSE, cutoff.print = FALSE, verbose = TRUE, ...)
 }
 \arguments{
 \item{x}{something}

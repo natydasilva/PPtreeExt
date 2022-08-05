@@ -1,3 +1,6 @@
+
+utils::globalVariables(c("Sim", "X1", "X2", "predict", "pred", "ppred"))
+
 simu3 <- 
   function(mux1, mux2, muy1, muy2, muz1, muz2,
            cor1, cor2, cor3,
@@ -55,7 +58,7 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
     pptree <- PPtreeViz::PPTreeclass(Sim ~ ., data = data, PPmethod = "LDA")
     # Predict projection pursuit classification tree ...NOT USED!!!
     ppred.sim <- PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
-    # PROBLEMA: POR QUÉ ppred.sim$predict.error es NA?????
+    #PROBLEMA: POR QUE ppred.sim$predict.error es NA?
     grilla$pred <- ppred.sim[[2]]
     err <-
       round(

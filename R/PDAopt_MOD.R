@@ -34,28 +34,18 @@ PDAopt_MOD <-
            weight = TRUE,
            lambda = 0.1,
            ...) {
-    # Comentarios para debugear
-    cat("\n\n ---- Corrida PDAopt_MOD ---- \n\n")
-    cat("dimensión de origdata: ", dim(origdata), "\n")
     data.std <- as.matrix(origdata)
     class.table <- table(origclass)
-    cat("class.table: ", class.table, "\n")
     g <- length(class.table)
-    cat("g = ", g, "\n")
     class.name <- names(class.table)
-    cat("class.name = ", class.name, "\n")
     p <- ncol(data.std)
     n <- nrow(data.std)
-    # comentarios
-    cat("p = ", p, "\n")
-    cat("n = ", n, "\n")
-    cat("dimensión data.std: ", dim(data.std), "\n")
-    cat("origclass = ", origclass, "\n")
+
     mean.g <- matrix(apply(data.std, 2, function(x) {
       tapply(x, origclass, mean, na.rm = TRUE)
     }),
     ncol = p)
-    cat("dimensión mean.g: ", dim(mean.g), "\n")
+   
     mean.all <- matrix(apply(data.std, 2, mean), ncol = p)
     B <- matrix(0, ncol = p, nrow = p)
     W <- matrix(0, ncol = p, nrow = p)

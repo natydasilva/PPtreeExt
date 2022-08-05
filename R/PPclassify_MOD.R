@@ -22,8 +22,8 @@
 #' n.train <- round(n*0.9)
 #' train <- sample(tot,n.train)
 #' test <- tot[-train]
-#' Tree.result <- PPTreeclass_MOD(Species~.,data=iris[train,],"LDA")
-#' PPclassify_MOD(Tree.result,iris[test,1:4],iris[test,5])
+#' Tree.result <- PPTreeclass_MOD(formula = Species~.,data = iris[train,],PPmethod = "LDA")
+#' PPclassify_MOD(Tree.result,test.data = iris[test,1:4], true.class = iris[test,5])
 #' 
 PPclassify_MOD<-function(Tree.result,test.data=NULL,true.class=NULL,...) {
   if(is.null(test.data))
