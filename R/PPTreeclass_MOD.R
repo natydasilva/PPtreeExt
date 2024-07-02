@@ -7,8 +7,7 @@
 #'                      r=1,lambda=0.1,energy=0,maxiter=50000,strule = 1,tot,...) 
 #' @param formula an object of class "formula"
 #' @param data data frame
-#' @param PPmethod method for projection pursuit; "LDA", "PDA", "Lr", 
-#'        "GINI", and "ENTROPY"
+#' @param PPmethod method for projection pursuit; "LDA", "PDA"
 #' @param weight weight flag in LDA, PDA and Lr index
 #' @param r r in Lr index
 #' @param lambda lambda in PDA index

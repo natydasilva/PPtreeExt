@@ -36,10 +36,10 @@
 #' Tree.result
 #' 
 #' PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
-#' Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "PDA", 
-#' size.p = 1, entro = TURE, entroindiv = FALSE)
+#' Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "LDA", 
+#' size.p = 1, entro=TRUE, entroindiv = FALSE)
 #' Tree.iris}
-PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro, entroindiv,...) {
+PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro= TRUE, entroindiv = FALSE,...) {
   
      formula <- stats::as.formula(form)
      mf <- stats::model.frame(formula, data = data)
@@ -59,7 +59,7 @@ PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda =
     # Tree structure (see optim_index.cpp)
     Tree.final <- treeconstructMOD(origclass, origdata, Treestruct = cbind( 1:(2*G - 1), matrix(0, ncol = 4, nrow = 2*G-1) ), 
                   id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 
-                  splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro = TRUE, entroindiv=FALSE)
+                  splitCutoffnode = matrix(0, ncol = 8, nrow = 1), PPmethod, lambda, size.p, entro = entro, entroindiv = entroindiv)
    
      # Tree.final <- treeconstructIND(origclass, origdata, Treestruct =  matrix(0, ncol = 5, nrow = 1) , 
      #                                id = 0,  rep = 1, rep1 = 2, rep2 = 1, projbestnode = matrix(0, ncol = pp, nrow = 1), 

@@ -534,7 +534,7 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
       }
 
 //sum entropy for all possible partition between each observation
-      if(entroindiv == true){
+     if(entroindiv == true){
         for(int j = 0; j < n-1; j++){
          //double p = projdata(ordproj(j));
          double p = projdata(j);
@@ -544,6 +544,7 @@ List split_relMOD(arma::vec origclass, arma::colvec  projdata, bool entro, bool 
         }
         mmi = entiall.index_min();
               }
+     
       
     //----------
     //arma::vec newclass(n);
@@ -633,7 +634,7 @@ List findprojMOD(arma::vec origclass,
 
 
 
-//Finds the 1D projection for separating all classes, lates MOD only 1 step projection even in multiclass problem 
+//Finds the 1D projection for separating all classes, latest MOD only 1 step projection even in multiclass problem 
 // [[Rcpp::export]]
 List findproj1D(arma::vec origclass,
                  arma::mat origdata, std::string PPmethod, 
@@ -782,8 +783,6 @@ int n = projdata.n_rows;
    return C;
     
  }
-
-
 
 
 //it is a wrap of findprojMOD or findproj1D and split_relMOD
