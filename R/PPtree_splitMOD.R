@@ -36,6 +36,7 @@
 #' Tree.result
 #' 
 #' PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
+#' 
 #' Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "LDA", 
 #' size.p = 1, entro=TRUE, entroindiv = FALSE)
 #' Tree.iris}
@@ -50,7 +51,7 @@ PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda =
     origdata <- data[ , -which(colnames(data)%in%cls)]
     origdata <- as.matrix(origdata)
     pp <- ncol(origdata)
-    origclass <- as.numeric(as.factor(origclass))
+    origclass <- as.factor(origclass) #just change numeric here
 
 
     g <- table(origclass)

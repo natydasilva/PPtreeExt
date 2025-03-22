@@ -25,6 +25,6 @@ Suggests:
     RColorBrewer,
     roxygen2 (>= 3.0.0),
     rmarkdown
-VignetteBuilder: knitr
+Encoding: UTF-8
 LinkingTo: Rcpp,RcppArmadillo
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2

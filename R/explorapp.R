@@ -47,8 +47,8 @@ simu3 <-
 }
 
 # Esto corre.
-simu3(mux1 = 1, mux2 = 1, muy1 = 1, muy2 = 1, muz1 = 1, muz2 = 1,
-      cor1 = 0.95, cor2 = 0.95, cor3 = 0.95, n1 = 100, n2 = 100, n3 = 100)
+#dat.pl2<-simu3(mux1 = -1, mux2 = 0.6, muy1 = 0, muy2 = -0.6, muz1 = 2, muz2 = -1,
+#     cor1 = 0.95, cor2 = 0.95, cor3 = 0.95, n1 = 100, n2 = 100, n3 = 100)
 
 
 ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
@@ -98,7 +98,8 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
     pptree <- PPtree_splitMOD(Sim ~ ., data = data, "LDA", entro = entro)
     ppred.sim <-
       PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
-    grilla$pred <- paste("sim", ppred.sim[[2]], sep = "")
+    #grilla$pred <- paste("sim", ppred.sim[[2]], sep = "")
+    grilla$pred <- ppred.sim[[2]]
     err <-
       round(
         PPtreeViz::PPclassify(
@@ -217,7 +218,7 @@ ppboundMOD <-
         ggplot2::ggplot(data = grilla) + ggplot2::geom_point(ggplot2::aes(x = X1, y = X2, color = ppred), alpha = .20) +
           ggplot2::scale_colour_brewer(name = "Class",
                                        type = "qual",
-                                       palette = "Dark2") + 
+                                       palette = "Dark2") +
           ggplot2::theme_bw() +
           ggplot2::scale_shape_discrete(name = 'Class') + 
           ggplot2::geom_point(
@@ -231,7 +232,7 @@ ppboundMOD <-
             size = I(3)
           ) +
           ggplot2::theme(legend.position = "none", aspect.ratio = 1) +
-          ggplot2::scale_y_continuous(expand = c(0, 0)) + 
+          ggplot2::scale_y_continuous(expand = c(0, 0)) +
           ggplot2::scale_x_continuous(expand = c(0, 0)) +
           ggplot2::labs(
             x = " ",
@@ -265,7 +266,7 @@ ppboundMOD <-
           size = I(3)
         ) +
         ggplot2::theme(legend.position = "none", aspect.ratio = 1) +
-        ggplot2::scale_y_continuous(expand = c(0, 0)) + 
+        ggplot2::scale_y_continuous(expand = c(0, 0)) +
         ggplot2::scale_x_continuous(expand = c(0, 0)) +
         ggplot2::labs(
           x = " ",
@@ -470,7 +471,7 @@ ui <- shiny::fluidPage(shiny::mainPanel(
       ),
       shiny::fluidRow(
         shiny::column(4, shiny::numericInput(
-          "size", label = "Sample size", value = 100
+          "size", label = "Sample size", value = 500
         )),
         shiny::column(
           4,
@@ -484,7 +485,7 @@ ui <- shiny::fluidPage(shiny::mainPanel(
         ),
         shiny::column(
           4,
-          shiny::numericInput("K", label = "K number of components", value = 3)
+          shiny::numericInput("K", label = "K number of components", value = 4)
         )
       ),
       #shiny::numericInput("p", label = "number of dimensions", value = 5),
@@ -669,14 +670,14 @@ server <- function(input, output) {
             MaxOmega = shiny::isolate(as.numeric(input$MaxOmega)),
             K = shiny::isolate(as.numeric(input$K)),
             p = 2,
-            sph = FALSE,
-            hom = TRUE,
-            ecc = 0.90,
-            PiLow = 1.0,
-            int = c(0.0, 1.0),
-            resN = 100,
-            eps = 1e-06,
-            lim = 1e06
+            # sph = FALSE,
+            # hom = TRUE,
+            # ecc = 0.90,
+            # PiLow = 1.0,
+            # int = c(0.0, 1.0),
+            # resN = 100,
+            # eps = 1e-06,
+            # lim = 1e06
           )
         if (Q$fail == 0)
           break
@@ -734,7 +735,7 @@ server <- function(input, output) {
       
       gridExtra::grid.arrange(
         ppbound(
-          ru =  as.numeric(input$rule3),
+          ru = as.numeric(input$rule3),
           data = dat.pl2,
           meth = "Rpart",
           entro = TRUE ,
@@ -742,7 +743,7 @@ server <- function(input, output) {
           simM = TRUE
         ),
         ppbound(
-          ru =  as.numeric(input$rule3),
+          ru = as.numeric(input$rule3),
           data = dat.pl2,
           meth = "Original" ,
           entro = FALSE,

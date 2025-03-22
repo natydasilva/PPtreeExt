@@ -32,7 +32,6 @@ data(iris)
 n <- nrow(iris)
 tot <- c(1:n)
 n.train <- round(n*0.9)
-set.seed(12999)
 train <- sample(tot,n.train)
 test <- tot[-train]
 Tree.result <- PPTreeclass_MOD(formula = Species~.,data = iris[train,],PPmethod = "LDA")

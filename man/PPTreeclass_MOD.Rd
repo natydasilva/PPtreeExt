@@ -12,8 +12,7 @@ PPTreeclass_MOD(formula,data, PPmethod="LDA",weight=TRUE,
 
 \item{data}{data frame}
 
-\item{PPmethod}{method for projection pursuit; "LDA", "PDA", "Lr", 
-"GINI", and "ENTROPY"}
+\item{PPmethod}{method for projection pursuit; "LDA", "PDA"}
 
 \item{weight}{weight flag in LDA, PDA and Lr index}
 
