@@ -35,23 +35,6 @@ An object of class \code{PPtreeclass} with components
 \description{
 Find tree structure using various projection pursuit indices of classification in each split.
 }
-\examples{
-#crab data set
-\dontrun{
-train<- sample(1:200,150)
-Tree.crab <- PPtree_splitMOD("Type~.", data = PPforest::crab[train, ],
- PPmethod = "LDA", size.p = 1, entro = TRUE,entroindiv=FALSE)
-Tree.crab
-
- Tree.result <- PPtreeViz::PPTreeclass(Type~.,data = PPforest::crab[train,],"LDA")
-Tree.result
-
-PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
-
-Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "LDA", 
-size.p = 1, entro=TRUE, entroindiv = FALSE)
-Tree.iris}
-}
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK (2013) 
 PPtree: Projection pursuit classification tree, 

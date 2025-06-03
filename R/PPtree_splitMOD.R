@@ -24,22 +24,6 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 #' @keywords tree
-#' @examples
-#' #crab data set
-#' \dontrun{
-#' train<- sample(1:200,150)
-#' Tree.crab <- PPtree_splitMOD("Type~.", data = PPforest::crab[train, ],
-#'  PPmethod = "LDA", size.p = 1, entro = TRUE,entroindiv=FALSE)
-#' Tree.crab
-#' 
-#'  Tree.result <- PPtreeViz::PPTreeclass(Type~.,data = PPforest::crab[train,],"LDA")
-#' Tree.result
-#' 
-#' PPtreeViz::PPclassify(Tree.result,PPforest::crab[-train,-1],1,crab[-train,1])
-#' 
-#' Tree.iris <- PPtree_splitMOD("Species~.", data = iris, PPmethod = "LDA", 
-#' size.p = 1, entro=TRUE, entroindiv = FALSE)
-#' Tree.iris}
 PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro= TRUE, entroindiv = FALSE,...) {
   
      formula <- stats::as.formula(form)

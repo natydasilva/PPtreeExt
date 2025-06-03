@@ -7,7 +7,7 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' explorapp(ui,server)
 #' }
 explorapp <-function(ui,server){
