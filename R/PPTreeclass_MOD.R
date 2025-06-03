@@ -90,9 +90,9 @@ PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 
   projbest.node<-Tree.final$projbest.node
   splitCutoff.node<-Tree.final$splitCutoff.node
   #colnames(splitCutoff.node)<-paste("Rule",1,sep="")
-  treeobj<-list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
+  treeobj <- list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
                 splitCutoff.node=splitCutoff.node,origclass=origclass,
-                origdata=origdata,terms=Terms)
-  class(treeobj)<-append(class(treeobj),"PPtreeclassMOD")
+                origdata = origdata,terms=Terms)
+  class(treeobj) <- append(class(treeobj),"PPtreeclassMOD")
   return(treeobj)
 }

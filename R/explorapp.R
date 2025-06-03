@@ -43,12 +43,7 @@ simu3 <-
   d2 <- data.frame(Sim = "sim2", bivn2)
   d3 <- data.frame(Sim = "sim3", bivn3)
   rbind(d1, d2, d3)
-  # Sim is class character and must be factor, modify it.
 }
-
-# Esto corre.
-#dat.pl2<-simu3(mux1 = -1, mux2 = 0.6, muy1 = 0, muy2 = -0.6, muz1 = 2, muz2 = -1,
-#     cor1 = 0.95, cor2 = 0.95, cor3 = 0.95, n1 = 100, n2 = 100, n3 = 100)
 
 
 ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
@@ -58,7 +53,6 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
     X2 = seq((min(data$X2) + sign(min(data$X2)) * .5), (max(data$X2) + sign(max(data$X2)) * .5), length.out = 100)
     )
   
-  # Sim must be a factor in order to work with PPtreeViz
   data$Sim <- as.factor(data$Sim)
   
   if (meth == "Original") {

@@ -1,19 +1,18 @@
 
 utils::globalVariables(c("Sim", "X1", "X2", "predict", "pred", "ppred"))
 
-simu3 <- 
-  function(mux1, mux2, muy1, muy2, muz1, muz2,
+# Description: Function to simulate multivariate (bivariate) normal distributions
+# Input: 
+# mean vector, 
+# covariance matrix of the variables
+# number of samples
+# Output: 
+# data.frame with dimension (n1+n2+n3)x(3)
+
+simu3 <- function(mux1, mux2, muy1, muy2, muz1, muz2,
            cor1, cor2, cor3,
            n1 = 100, n2 = 100, n3 = 100
   ) {
-    
-    # Function to simulate multivariate (bivariate) normal distributions
-    # Input: 
-      # mean vector, 
-      # covariance matrix of the variables
-      # number of samples
-    # Output: 
-      # data.frame with dimension (n1+n2+n3)x(3)
     
     set.seed(666)
     bivn <- MASS::mvrnorm(n1, mu = c(mux1, mux2), Sigma = matrix(c(1, cor1, cor1, 1), 2))
@@ -26,21 +25,17 @@ simu3 <-
     rbind(d1, d2, d3)
   }
 
-# Esto corre.
-# simu3(mux1 = 1, mux2 = 1, muy1 = 1, muy2 = 1, muz1 = 1, muz2 = 1, 
-#       cor1 = 0.95, cor2 = 0.95, cor3 = 0.95, n1 = 100, n2 = 100, n3 = 100)
-
+# Description:
+# Input:
+# ru = split rule = {1, 2, 3, 4, 5, 6, 7}
+# data = dataset of simulate values
+# meth = 
+# entro = 
+# Output:
+# Generate grid values to use as test set.
 
 ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
-  # Description:
-  # Input:
-    # ru = split rule = {1, 2, 3, 4, 5, 6, 7}
-    # data = dataset of simulate values
-    # meth = 
-    # entro = 
-  # Output:
-  
-  # Generate grid values to use as TEST SET.
+
   n_grid <- 100
   
   grilla <-
