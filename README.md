@@ -3,4 +3,7 @@
 [![Travis-CI Build Status](https://travis-ci.org/natydasilva/PPtreeExt.svg?branch=master)](https://travis-ci.org/natydasilva/PPtreeExt)
 
 # PPtreeExt
-Package to extend the PPtree algorithm
+PPtreeExt is an R package that extends the PPtree algorithm  for classification problems. The extentions allows 
+to handle multiple splits per group and more complex structures than the original algorithm. 
+
+
