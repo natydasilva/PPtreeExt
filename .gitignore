@@ -6,3 +6,4 @@
 R/TEST_APP.R
 *.o
 *.so
+docs
