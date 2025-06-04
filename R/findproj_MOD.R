@@ -14,7 +14,6 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 #' @export
-
 findproj_MOD <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1) {
   
   class.table <- table(origclass)

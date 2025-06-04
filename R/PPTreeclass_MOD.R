@@ -28,9 +28,10 @@
 #' @export
 #' @keywords tree
 #' @examples
-#' data(iris)
-#' Tree.result <- PPTreeclass_MOD(Species~.,data = iris,"LDA")
-#' Tree.result
+#' data(penguins)
+#' penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
+#'   flipper_len + body_mass, data = penguins, PPmethod = "LDA")
+#' penguins_ppt
 PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1,
                          lambda = 0.1, energy = 0, maxiter = 50000, strule = 1, tot, ...){
   Call <- match.call()

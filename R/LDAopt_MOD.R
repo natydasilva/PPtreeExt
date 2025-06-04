@@ -18,7 +18,6 @@
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
-
 LDAopt_MOD <- function (origclass, origdata, q = 1, weight = TRUE, ...) 
 {
   origdata <- as.matrix(origdata)

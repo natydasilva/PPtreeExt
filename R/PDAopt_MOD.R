@@ -21,12 +21,11 @@
 #' @export
 #' @keywords projection pursuit
 #' @examples
-#' data(iris)
-#' PDA.proj.result <- PDAopt_MOD(iris[,5],iris[,1:4],weight=TRUE,q=2,lambda=0.1)
-#' PDA.proj.result$indexbest
-#' PDA.proj.result$projbest
-#' 
-
+#' data(penguins)
+#' penguins_pda_proj <- PDAopt_MOD(penguins[,1]. penguins[,3:6],
+#'   weight=TRUE, q=2, lambda=0.1)
+#' penguins_pda_proj$indexbest
+#' penguins_pda_proj$projbest
 PDAopt_MOD <-
   function(origclass,
            origdata,
