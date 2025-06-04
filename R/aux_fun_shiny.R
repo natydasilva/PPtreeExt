@@ -45,7 +45,6 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
     )
   
   if (meth == "Original") {
-    # Si Sim no es factor se genera error. Agregar un chequeo de clases y que salte error/warning y se cambien.
     
     # Dependent variable must be a factor
     data$Sim <- as.factor(data$Sim)
@@ -187,7 +186,7 @@ ppboundMOD <-
         X1 = seq((min(data$X1) + sign(min(data$X1)) * .5), (max(data$X1) + sign(max(data$X1)) * .5), length.out = 100), 
         X2 = seq((min(data$X2) + sign(min(data$X2)) * .5), (max(data$X2) + sign(max(data$X2)) * .5), length.out = 100)
       )
-    # Responde variable must be a factor
+    # Response variable must be a factor
     data$Sim <- as.factor(data$Sim)
     
     # Construct the projection pursuit classification tree using LDA index.
@@ -276,14 +275,3 @@ ppboundMOD <-
     pl.pp
   }
 
-# Comentó esto y lo agrego en el server.
-# Mejor dicho...Para qué esta esto si no se asigna a ningún objeto ???
-# ppboundMOD(
-#   data = dat.pl2, # Datos simulados en server. 
-#   meth = "MOD",
-#   entro = FALSE,
-#   entroindiv = TRUE,
-#   title = "Modified multi_sp",
-#   strule = x4,
-#   tot = sum(x3)
-# )

@@ -27,7 +27,7 @@ origclass original class information vector
 origdata  original data matrix  without class information
 }
 \description{
-PP optimization using LDA index same as original
+PP optimization using LDA index same as PPtree
 }
 \details{
 Find the q-dimensional optimal projection using LDA projectin pursuit index

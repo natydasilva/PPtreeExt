@@ -1,5 +1,4 @@
 #' Construct the projection pursuit classification tree extensions
-#' 
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
 #' @title Projection pursuit classification tree 
@@ -13,7 +12,9 @@
 #' @param lambda lambda in PDA index
 #' @param energy parameter for the probability to take new projection
 #' @param maxiter maximum iteration number
-#' @param strule select the stoping rule based in G=1 pure node
+#' @param strule select the stoping rule, 1 all observations in the node belongs 
+#' to the same class based, 2 node size is less than 5% of the total number of observations, 
+#' 3 the entropy reduction is samaller than a treshold.
 #' @param tot total obs original class
 #' @param ... arguments to be passed to methods
 #' @return Tree.Struct tree structure of projection pursuit classification tree

@@ -1,4 +1,4 @@
-#' Shiny app to explore PPtree algirith partitions
+#' Shiny app to compare PPtree, PPtreeExt and rpart boundaries in 2D with different simulation scenarios
 #' 
 #' @usage explorapp(ui, server) 
 #' @param ui A 

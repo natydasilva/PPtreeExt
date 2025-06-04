@@ -21,9 +21,6 @@ predict.class predicted class
 predict.error number of the prediction errors
 }
 \description{
-predict projection pursuit classification tree
-}
-\details{
 Predict class for the test set with the fitted projection pursuit 
 classification tree and calculate prediction error.
 }

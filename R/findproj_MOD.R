@@ -1,6 +1,6 @@
-#' 1D projection for each node partition using entropy (NEW)
+#' 1D projection for each node partition using entropy 
 #' 
-#' @usage findproj_MOD(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,lambda =.1) 
+#' @usage findproj_MOD(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1) 
 #' @param origclass original class 
 #' @param origdata original data
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
@@ -15,7 +15,7 @@
 #' @export
 #' @export
 
-findproj_MOD <- function(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,lambda =.1) {
+findproj_MOD <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1) {
   
   class.table <- table(origclass)
  
@@ -33,7 +33,7 @@ findproj_MOD <- function(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,la
   rm(n)
   
   
-  if(PPmethod=="LDA"){
+  if(PPmethod == "LDA"){
     idx <- LDAopt_MOD(origclass, origdata)
   }else{
     idx <- PDAopt_MOD(origclass, origdata, q,weight,lambda)
@@ -43,7 +43,6 @@ findproj_MOD <- function(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,la
   #pm <- mean(projdata)
   if ( cp == max(projdata) ) cp <- sort(projdata)[ length(projdata) - 1]
   
-
   class.table <- table(origclass)
  
   g <- length(class.table)
@@ -58,8 +57,6 @@ findproj_MOD <- function(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,la
   rm(class.name)
   rm(p)
   rm(n)
-  
-  
   
   list(
     Index  = idx$indexbest, 

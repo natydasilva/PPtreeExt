@@ -2,7 +2,7 @@
 % Please edit documentation in R/explorapp.R
 \name{explorapp}
 \alias{explorapp}
-\title{Shiny app to explore PPtree algirith partitions}
+\title{Shiny app to compare PPtree, PPtreeExt and rpart boundaries in 2D with different simulation scenarios}
 \usage{
 explorapp(ui, server)
 }
@@ -12,7 +12,7 @@ explorapp(ui, server)
 \item{server}{aaa}
 }
 \description{
-Shiny app to explore PPtree algirith partitions
+Shiny app to compare PPtree, PPtreeExt and rpart boundaries in 2D with different simulation scenarios
 }
 \examples{
 if(interactive()){

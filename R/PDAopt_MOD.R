@@ -1,8 +1,8 @@
-#' PP optimization using PDA index same as original
+#' PP optimization using PDA index same as PPtree
 #' 
 #' Find the q-dimensional optimal projection using PDA projectin pursuit index
 #' @title PP optimization using PDA index
-#' @usage PDAopt_MOD(origclass,origdata,q=1,weight=TRUE,lambda=0.1,...) 
+#' @usage PDAopt_MOD(origclass,origdata, q = 1, weight = TRUE, lambda = 0.1,...) 
 #' @param origclass class information vector of data
 #' @param origdata data matrix without class information
 #' @param q dimension of projection vector

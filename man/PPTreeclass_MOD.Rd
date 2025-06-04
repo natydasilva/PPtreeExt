@@ -24,7 +24,9 @@ PPTreeclass_MOD(formula,data, PPmethod = "LDA",weight = TRUE,
 
 \item{maxiter}{maximum iteration number}
 
-\item{strule}{select the stoping rule based in G=1 pure node}
+\item{strule}{select the stoping rule, 1 all observations in the node belongs 
+to the same class based, 2 node size is less than 5% of the total number of observations, 
+3 the entropy reduction is samaller than a treshold.}
 
 \item{tot}{total obs original class}
 
@@ -43,8 +45,6 @@ origdata original data
 }
 \description{
 Construct the projection pursuit classification tree extensions
-}
-\details{
 Find tree structure using various projection pursuit indices of 
 classification in each split.
 }

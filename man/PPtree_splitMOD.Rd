@@ -4,8 +4,8 @@
 \alias{PPtree_splitMOD}
 \title{Projection pursuit classification tree with random variable selection in each split}
 \usage{
-PPtree_splitMOD(form, data, PPmethod='LDA', 
-size.p=1,  lambda=0.1, entro ,entroindiv,...)
+PPtree_splitMOD(form, data, PPmethod = 'LDA', 
+size.p = 1,  lambda = 0.1, entro , entroindiv,...)
 }
 \arguments{
 \item{form}{A character with the name of the class variable.}
@@ -20,7 +20,7 @@ size.p=1,  lambda=0.1, entro ,entroindiv,...)
 
 \item{entro}{TRUE, compute the entropy method}
 
-\item{entroindiv}{TRUE, compute the entropy for each obs...clarify this}
+\item{entroindiv}{TRUE, compute the entropy for each observation in 1D projection}
 
 \item{...}{arguments to be passed to methods}
 }

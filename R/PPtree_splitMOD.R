@@ -1,15 +1,15 @@
 #' Projection pursuit classification tree with random variable selection in each split
 #' 
 #' Find tree structure using various projection pursuit indices of classification in each split.
-#' @usage PPtree_splitMOD(form, data, PPmethod='LDA', 
-#' size.p=1,  lambda=0.1, entro ,entroindiv,...) 
+#' @usage PPtree_splitMOD(form, data, PPmethod = 'LDA', 
+#' size.p = 1,  lambda = 0.1, entro , entroindiv,...) 
 #' @param form A character with the name of the class variable.
 #' @param data Data frame with the complete data set.
 #' @param PPmethod index to use for projection pursuit: 'LDA', 'PDA'
 #' @param size.p proportion of variables randomly sampled in each split, default is 1, returns a PPtree.
 #' @param lambda penalty parameter in PDA index and is between 0 to 1 . If \code{lambda = 0}, no penalty parameter is added and the PDA index is the same as LDA index. If \code{lambda = 1} all variables are treated as uncorrelated. The default value is \code{lambda = 0.1}.
 #' @param entro TRUE, compute the entropy method
-#' @param entroindiv TRUE, compute the entropy for each obs...clarify this
+#' @param entroindiv TRUE, compute the entropy for each observation in 1D projection
 #' @param ... arguments to be passed to methods
 #' @return An object of class \code{PPtreeclass} with components
 #' \item{Tree.Struct}{Tree structure of projection pursuit classification tree}
