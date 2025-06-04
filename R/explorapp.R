@@ -406,8 +406,7 @@ ui <- shiny::fluidPage(shiny::mainPanel(
         shiny::selectInput(
           inputId = "group",
           label = "Add outliers to class",
-          choices = c("Subsetting clases" = "1", 
-                      "Multiple splits" = "3"),
+          choices = 1:3,
           selected = 1
         )
       )),

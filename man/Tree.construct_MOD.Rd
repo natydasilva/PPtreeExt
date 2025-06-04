@@ -4,9 +4,9 @@
 \alias{Tree.construct_MOD}
 \title{Projection pursuit classification tree MOD}
 \usage{
-Tree.construct_MOD(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,
-projbest.node,splitCutoff.node,PPmethod,r = NULL, 
-lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule ,tot,...)
+Tree.construct_MOD(origclass, origdata, Tree.Struct, id, rep, rep1, rep2,
+projbest.node, splitCutoff.node, PPmethod, r = NULL, 
+lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot,...)
 }
 \arguments{
 \item{origclass}{original class}
@@ -15,7 +15,7 @@ lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule ,tot,...)
 
 \item{Tree.Struct}{tree structure of projection pursuit classification tree}
 
-\item{id}{something}
+\item{id}{identify}
 
 \item{rep}{something}
 
@@ -23,7 +23,7 @@ lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule ,tot,...)
 
 \item{rep2}{something}
 
-\item{projbest.node}{somenthing}
+\item{projbest.node}{something}
 
 \item{splitCutoff.node}{something}
 
@@ -31,26 +31,26 @@ lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule ,tot,...)
 
 \item{r}{r in Lr index}
 
-\item{lambda}{something}
+\item{lambda}{weight flag in PDA index}
 
-\item{TOL}{dfasd}
+\item{TOL}{tolerance}
 
 \item{maxiter}{something}
 
-\item{q}{something}
+\item{q}{1D proj}
 
 \item{weight}{weight flag in LDA, PDA}
 
-\item{tol}{something}
+\item{tol}{tolerance}
 
-\item{strule}{select the stoping rule based in G=1 pure node}
+\item{strule}{select the stoping rule based, 1 = pure node, 2 = size of node, 3 = entropy}
 
-\item{tot}{total obs original class}
+\item{tot}{total observarions of the original class}
 
-\item{...}{something}
+\item{...}{arguments to be passed to methods}
 }
 \description{
-Construct the projection pursuit classification tree MOD (NEW)
+Construct the projection pursuit classification tree MOD
 }
 \details{
 Find tree structure using various projection pursuit indices of 

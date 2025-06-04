@@ -1031,8 +1031,6 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   //double cp;
   arma::mat newC(1,1, fill::zeros);
   int G = g.size();
-
-  
   List a;
   List b;
   
@@ -1048,7 +1046,7 @@ List treeconstructIND(arma::vec origclass, arma::mat origdata, arma::mat Treestr
   // Rcout << G ;
   // Rcout <<  '\n';
   
-  if( cnd==1 ) {
+  if( cnd == 1 ) {
   //if( n/tot < 0.05){
     //check as.numeric group names
     Treestruct(id, 2) = cl2(g.index_max());

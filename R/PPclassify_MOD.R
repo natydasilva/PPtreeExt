@@ -24,10 +24,12 @@
 #' PPclassify_MOD(Tree.result,test.data = iris[test,1:4], true.class = iris[test,5])
 #' 
 PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...) {
+  
   if(is.null(test.data))
     test.data<-Tree.result$origdata
   test.data<-as.matrix(test.data)
-  if(!is.null(true.class)){  
+ 
+   if(!is.null(true.class)){  
     true.class<-as.matrix(true.class); 
     if(nrow(true.class)==1) 
       true.class<-t(true.class)
@@ -97,7 +99,7 @@ PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...)
   n<-nrow(test.data)
   class.temp<-rep(1,n)
   test.class.index<-NULL
-  temp<-PP.Class.index(class.temp,test.class.index,test.data,
+  temp <- PP.Class.index(class.temp,test.class.index,test.data,
                        Tree.result$Tree.Struct,Tree.result$projbest.node,
                        Tree.result$splitCutoff.node,1)
   test.class<-rep(0,n)
@@ -110,6 +112,7 @@ PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...)
     predict.error<-NA
   }  
   class.name<-names(table(Tree.result$origclass))
-  predict.class<-class.name[temp$test.class]
-  list(predict.error=predict.error, predict.class=predict.class)
+  predict.class <- class.name[temp$test.class]
+  list(predict.error= predict.error, predict.class=predict.class)
+
 }
