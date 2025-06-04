@@ -3,8 +3,13 @@
 [![Travis-CI Build Status](https://travis-ci.org/natydasilva/PPtreeExt.svg?branch=master)](https://travis-ci.org/natydasilva/PPtreeExt)
 
 # PPtreeExt
-PPtreeExt is an R package that extends the PPtree algorithm  for classification problems. The extentions allows 
-to handle multiple splits per group and more complex structures than the original algorithm. 
+
+PPtreeExt is an R package with extensons to the Projection Pursuit Tree (PPtree) algorithm to improve its performance in multi-class settings and under nonlinear separations.
+The PPtree classifier finds separations between classes  based on linear combinations of variables by optimizing a projection pursuit index. One of its limitations is a rigid structure: the depth of a PPtree object is at most
+$G$-1, where $G$ is the number of classes, with each class assigned to a single terminal node.
+The proposed modifications enhance predictive performance in multi-class contexts, particularly in situations involving outliers or asymmetries. The objective is to increase the classifier's flexibility to handle more complex scenarios, while retaining interpretability.
+The package includes an interactive web application to explore the behavior of the original and modified PPtree classifiers under a variety of scenarios.
+This interactive tool played a key role in identifying limitations of the original algorithm and informing the design of the proposed modifications.
 
 
 ## Installation

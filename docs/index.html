@@ -57,7 +57,7 @@
 <img src="logo.png" class="logo" alt=""><h1 id="pptreeext">PPtreeExt<a class="anchor" aria-label="anchor" href="#pptreeext"></a>
 </h1>
 </div>
-<p>PPtreeExt is an R package that extends the PPtree algorithm for classification problems. The extentions allows to handle multiple splits per group and more complex structures than the original algorithm.</p>
+<p>PPtreeExt is an R package with extensons to the Projection Pursuit Tree (PPtree) algorithm to improve its performance in multi-class settings and under nonlinear separations. The PPtree classifier finds separations between classes based on linear combinations of variables by optimizing a projection pursuit index. One of its limitations is a rigid structure: the depth of a PPtree object is at most <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>-1, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> is the number of classes, with each class assigned to a single terminal node. The proposed modifications enhance predictive performance in multi-class contexts, particularly in situations involving outliers or asymmetries. The objective is to increase the classifier’s flexibility to handle more complex scenarios, while retaining interpretability. The package includes an interactive web application to explore the behavior of the original and modified PPtree classifiers under a variety of scenarios. This interactive tool played a key role in identifying limitations of the original algorithm and informing the design of the proposed modifications.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -135,8 +135,7 @@
 <span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a><span class="sc">$</span>predict.class</span>
 <span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a> [<span class="dv">1</span>] <span class="st">"setosa"</span>     <span class="st">"setosa"</span>     <span class="st">"setosa"</span>     <span class="st">"setosa"</span>     <span class="st">"setosa"</span>     <span class="st">"setosa"</span>    </span>
 <span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a> [<span class="dv">7</span>] <span class="st">"setosa"</span>     <span class="st">"setosa"</span>     <span class="st">"virginica"</span>  <span class="st">"versicolor"</span> <span class="st">"versicolor"</span> <span class="st">"setosa"</span>    </span>
-<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">"virginica"</span>  <span class="st">"virginica"</span>  <span class="st">"virginica"</span> </span>
-<span id="cb3-64"><a href="#cb3-64" tabindex="-1"></a></span></code></pre></div>
+<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a>[<span class="dv">13</span>] <span class="st">"virginica"</span>  <span class="st">"virginica"</span>  <span class="st">"virginica"</span> </span></code></pre></div>
 </div>
 </div>
 
