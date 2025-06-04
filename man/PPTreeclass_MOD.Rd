@@ -4,8 +4,8 @@
 \alias{PPTreeclass_MOD}
 \title{Projection pursuit classification tree}
 \usage{
-PPTreeclass_MOD(formula,data, PPmethod="LDA",weight=TRUE,
-                     r=1,lambda=0.1,energy=0,maxiter=50000,strule = 1,tot,...)
+PPTreeclass_MOD(formula,data, PPmethod = "LDA",weight = TRUE,
+                     r = 1,lambda = 0.1, energy = 0,maxiter = 50000, strule = 1,tot,...)
 }
 \arguments{
 \item{formula}{an object of class "formula"}
@@ -24,7 +24,9 @@ PPTreeclass_MOD(formula,data, PPmethod="LDA",weight=TRUE,
 
 \item{maxiter}{maximum iteration number}
 
-\item{strule}{select the stoping rule rule based in G=1 pure node}
+\item{strule}{select the stoping rule, 1 all observations in the node belongs 
+to the same class based, 2 node size is less than 5% of the total number of observations, 
+3 the entropy reduction is samaller than a treshold.}
 
 \item{tot}{total obs original class}
 
@@ -42,9 +44,7 @@ origclass original class
 origdata original data
 }
 \description{
-Construct the projection pursuit classification tree MOD
-}
-\details{
+Construct the projection pursuit classification tree extensions
 Find tree structure using various projection pursuit indices of 
 classification in each split.
 }

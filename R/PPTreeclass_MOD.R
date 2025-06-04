@@ -1,10 +1,9 @@
-#' Construct the projection pursuit classification tree MOD
-#' 
+#' Construct the projection pursuit classification tree extensions
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
 #' @title Projection pursuit classification tree 
-#' @usage PPTreeclass_MOD(formula,data, PPmethod="LDA",weight=TRUE,
-#'                      r=1,lambda=0.1,energy=0,maxiter=50000,strule = 1,tot,...) 
+#' @usage PPTreeclass_MOD(formula,data, PPmethod = "LDA",weight = TRUE,
+#'                      r = 1,lambda = 0.1, energy = 0,maxiter = 50000, strule = 1,tot,...) 
 #' @param formula an object of class "formula"
 #' @param data data frame
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
@@ -13,7 +12,9 @@
 #' @param lambda lambda in PDA index
 #' @param energy parameter for the probability to take new projection
 #' @param maxiter maximum iteration number
-#' @param strule select the stoping rule rule based in G=1 pure node
+#' @param strule select the stoping rule, 1 all observations in the node belongs 
+#' to the same class based, 2 node size is less than 5% of the total number of observations, 
+#' 3 the entropy reduction is samaller than a treshold.
 #' @param tot total obs original class
 #' @param ... arguments to be passed to methods
 #' @return Tree.Struct tree structure of projection pursuit classification tree
@@ -90,9 +91,9 @@ PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 
   projbest.node<-Tree.final$projbest.node
   splitCutoff.node<-Tree.final$splitCutoff.node
   #colnames(splitCutoff.node)<-paste("Rule",1,sep="")
-  treeobj<-list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
+  treeobj <- list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
                 splitCutoff.node=splitCutoff.node,origclass=origclass,
-                origdata=origdata,terms=Terms)
-  class(treeobj)<-append(class(treeobj),"PPtreeclassMOD")
+                origdata = origdata,terms=Terms)
+  class(treeobj) <- append(class(treeobj),"PPtreeclassMOD")
   return(treeobj)
 }

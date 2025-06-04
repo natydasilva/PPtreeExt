@@ -605,7 +605,7 @@ List findprojMOD(arma::vec origclass,
   arma::vec classe = as<vec>(split["newclass"]);
   arma::uvec idxcl = as<uvec>(split["idxcl"]);
   
-  if ((g > 2 & entroindiv ==false) ) {
+  if ((g > 2) && (entroindiv ==false) ) {
     if (PPmethod.compare("LDA") == 0){
       //Rcout << "still LDA\n";
       

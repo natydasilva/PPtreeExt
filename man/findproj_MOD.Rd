@@ -2,9 +2,9 @@
 % Please edit documentation in R/findproj_MOD.R
 \name{findproj_MOD}
 \alias{findproj_MOD}
-\title{1D projection for each node partition using entropy (NEW)}
+\title{1D projection for each node partition using entropy}
 \usage{
-findproj_MOD(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,lambda =.1)
+findproj_MOD(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1)
 }
 \arguments{
 \item{origclass}{original class}
@@ -20,7 +20,7 @@ findproj_MOD(origclass, origdata, PPmethod="LDA", q=1,weight=TRUE,lambda =.1)
 \item{lambda}{lambda in PDA index}
 }
 \description{
-1D projection for each node partition using entropy (NEW)
+1D projection for each node partition using entropy
 }
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 

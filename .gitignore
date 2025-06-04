@@ -6,4 +6,5 @@
 R/TEST_APP.R
 *.o
 *.so
-docs
+man/.DS_Store
+

@@ -1,5 +1,3 @@
-#' predict projection pursuit classification tree
-#' 
 #' Predict class for the test set with the fitted projection pursuit 
 #' classification tree and calculate prediction error.
 #' @title predict PPtree
@@ -25,7 +23,7 @@
 #' Tree.result <- PPTreeclass_MOD(formula = Species~.,data = iris[train,],PPmethod = "LDA")
 #' PPclassify_MOD(Tree.result,test.data = iris[test,1:4], true.class = iris[test,5])
 #' 
-PPclassify_MOD<-function(Tree.result,test.data=NULL,true.class=NULL,...) {
+PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...) {
   if(is.null(test.data))
     test.data<-Tree.result$origdata
   test.data<-as.matrix(test.data)

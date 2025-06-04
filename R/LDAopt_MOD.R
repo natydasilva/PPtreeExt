@@ -1,4 +1,4 @@
-#' PP optimization using LDA index same as original
+#' PP optimization using LDA index same as PPtree
 #' 
 #' Find the q-dimensional optimal projection using LDA projectin pursuit index
 #' @title PP optimization using LDA index

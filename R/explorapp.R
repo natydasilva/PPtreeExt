@@ -1,4 +1,4 @@
-#' Shiny app to explore PPtree algirith partitions
+#' Shiny app to compare PPtree, PPtreeExt and rpart boundaries in 2D with different simulation scenarios
 #' 
 #' @usage explorapp(ui, server) 
 #' @param ui A 
@@ -7,7 +7,7 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 #' @examples
-#' \dontrun{
+#' if(interactive()){
 #' explorapp(ui,server)
 #' }
 explorapp <-function(ui,server){
@@ -43,12 +43,7 @@ simu3 <-
   d2 <- data.frame(Sim = "sim2", bivn2)
   d3 <- data.frame(Sim = "sim3", bivn3)
   rbind(d1, d2, d3)
-  # Sim is class character and must be factor, modify it.
 }
-
-# Esto corre.
-#dat.pl2<-simu3(mux1 = -1, mux2 = 0.6, muy1 = 0, muy2 = -0.6, muz1 = 2, muz2 = -1,
-#     cor1 = 0.95, cor2 = 0.95, cor3 = 0.95, n1 = 100, n2 = 100, n3 = 100)
 
 
 ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
@@ -58,7 +53,6 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
     X2 = seq((min(data$X2) + sign(min(data$X2)) * .5), (max(data$X2) + sign(max(data$X2)) * .5), length.out = 100)
     )
   
-  # Sim must be a factor in order to work with PPtreeViz
   data$Sim <- as.factor(data$Sim)
   
   if (meth == "Original") {
@@ -139,7 +133,7 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
       ggplot2::labs(
         x = " ",
         y = "",
-        title = paste(title, "error", err, "%")
+        title = paste(title, "(test error", err, "%)", sep = '')
       )
   } else{
     pl.pp  <-
@@ -169,7 +163,7 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
       ggplot2::labs(
         x = " ",
         y = "",
-        title = paste(title, "error", err, "%")
+        title = paste(title, "(test error", err, "%)", sep = '')
       )
   }
   
@@ -237,7 +231,7 @@ ppboundMOD <-
           ggplot2::labs(
             x = " ",
             y = "",
-            title = paste(title, "error", err, "%")
+            title = paste(title, "(test error", err, "%)", sep = '')
             )
       
     } else {
@@ -271,7 +265,7 @@ ppboundMOD <-
         ggplot2::labs(
           x = " ",
           y = "",
-          title = paste(title, "error", err, "%")
+          title = paste(title, "(test error", err, "%)", sep = '')
         )
       
     }
@@ -298,7 +292,9 @@ ui <- shiny::fluidPage(shiny::mainPanel(
           shiny::selectInput(
             inputId = "modi",
             label = "Modification",
-            choices = 1:3,
+            choices = c("Subsetting clases" = "1", 
+                         
+                        "Multiple splits" = "3"),
             selected = 1
           )
         ),
@@ -306,8 +302,11 @@ ui <- shiny::fluidPage(shiny::mainPanel(
           3,
           shiny::selectInput(
             inputId = "stop",
-            label = "Stoping rule MOD 3",
-            choices = 1:3
+            label = "Stopping rule: Multiple splits",
+            choices = c("Pure node" = "1", 
+                                   "Node size" = "2",
+                                   "Entropy reduction" = "3"),
+            selected = 1
           )
         )
       ),
@@ -358,7 +357,8 @@ ui <- shiny::fluidPage(shiny::mainPanel(
           shiny::selectInput(
             inputId = "modi2",
             label = "Modification",
-            choices = 1:3,
+            choices = c("Subsetting clases" = "1", 
+                         "Multiple splits" = "3"),
             selected = 1
           )
         ),
@@ -366,8 +366,11 @@ ui <- shiny::fluidPage(shiny::mainPanel(
           3,
           shiny::selectInput(
             inputId = "stop2",
-            label = "Stoping rule MOD 3",
-            choices = 1:3
+            label = "Stopping rule: Multiple splits",
+            choices = c("Pure node" = "1", 
+                        "Node size" = "2",
+                        "Entropy reduction" = "3"),
+            selected = 1
           )
         )
       ),
@@ -403,7 +406,8 @@ ui <- shiny::fluidPage(shiny::mainPanel(
         shiny::selectInput(
           inputId = "group",
           label = "Add outliers to class",
-          choices = 1:3,
+          choices = c("Subsetting clases" = "1", 
+                      "Multiple splits" = "3"),
           selected = 1
         )
       )),
@@ -456,7 +460,8 @@ ui <- shiny::fluidPage(shiny::mainPanel(
           shiny::selectInput(
             inputId = "modi3",
             label = "Modification",
-            choices = 1:3,
+            choices = c("Subsetting clases" = "1", 
+                       "Multiple splits" = "3"),
             selected = 1
           )
         ),
@@ -464,8 +469,11 @@ ui <- shiny::fluidPage(shiny::mainPanel(
           3,
           shiny::selectInput(
             inputId = "stop3",
-            label = "Stoping rule MOD 3",
-            choices = 1:3
+            label = "Stopping rule: Multiple splits",
+            choices = c("Pure node" = "1", 
+                        "Node size" = "2",
+                        "Entropy reduction" = "3"),
+            selected = 1
           )
         )
       ),
@@ -517,7 +525,7 @@ server <- function(input, output) {
             data = dat.pl2,
             meth = "Modified" ,
             entro = FALSE,
-            title = "Modified  subset"
+            title = "PPtreeExt: Subsetting clases"
           )
       }
       if (input$modi == 2) {
@@ -538,7 +546,7 @@ server <- function(input, output) {
             meth = "MOD",
             entro = FALSE,
             entroindiv = TRUE,
-            title = "Modified multi_sp",
+            title = "PPtreeExt: Multiple splits",
             strule = x4,
             tot = sum(x3)
           )
@@ -557,7 +565,7 @@ server <- function(input, output) {
           data = dat.pl2,
           meth = "Original" ,
           entro = FALSE,
-          title = "Original"
+          title = "PPtree"
         ),
         #ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE),
         modpl,
@@ -606,7 +614,7 @@ server <- function(input, output) {
             data = dat.pl2,
             meth = "Modified" ,
             entro = FALSE,
-            title = "Modified subset"
+            title = "PPtreeExt: Subsetting clases"
           )
       }
       if (input$modi2 == 2) {
@@ -626,7 +634,7 @@ server <- function(input, output) {
             meth = "MOD",
             entro = FALSE,
             entroindiv = TRUE,
-            title = "Modified multi_sp",
+            title = "PPtreeExt: Multiple splits",
             strule = x7,
             tot = sum(x3 + x6)
           )
@@ -645,7 +653,7 @@ server <- function(input, output) {
           data = dat.pl2,
           meth = "Original",
           entro = TRUE,
-          title = "Original"
+          title = "PPtree"
         ),
         
         # ppbound(ru =  as.numeric(input$rule2), FALSE, data = dat.pl2, meth = "Modified" , entro = TRUE),
@@ -704,7 +712,7 @@ server <- function(input, output) {
             data = dat.pl2,
             meth = "Modified" ,
             entro = FALSE,
-            title = "Modified subset",
+            title = "PPtreeExt: Subsetting clases",
             simM = TRUE
           )
       }
@@ -726,7 +734,7 @@ server <- function(input, output) {
             meth = "MOD",
             entro = FALSE,
             entroindiv = TRUE,
-            title = "Modified multi_sp",
+            title = "PPtreeExt: Multiple splits",
             simM = TRUE,
             strule = x1,
             tot = input$size
@@ -747,7 +755,7 @@ server <- function(input, output) {
           data = dat.pl2,
           meth = "Original" ,
           entro = FALSE,
-          title = "Original",
+          title = "PPtree",
           simM = TRUE
         ),
         #ppbound(ru =  as.numeric(input$rule),  data = dat.pl2, meth = "Modified" , entro = TRUE),
@@ -762,69 +770,6 @@ server <- function(input, output) {
 shiny::shinyApp(ui = ui, server = server)
 }
 
-# Comentarios a borrar (no aún por las dudas)
-
-# PPtreeExt::explorapp()
-# # Comentarios a borrar luego:
-# # Corro todas las funciones
-# findproj_MOD <- PPtreeExt::findproj_MOD
-# LDAopt_MOD <- PPtreeExt::LDAopt_MOD
-# PDAopt_MOD <- PPtreeExt::PDAopt_MOD
-# PPclassify_MOD <- PPtreeExt::PPclassify_MOD
-# PPtree_splitMOD <- PPtreeExt::PPtree_splitMOD
-# PPTreeclass_MOD <- PPtreeExt::PPTreeclass_MOD
-# Tree.construct_MOD <- PPtreeExt::Tree.construct_MOD
-# Tree.construct_MOD <- PPtreeExt::Tree.construct_MOD
-  
-# Errores en la corrida por pestañas:
-
-# Rule = rule
-# Modification = modi
-# Stoping rule MOD 3 = stop
-# Group means = mean
-# Correlations = cor
-# Group sample = sample
-
-# rule = 1
-# modification = 1
-# stoping rule MOD 3  1
-# medias = -1, 0.6, 0, -0.6, 2, -1
-# corr = 0.95, 0.95, 0.95
-# group sample = 100, 100, 100
-
-# Pestaña 1 ---------------------------------------------------------------
 
 
-# Pestaña 1: Basic-Sim:
 
-# Warning in Tree.construct_MOD(origclass, origdata, Tree.Struct, id, rep,  :
-#                                 NAs introduced by coercion
-#                               Warning: Error in [: subscript out of bounds
-#                                                  [No stack trace available]
-
-# Voy a correr la pestaña 1 a ver donde esta el error.
-
-
-# Pestaña 2 ---------------------------------------------------------------
-
-# Pestaña 2: SIM-Outliers
-
-# Warning in Tree.construct_MOD(origclass, origdata, Tree.Struct, id, rep,  :
-#                                 NAs introduced by coercion
-#                               Warning in if (strule == 1) { :
-#                                   the condition has length > 1 and only the first element will be used
-#                                 Warning in if (strule == 2) { :
-#                                     the condition has length > 1 and only the first element will be used
-#                                   Warning: Error in entropy: could not find function "entropy"
-#                                   [No stack trace available]
-
-
-# Pestaña 3 ---------------------------------------------------------------
-
-
-# MixSIM
-
-# Warning: Error in treeconstructMOD: could not find function "treeconstructMOD"
-# [No stack trace available]
-
-# explorapp()

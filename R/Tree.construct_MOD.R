@@ -3,9 +3,9 @@
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
 #' @title Projection pursuit classification tree MOD
-#' @usage Tree.construct_MOD(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,
-#' projbest.node,splitCutoff.node,PPmethod,r = NULL, 
-#'lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule ,tot,...) 
+#' @usage Tree.construct_MOD(origclass, origdata, Tree.Struct, id, rep, rep1, rep2,
+#' projbest.node, splitCutoff.node, PPmethod, r = NULL, 
+#' lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot,...) 
 #' @param origclass original class 
 #' @param origdata original data
 #' @param Tree.Struct tree structure of projection pursuit classification tree
@@ -23,7 +23,7 @@
 #' @param q something
 #' @param weight weight flag in LDA, PDA 
 #' @param tol something
-#' @param strule select the stoping rule rule based in G=1 pure node
+#' @param strule select the stoping rule based in G=1 pure node
 #' @param tot total obs original class
 #' @param ... something
 #' @useDynLib PPtreeExt

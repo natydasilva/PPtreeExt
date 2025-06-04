@@ -7,54 +7,54 @@
 #' @param ... something
 #' @export
 #' 
-print.PPtreeclassMOD<-function(x,coef.print=FALSE,cutoff.print=FALSE,
-                               verbose=TRUE,...){
-  PPtreeOBJ<-x
-  TS<-PPtreeOBJ$Tree.Struct
-  Alpha<-PPtreeOBJ$projbest.node
-  cut.off<-PPtreeOBJ$splitCutoff.node
-  gName<-names(table(PPtreeOBJ$origclass))
-  pastemake<-function(k,arg,sep.arg=""){
-    temp<-""
+print.PPtreeclassMOD <- function(x,coef.print  = FALSE, cutoff.print=FALSE,
+                               verbose = TRUE,...){
+  PPtreeOBJ <- x
+  TS <- PPtreeOBJ$Tree.Struct
+  Alpha <- PPtreeOBJ$projbest.node
+  cut.off <- PPtreeOBJ$splitCutoff.node
+  gName <- names(table(PPtreeOBJ$origclass))
+  pastemake <- function(k,arg,sep.arg=""){
+    temp <- ""
     for(i in 1:k)
-      temp<-paste(temp,arg,sep=sep.arg)
+      temp <- paste(temp, arg, sep = sep.arg)
     return(temp)
   }
-  TreePrint<-"1) root"
-  i<-1  
-  flag.L<-rep(FALSE,nrow(TS))
-  keep.track<-1
-  depth.track<-0
+  TreePrint <- "1) root"
+  i <- 1  
+  flag.L <- rep(FALSE,nrow(TS))
+  keep.track <- 1
+  depth.track <- 0
   depth<-0
   while(sum(flag.L)!=nrow(TS)){
     if(!flag.L[i]){                    
       if(TS[i,2] == 0) {
-        flag.L[i]<-TRUE
-        n.temp<-length(TreePrint)
-        tempp<-strsplit(TreePrint[n.temp],") ")[[1]]
-        temp.L<-paste(tempp[1],")*",tempp[2],sep="")
-        temp.L<- paste(temp.L,"  ->  ","\"",gName[TS[i,3]],"\"",sep="")
-        TreePrint<-TreePrint[-n.temp]
-        id.l<-length(keep.track)-1
-        i<-keep.track[id.l]
-        depth<-depth -1
+        flag.L[i] <-TRUE
+        n.temp <-length(TreePrint)
+        tempp <-strsplit(TreePrint[n.temp],") ")[[1]]
+        temp.L <-paste(tempp[1],")*",tempp[2],sep="")
+        temp.L <- paste(temp.L,"  ->  ","\"",gName[TS[i,3]],"\"",sep="")
+        TreePrint <- TreePrint[-n.temp]
+        id.l <-length(keep.track)-1
+        i <- keep.track[id.l]
+        depth <-depth -1
       } else if(!flag.L[TS[i,2]]){
-        depth<-depth+1
-        emptyspace<-pastemake(depth,"   ")
-        temp.L<-paste(emptyspace,TS[i,2],")  proj",
-                      TS[i,4],"*X < cut",TS[i,4],sep="")
-        i<-TS[TS[i,2],1]   
+        depth <- depth+1
+        emptyspace <- pastemake(depth, "   ")
+        temp.L <- paste(emptyspace, TS[i,2], ")  proj",
+                      TS[i,4],"*X < cut",TS[i,4], sep = "")
+        i <- TS[TS[i,2],1]   
       } else{
-        depth<-depth +1
-        emptyspace<-pastemake(depth,"   ")          
-        temp.L<- paste(emptyspace,TS[i,3],")  proj",
+        depth <- depth +1
+        emptyspace <- pastemake(depth,"   ")          
+        temp.L <- paste(emptyspace,TS[i,3],")  proj",
                        TS[i,4],"*X >= cut",TS[i,4],sep="")
-        flag.L[i]<-TRUE
-        i<-TS[TS[i,3],1]
+        flag.L[i] <- TRUE
+        i <- TS[TS[i,3],1]
       } 
-      keep.track<-c(keep.track,i)
-      depth.track<-c(depth.track,depth)
-      TreePrint<-c(TreePrint,temp.L)
+      keep.track <- c(keep.track,i)
+      depth.track <- c(depth.track,depth)
+      TreePrint <-c(TreePrint,temp.L)
     } else{
       id.l<-id.l-1
       i<-keep.track[id.l]
