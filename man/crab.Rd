@@ -3,7 +3,7 @@
 \docType{data}
 \name{crab}
 \alias{crab}
-\title{Astralian crabs}
+\title{Australian crabs}
 \format{
 A data frame with 200 rows and 6 variables
 }

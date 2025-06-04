@@ -29,8 +29,9 @@
 #' @keywords tree
 #' @examples
 #' data(penguins)
+#' penguins <- na.omit(penguins[, -c(2,7)])
 #' penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
-#'   flipper_len + body_mass, data = penguins, PPmethod = "LDA")
+#'   flipper_len + body_mass, data = penguins, PPmethod = "PDA")
 #' penguins_ppt
 PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1,
                          lambda = 0.1, energy = 0, maxiter = 50000, strule = 1, tot, ...){

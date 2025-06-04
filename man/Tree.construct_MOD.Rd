@@ -15,7 +15,7 @@ lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot
 
 \item{Tree.Struct}{tree structure of projection pursuit classification tree}
 
-\item{id}{identify}
+\item{id}{something}
 
 \item{rep}{something}
 
@@ -23,7 +23,7 @@ lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot
 
 \item{rep2}{something}
 
-\item{projbest.node}{something}
+\item{projbest.node}{somenthing}
 
 \item{splitCutoff.node}{something}
 
@@ -31,26 +31,26 @@ lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot
 
 \item{r}{r in Lr index}
 
-\item{lambda}{weight flag in PDA index}
+\item{lambda}{something}
 
-\item{TOL}{tolerance}
+\item{TOL}{dfasd}
 
 \item{maxiter}{something}
 
-\item{q}{1D proj}
+\item{q}{something}
 
 \item{weight}{weight flag in LDA, PDA}
 
-\item{tol}{tolerance}
+\item{tol}{something}
 
-\item{strule}{select the stoping rule based, 1 = pure node, 2 = size of node, 3 = entropy}
+\item{strule}{select the stoping rule based in G=1 pure node}
 
-\item{tot}{total observarions of the original class}
+\item{tot}{total obs original class}
 
-\item{...}{arguments to be passed to methods}
+\item{...}{something}
 }
 \description{
-Construct the projection pursuit classification tree MOD
+Construct the projection pursuit classification tree MOD (NEW)
 }
 \details{
 Find tree structure using various projection pursuit indices of 

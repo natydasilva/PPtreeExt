@@ -35,11 +35,12 @@ PP optimization using PDA index same as PPtree
 Find the q-dimensional optimal projection using PDA projectin pursuit index
 }
 \examples{
-data(iris)
-PDA.proj.result <- PDAopt_MOD(iris[,5],iris[,1:4],weight=TRUE,q=2,lambda=0.1)
-PDA.proj.result$indexbest
-PDA.proj.result$projbest
+data(penguins)
+penguins <- na.omit(penguins[, -c(2,7)])
 
+penguins_pda_proj <- PDAopt_MOD(penguins[,1],penguins[,-1], weight=TRUE, q=2, lambda=0.1)
+penguins_pda_proj$indexbest
+penguins_pda_proj$projbest
 }
 \references{
 Lee, EK, Cook, D.(2010) 

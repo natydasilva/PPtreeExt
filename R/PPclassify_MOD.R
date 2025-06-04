@@ -15,15 +15,15 @@
 #' @keywords tree
 #' @examples
 #' data(penguins)
-#' set.seed(345)
+#' penguins <- na.omit(penguins[, -c(2,7, 8)])
 #' require(rsample)
 #' penguins_spl <- rsample::initial_split(penguins, strata=species)
 #' penguins_train <- training(penguins_spl)
 #' penguins_test <- testing(penguins_spl)
 #' penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
 #'   flipper_len + body_mass, data = penguins_train, PPmethod = "LDA")
-#' PPclassify_MOD(penguins_ppt, test.data=penguins_test, true.class = penguins_test$species)
-#' 
+#' PPclassify_MOD(penguins_ppt, test.data=penguins_test[,-1], true.class = penguins_test$species)
+
 PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...) {
   
   if(is.null(test.data))

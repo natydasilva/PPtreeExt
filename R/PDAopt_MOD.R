@@ -22,8 +22,9 @@
 #' @keywords projection pursuit
 #' @examples
 #' data(penguins)
-#' penguins_pda_proj <- PDAopt_MOD(penguins[,1]. penguins[,3:6],
-#'   weight=TRUE, q=2, lambda=0.1)
+#' penguins <- na.omit(penguins[, -c(2,7)])
+#' 
+#' penguins_pda_proj <- PDAopt_MOD(penguins[,1],penguins[,-1], weight=TRUE, q=2, lambda=0.1)
 #' penguins_pda_proj$indexbest
 #' penguins_pda_proj$projbest
 PDAopt_MOD <-

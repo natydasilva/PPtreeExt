@@ -25,15 +25,15 @@ Predict class for the test set with the fitted projection pursuit
 classification tree and calculate prediction error.
 }
 \examples{
-data(iris)
-n <- nrow(iris)
-tot <- c(1:n)
-n.train <- round(n*0.9)
-train <- sample(tot,n.train)
-test <- tot[-train]
-Tree.result <- PPTreeclass_MOD(formula = Species~.,data = iris[train,],PPmethod = "LDA")
-PPclassify_MOD(Tree.result,test.data = iris[test,1:4], true.class = iris[test,5])
-
+data(penguins)
+penguins <- na.omit(penguins[, -c(2,7, 8)])
+require(rsample)
+penguins_spl <- rsample::initial_split(penguins, strata=species)
+penguins_train <- training(penguins_spl)
+penguins_test <- testing(penguins_spl)
+penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
+  flipper_len + body_mass, data = penguins_train, PPmethod = "LDA")
+PPclassify_MOD(penguins_ppt, test.data=penguins_test[,-1], true.class = penguins_test$species)
 }
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 

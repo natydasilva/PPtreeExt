@@ -49,9 +49,11 @@ Find tree structure using various projection pursuit indices of
 classification in each split.
 }
 \examples{
-data(iris)
-Tree.result <- PPTreeclass_MOD(Species~.,data = iris,"LDA")
-Tree.result
+data(penguins)
+penguins <- na.omit(penguins[, -c(2,7)])
+penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
+  flipper_len + body_mass, data = penguins, PPmethod = "PDA")
+penguins_ppt
 }
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 
