@@ -43,7 +43,7 @@ lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule ,tot,...)
 
 \item{tol}{something}
 
-\item{strule}{select the stoping rule rule based in G=1 pure node}
+\item{strule}{select the stoping rule based in G=1 pure node}
 
 \item{tot}{total obs original class}
 

@@ -23,7 +23,7 @@
 #' @param q something
 #' @param weight weight flag in LDA, PDA 
 #' @param tol something
-#' @param strule select the stoping rule rule based in G=1 pure node
+#' @param strule select the stoping rule based in G=1 pure node
 #' @param tot total obs original class
 #' @param ... something
 #' @useDynLib PPtreeExt

@@ -1,10 +1,10 @@
-#' Construct the projection pursuit classification tree MOD
+#' Construct the projection pursuit classification tree extensions
 #' 
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
 #' @title Projection pursuit classification tree 
-#' @usage PPTreeclass_MOD(formula,data, PPmethod="LDA",weight=TRUE,
-#'                      r=1,lambda=0.1,energy=0,maxiter=50000,strule = 1,tot,...) 
+#' @usage PPTreeclass_MOD(formula,data, PPmethod = "LDA",weight = TRUE,
+#'                      r = 1,lambda = 0.1, energy = 0,maxiter = 50000, strule = 1,tot,...) 
 #' @param formula an object of class "formula"
 #' @param data data frame
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
@@ -13,7 +13,7 @@
 #' @param lambda lambda in PDA index
 #' @param energy parameter for the probability to take new projection
 #' @param maxiter maximum iteration number
-#' @param strule select the stoping rule rule based in G=1 pure node
+#' @param strule select the stoping rule based in G=1 pure node
 #' @param tot total obs original class
 #' @param ... arguments to be passed to methods
 #' @return Tree.Struct tree structure of projection pursuit classification tree
