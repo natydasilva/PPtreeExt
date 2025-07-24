@@ -198,12 +198,12 @@ ppboundMOD <-
         tot = tot
       )
     
-    ppred.sim <- PPclassify_MOD(pptree, test.data = grilla)
+    ppred.sim <- predict(object = pptree, newdata = grilla)
     
     grilla$ppred <- ppred.sim[[2]]
     
     err <-
-      round(PPclassify_MOD(pptree, test.data = data[, -1], true.class = data[, 1])[[1]] /
+      round(predict(object = pptree, newdata = data[, -1], true.class = data[, 1])[[1]] /
               nrow(data[, -1]),
             3) * 100
     

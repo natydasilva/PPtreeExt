@@ -1,16 +1,15 @@
-#' Predict class for the test set with the fitted projection pursuit 
-#' classification tree and calculate prediction error.
-#' @title predict PPtree
-#' @usage PPclassify_MOD(Tree.result,test.data,true.class=NULL,...)  
-#' @param Tree.result PPtreeclass object 
-#' @param test.data  the test dataset
+#' Predict Predict method for projection pursuit 
+#' classification tree Extension and calculate prediction error.
+#' @title predict PPtreeExt
+#' @param object PPtreeclass object 
+#' @param newdata the test dataset
 #' @param true.class true class of test dataset if available
 #' @param ... arguments to be passed to methods
-#' @return predict.class predicted class
-#' @return predict.error number of the prediction errors
-#' @references Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 
-#' PPtree: Projection Pursuit Classification Tree, 
-#' Electronic Journal of Statistics, 7:1369-1386.
+#' @return A list with:
+#' \describe{
+#'   \item{predict.class }{predicted class}
+#'   \item{predict.error}{number of the prediction errors}
+#' }
 #' @export
 #' @keywords tree
 #' @examples
@@ -22,13 +21,13 @@
 #' penguins_test <- testing(penguins_spl)
 #' penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
 #'   flipper_len + body_mass, data = penguins_train, PPmethod = "LDA")
-#' PPclassify_MOD(penguins_ppt, test.data=penguins_test[,-1], true.class = penguins_test$species)
+#' predict(object = penguins_ppt, newdata =penguins_test[,-1], true.class = penguins_test$species)
 
-PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...) {
+predict.PPtreeclassMOD <- function(object, newdata, true.class = NULL,...) {
   
-  if(is.null(test.data))
-    test.data<-Tree.result$origdata
-  test.data<-as.matrix(test.data)
+  #if(is.null(newdata))
+    #newdata<-object$origdata
+  newdata<-as.matrix(newdata)
  
    if(!is.null(true.class)){  
     true.class<-as.matrix(true.class); 
@@ -67,7 +66,7 @@ PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...)
     list(test.class=test.class,rep=rep)
   }
   
-  PP.Class.index<-function(class.temp,test.class.index,test.data,
+  PP.Class.index<-function(class.temp,test.class.index,newdata,
                            Tree.Struct,Alpha.Keep,C.Keep,id){
     class.temp<-as.integer(class.temp)
     if(Tree.Struct[id,2]==0){
@@ -78,18 +77,18 @@ PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...)
       t.index<-sort.list(t.class)
       if(t.n)
         t.index<-sort(t.index[-(1:t.n)])
-      t.data<-test.data[t.index,]
+      t.data<-newdata[t.index,]
       id.proj<-Tree.Struct[id,4]
       
-      proj.test<-as.matrix(test.data)%*%as.matrix(Alpha.Keep[id.proj,])
+      proj.test<-as.matrix(newdata)%*%as.matrix(Alpha.Keep[id.proj,])
       proj.test<-as.double(proj.test)
       class.temp<-t(proj.test<C.Keep[id.proj]) 
       test.class.index<-rbind(test.class.index,class.temp)
-      a<-PP.Class.index(class.temp,test.class.index,test.data,
+      a<-PP.Class.index(class.temp,test.class.index,newdata,
                         Tree.Struct,Alpha.Keep,C.Keep,
                         Tree.Struct[id,2])
       test.class.index<-a$test.class.index
-      a<-PP.Class.index(1-class.temp,test.class.index,test.data,
+      a<-PP.Class.index(1-class.temp,test.class.index,newdata,
                         Tree.Struct,Alpha.Keep,C.Keep,
                         Tree.Struct[id,3])
       test.class.index<-a$test.class.index;
@@ -97,22 +96,22 @@ PPclassify_MOD <- function(Tree.result, test.data = NULL, true.class = NULL,...)
     list(test.class.index=test.class.index,class.temp=class.temp)
   }
   
-  n<-nrow(test.data)
+  n<-nrow(newdata)
   class.temp<-rep(1,n)
   test.class.index<-NULL
-  temp <- PP.Class.index(class.temp,test.class.index,test.data,
-                       Tree.result$Tree.Struct,Tree.result$projbest.node,
-                       Tree.result$splitCutoff.node,1)
+  temp <- PP.Class.index(class.temp,test.class.index,newdata,
+                       object$Tree.Struct,object$projbest.node,
+                       object$splitCutoff.node,1)
   test.class<-rep(0,n)
   IOindex<-rep(1,n)
-  temp<-PP.Classification(Tree.result$Tree.Struct,temp$test.class.index,
+  temp<-PP.Classification(object$Tree.Struct,temp$test.class.index,
                           IOindex,test.class,1,1)
   if(!is.null(true.class)){
     predict.error<-sum(true.class!=temp$test.class)
   } else {
     predict.error<-NA
   }  
-  class.name<-names(table(Tree.result$origclass))
+  class.name<-names(table(object$origclass))
   predict.class <- class.name[temp$test.class]
   list(predict.error= predict.error, predict.class=predict.class)
 

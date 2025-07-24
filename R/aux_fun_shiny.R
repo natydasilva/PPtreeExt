@@ -67,10 +67,10 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
   }
   if (meth == "Rpart") {
     rpart.mod <- rpart::rpart(Sim ~ ., data = data)
-    grilla$pred <- predict(rpart.mod, newdata = grilla, type = "class")
+    grilla$pred <-predict.PPtreeclassMOD(rpart.mod, newdata = grilla, type = "class")
     err <-
       round(1 - sum(diag(table(
-        predict(rpart.mod, newdata = data[, -1], type = "class") , data[, 1]
+        predict.PPtreeclassMOD(rpart.mod, newdata = data[, -1], type = "class") , data[, 1]
       ))) / nrow(data), 3) * 100
   }
   
@@ -199,12 +199,12 @@ ppboundMOD <-
         tot = tot
       )
     
-    ppred.sim <- PPclassify_MOD(pptree, test.data = grilla)
+    ppred.sim <- predict(object = pptree, newdata = grilla)
     
     grilla$ppred <- ppred.sim[[2]]
     
     err <-
-      round(PPclassify_MOD(pptree, test.data = data[, -1], true.class = data[, 1])[[1]] /
+      round( predict(object = pptree, newdata = data[, -1], true.class = data[, 1])[[1]] /
               nrow(data),
             3) * 100
     
