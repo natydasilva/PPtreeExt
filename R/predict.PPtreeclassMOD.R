@@ -21,7 +21,7 @@
 #' penguins_test <- testing(penguins_spl)
 #' penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
 #'   flipper_len + body_mass, data = penguins_train, PPmethod = "LDA")
-#' predict(object = penguins_ppt, newdata =penguins_test[,-1], true.class = penguins_test$species)
+#' predict(object = penguins_ppt, newdata = penguins_test[,-1], true.class = penguins_test$species)
 
 predict.PPtreeclassMOD <- function(object, newdata, true.class = NULL,...) {
   

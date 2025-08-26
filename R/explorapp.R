@@ -34,7 +34,6 @@ simu3 <-
            n2 = 100,
            n3 = 100
   ) {
-  set.seed(666)
   bivn <- MASS::mvrnorm(n1, mu = c(mux1, mux2), Sigma = matrix(c(1, cor1, cor1, 1), 2))
   bivn2 <- MASS::mvrnorm(n2, mu = c(muy1, muy2), Sigma = matrix(c(1, cor2, cor2, 1), 2))
   bivn3 <- MASS::mvrnorm(n3, mu = c(muz1, muz2), Sigma = matrix(c(1, cor3, cor3, 1), 2))
@@ -593,7 +592,7 @@ server <- function(input, output) {
       dat.pl2 <- simu3(x1[1], x1[2], x1[3], x1[4], x1[5], x1[6],
                        x2[1], x2[2], x2[3], x3[1], x3[2], x3[3])
 
-      set.seed(123)
+
       aux <-
         data.frame(
           Sim = rep(paste("sim", as.numeric(input$group), sep = ""), x6),

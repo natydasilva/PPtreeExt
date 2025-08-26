@@ -34,7 +34,10 @@
 #'   flipper_len + body_mass, data = penguins, PPmethod = "PDA")
 #' penguins_ppt
 PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1,
-                         lambda = 0.1, energy = 0, maxiter = 50000, strule = 1, tot, ...){
+        lambda = 0.1, energy = 0, maxiter = 50000, strule = 1, tot, ...){
+ 
+  data <- data.frame(data)
+  
   Call <- match.call()
   indx<-match(c("formula", "data"), names(Call), nomatch=0L)
   if(indx[1] == 0L) 
