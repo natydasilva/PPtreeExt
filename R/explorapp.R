@@ -1,8 +1,8 @@
 #' Shiny app to compare PPtree, PPtreeExt and rpart boundaries in 2D with different simulation scenarios
 #' 
 #' @usage explorapp(ui, server) 
-#' @param ui A 
-#' @param server aaa
+#' @param ui user interface
+#' @param server server function
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
