@@ -1,3 +1,5 @@
+# PPtreeExt 1.0.0
+
 # PPtreeExt 0.1.0
 
 * Initial CRAN submission.

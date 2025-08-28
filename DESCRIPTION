@@ -1,6 +1,6 @@
 Package: PPtreeExt
 Type: Package
-Version: 0.1.0
+Version: 1.0.0
 Title: Projection Pursuit Classification Tree extensions
 Author: Natalia da Silva, Eun-Kyung Lee, Di Cook
 Maintainer: Natalia da Silva <ndasilva@iastate.edu>
