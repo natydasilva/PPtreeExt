@@ -7,9 +7,9 @@
 explorapp(ui, server)
 }
 \arguments{
-\item{ui}{A}
+\item{ui}{user interface}
 
-\item{server}{aaa}
+\item{server}{server function}
 }
 \description{
 Shiny app to compare PPtree, PPtreeExt and rpart boundaries in 2D with different simulation scenarios
