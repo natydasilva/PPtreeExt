@@ -3,7 +3,7 @@ Type: Package
 Version: 1.0.0
 Title: Projection Pursuit Classification Tree extensions
 Author: Natalia da Silva, Eun-Kyung Lee, Di Cook
-Maintainer: Natalia da Silva <ndasilva@iastate.edu>
+Maintainer: Natalia da Silva <natalia.dasilva@fcea.edu.uy>
 Description: Projection pursuit classification tree algorithm extensions.
 LazyData: yes
 Depends:
