@@ -8,3 +8,4 @@
 ^.github$
 ^docs$
 ^cran-comments\.md$
+^revdep$
