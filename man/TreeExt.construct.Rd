@@ -15,42 +15,42 @@ lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot
 
 \item{Tree.Struct}{tree structure of projection pursuit classification tree}
 
-\item{id}{something}
+\item{id}{tree node id}
 
-\item{rep}{something}
+\item{rep}{internal counter for nodes}
 
-\item{rep1}{something}
+\item{rep1}{internal counter for nodes}
 
-\item{rep2}{something}
+\item{rep2}{internal counter for nodes}
 
-\item{projbest.node}{somenthing}
+\item{projbest.node}{bests projection node}
 
-\item{splitCutoff.node}{something}
+\item{splitCutoff.node}{cutof node}
 
 \item{PPmethod}{method for projection pursuit; "LDA", "PDA"}
 
 \item{r}{r in Lr index}
 
-\item{lambda}{something}
+\item{lambda}{lambda in PDA index}
 
-\item{TOL}{dfasd}
+\item{TOL}{tolerance value for optimization algorithm}
 
-\item{maxiter}{something}
+\item{maxiter}{max number of iterations for optimization algorithm}
 
-\item{q}{something}
+\item{q}{numeric value with dimension of the projected data, if it is 1 then 1D projection is used}
 
 \item{weight}{weight flag in LDA, PDA}
 
-\item{tol}{something}
+\item{tol}{tolerance value for entropy stopping rule for splitting a node}
 
 \item{strule}{select the stoping rule based in G=1 pure node}
 
 \item{tot}{total obs original class}
 
-\item{...}{something}
+\item{...}{additional arguments to pass trough}
 }
 \description{
-Construct the projection pursuit classification tree MOD (NEW)
+Construct the projection pursuit classification tree with the extensions
 }
 \details{
 Find tree structure using various projection pursuit indices of 

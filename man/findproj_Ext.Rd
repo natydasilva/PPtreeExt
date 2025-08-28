@@ -13,7 +13,7 @@ findproj_Ext(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda
 
 \item{PPmethod}{method for projection pursuit; "LDA", "PDA"}
 
-\item{q}{1D proj}
+\item{q}{numeric value with dimension of the projected data, if it is 1 then 1D projection is used}
 
 \item{weight}{weight flag in LDA, PDA and Lr index}
 

@@ -4,7 +4,7 @@
 #' @param origclass original class 
 #' @param origdata original data
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
-#' @param q  1D proj
+#' @param q numeric value with dimension of the projected data, if it is 1 then 1D projection is used
 #' @param weight weight flag in LDA, PDA and Lr index
 #' @param lambda lambda in PDA index
 #' @references Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 

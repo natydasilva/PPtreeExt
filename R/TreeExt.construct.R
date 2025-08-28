@@ -1,4 +1,4 @@
-#' Construct the projection pursuit classification tree MOD (NEW)
+#' Construct the projection pursuit classification tree with the extensions 
 #' 
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
@@ -9,23 +9,23 @@
 #' @param origclass original class 
 #' @param origdata original data
 #' @param Tree.Struct tree structure of projection pursuit classification tree
-#' @param id something
-#' @param rep something
-#' @param rep1 something
-#' @param rep2 something
-#' @param projbest.node somenthing
-#' @param splitCutoff.node something
+#' @param id tree node id
+#' @param rep internal counter for nodes
+#' @param rep1 internal counter for nodes
+#' @param rep2 internal counter for nodes
+#' @param projbest.node bests projection node
+#' @param splitCutoff.node cutof node
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
 #' @param r r in Lr index
-#' @param lambda something
-#' @param TOL dfasd
-#' @param maxiter something
-#' @param q something
+#' @param lambda lambda in PDA index
+#' @param TOL tolerance value for optimization algorithm
+#' @param maxiter max number of iterations for optimization algorithm
+#' @param q numeric value with dimension of the projected data, if it is 1 then 1D projection is used
 #' @param weight weight flag in LDA, PDA 
-#' @param tol something
+#' @param tol tolerance value for entropy stopping rule for splitting a node
 #' @param strule select the stoping rule based in G=1 pure node
 #' @param tot total obs original class
-#' @param ... something
+#' @param ... additional arguments to pass trough
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
