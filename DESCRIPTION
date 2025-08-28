@@ -1,7 +1,7 @@
 Package: PPtreeExt
 Type: Package
 Version: 1.0.0
-Title: Projection Pursuit Classification Tree extensions
+Title: Projection Pursuit Classification Tree Extensions
 Authors@R: 
   c(person(given = "Natalia",
            family = "da Silva",
@@ -20,7 +20,7 @@ Authors@R:
            )
    )
 Maintainer: Natalia da Silva <natalia.dasilva@fcea.edu.uy>
-Description: Projection pursuit classification tree algorithm extensions to PPTreeViz.
+Description: Projection pursuit classification tree algorithm Extensions to PPTreeViz.
 LazyData: yes
 Depends:
     R (>= 3.2.0)
