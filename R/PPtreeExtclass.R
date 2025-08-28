@@ -2,7 +2,7 @@
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
 #' @title Projection pursuit classification tree 
-#' @usage PPTreeclass_MOD(formula,data, PPmethod = "LDA",weight = TRUE,
+#' @usage PPtreeExtclass(formula,data, PPmethod = "LDA",weight = TRUE,
 #'                      r = 1,lambda = 0.1, energy = 0,maxiter = 50000, strule = 1,tot,...) 
 #' @param formula an object of class "formula"
 #' @param data data frame
@@ -30,10 +30,10 @@
 #' @examples
 #' data(penguins)
 #' penguins <- na.omit(penguins[, -c(2,7)])
-#' penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
+#' penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
 #'   flipper_len + body_mass, data = penguins, PPmethod = "PDA")
 #' penguins_ppt
-PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1,
+PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1,
         lambda = 0.1, energy = 0, maxiter = 50000, strule = 1, tot, ...){
  
   data <- data.frame(data)
@@ -88,7 +88,7 @@ PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 
   rep1<-2
   rep2<-1
   rep<-1
-  Tree.final <- Tree.construct_MOD(origclass, origdata, Tree.Struct, id, rep, rep1, 
+  Tree.final <- TreeExt.construct(origclass, origdata, Tree.Struct, id, rep, rep1, 
                                       rep2, projbest.node, splitCutoff.node,
                                       PPmethod, r, lambda, TOL, maxiter,strule = strule, tot=tot, ...)                            
   Tree.Struct <- Tree.final$Tree.Struct
@@ -99,6 +99,6 @@ PPTreeclass_MOD <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 
   treeobj <- list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
                 splitCutoff.node=splitCutoff.node,origclass=origclass,
                 origdata = origdata,terms=Terms)
-  class(treeobj) <- append(class(treeobj),"PPtreeclassMOD")
+  class(treeobj) <- append(class(treeobj),"PPtreeExtclass")
   return(treeobj)
 }

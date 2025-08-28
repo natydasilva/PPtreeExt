@@ -67,10 +67,10 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
   }
   if (meth == "Rpart") {
     rpart.mod <- rpart::rpart(Sim ~ ., data = data)
-    grilla$pred <-predict.PPtreeclassMOD(rpart.mod, newdata = grilla, type = "class")
+    grilla$pred <-predict.PPtreeExtclass(rpart.mod, newdata = grilla, type = "class")
     err <-
       round(1 - sum(diag(table(
-        predict.PPtreeclassMOD(rpart.mod, newdata = data[, -1], type = "class") , data[, 1]
+        predict.PPtreeExtclass(rpart.mod, newdata = data[, -1], type = "class") , data[, 1]
       ))) / nrow(data), 3) * 100
   }
   
@@ -84,7 +84,7 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
   if (meth == "Modified") {
     
     # Projection pursuit classification tree with random variable selection in each split
-    pptree <- PPtree_splitMOD(Sim ~ ., data = data, "LDA", entro = entro)
+    pptree <- PPtreeExt_split(Sim ~ ., data = data, "LDA", entro = entro)
     # 
     ppred.sim <- PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
     grilla$pred <- paste("sim", ppred.sim[[2]], sep = "")
@@ -191,7 +191,7 @@ ppboundMOD <-
     
     # Construct the projection pursuit classification tree using LDA index.
     pptree <-
-      PPTreeclass_MOD(
+      PPtreeExtclass(
         Sim ~ . ,
         data = data,
         PPmethod = 'LDA',

@@ -2,7 +2,7 @@
 #' 
 #' Find the q-dimensional optimal projection using PDA projectin pursuit index
 #' @title PP optimization using PDA index
-#' @usage PDAopt_MOD(origclass,origdata, q = 1, weight = TRUE, lambda = 0.1,...) 
+#' @usage PDAopt_Ext(origclass,origdata, q = 1, weight = TRUE, lambda = 0.1,...) 
 #' @param origclass class information vector of data
 #' @param origdata data matrix without class information
 #' @param q dimension of projection vector
@@ -23,17 +23,10 @@
 #' @examples
 #' data(penguins)
 #' penguins <- na.omit(penguins[, -c(2,7)])
-#' 
-#' penguins_pda_proj <- PDAopt_MOD(penguins[,1],penguins[,-1], weight=TRUE, q=2, lambda=0.1)
+#' penguins_pda_proj <- PDAopt_Ext(penguins[,1],penguins[,-1], weight=TRUE, q=2, lambda=0.1)
 #' penguins_pda_proj$indexbest
 #' penguins_pda_proj$projbest
-PDAopt_MOD <-
-  function(origclass,
-           origdata,
-           q = 1,
-           weight = TRUE,
-           lambda = 0.1,
-           ...) {
+PDAopt_Ext <-function(origclass, origdata, q = 1, weight = TRUE, lambda = 0.1, ...) {
     data.std <- as.matrix(origdata)
     class.table <- table(origclass)
     g <- length(class.table)

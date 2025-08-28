@@ -1,6 +1,6 @@
 #' 1D projection for each node partition using entropy 
 #' 
-#' @usage findproj_MOD(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1) 
+#' @usage findproj_Ext(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1) 
 #' @param origclass original class 
 #' @param origdata original data
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
@@ -14,7 +14,7 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 #' @export
-findproj_MOD <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1) {
+findproj_Ext <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1) {
   
   class.table <- table(origclass)
  
@@ -33,9 +33,9 @@ findproj_MOD <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = 
   
   
   if(PPmethod == "LDA"){
-    idx <- LDAopt_MOD(origclass, origdata)
+    idx <- LDAopt_Ext(origclass, origdata,q,weight,lambda)
   }else{
-    idx <- PDAopt_MOD(origclass, origdata, q,weight,lambda)
+    idx <- PDAopt_Ext(origclass, origdata, q,weight,lambda)
   }
   projdata = apply(origdata, 1, function(x) sum(x*idx$projbest) )
   cp <- split_entro(origclass, projdata)

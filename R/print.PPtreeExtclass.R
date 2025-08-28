@@ -1,4 +1,4 @@
-#' Print PPtreeclassMOD object
+#' Print PPtreeExtclass object
 #' 
 #' @param x something
 #' @param coef.print something
@@ -6,8 +6,7 @@
 #' @param verbose something
 #' @param ... something
 #' @export
-#' 
-print.PPtreeclassMOD <- function(x,coef.print  = FALSE, cutoff.print=FALSE,
+print.PPtreeExtclass <- function(x,coef.print  = FALSE, cutoff.print=FALSE,
                                verbose = TRUE,...){
   PPtreeOBJ <- x
   TS <- PPtreeOBJ$Tree.Struct

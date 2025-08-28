@@ -88,7 +88,7 @@ ppbound <- function(ru, data , meth, entro , title, simM = FALSE) {
   }
   
   if (meth == "Modified") {
-    pptree <- PPtree_splitMOD(Sim ~ ., data = data, "LDA", entro = entro)
+    pptree <- PPtreeExt_split(Sim ~ ., data = data, "LDA", entro = entro)
     ppred.sim <-
       PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
     #grilla$pred <- paste("sim", ppred.sim[[2]], sep = "")
@@ -189,7 +189,7 @@ ppboundMOD <-
     # Sim variable must be a factor 
     data$Sim <- as.factor(data$Sim)
     pptree <-
-      PPTreeclass_MOD(
+      PPtreeExtclass(
         Sim ~ . ,
         data = data,
         PPmethod = 'LDA',

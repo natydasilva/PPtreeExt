@@ -2,7 +2,7 @@
 #' 
 #' Find the q-dimensional optimal projection using LDA projectin pursuit index
 #' @title PP optimization using LDA index
-#' @usage LDAopt_MOD(origclass,origdata,q=1,weight=TRUE,...) 
+#' @usage LDAopt_Ext(origclass, origdata, q = 1, weight = TRUE,...) 
 #' @param origclass class information vector of data
 #' @param origdata data matrix without class information
 #' @param q dimension of projection vector
@@ -18,8 +18,7 @@
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
-LDAopt_MOD <- function (origclass, origdata, q = 1, weight = TRUE, ...) 
-{
+LDAopt_Ext <- function(origclass, origdata, q = 1, weight = TRUE, ...) {
   origdata <- as.matrix(origdata)
   class.table <- table(origclass)
   class.name <- names(class.table)

@@ -19,11 +19,11 @@
 #' penguins_spl <- rsample::initial_split(penguins, strata=species)
 #' penguins_train <- training(penguins_spl)
 #' penguins_test <- testing(penguins_spl)
-#' penguins_ppt <- PPTreeclass_MOD(species~bill_len + bill_dep +
+#' penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
 #'   flipper_len + body_mass, data = penguins_train, PPmethod = "LDA")
 #' predict(object = penguins_ppt, newdata = penguins_test[,-1], true.class = penguins_test$species)
 
-predict.PPtreeclassMOD <- function(object, newdata, true.class = NULL,...) {
+predict.PPtreeExtclass <- function(object, newdata, true.class = NULL,...) {
   
   #if(is.null(newdata))
     #newdata<-object$origdata

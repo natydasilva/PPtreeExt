@@ -3,7 +3,7 @@
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
 #' @title Projection pursuit classification tree MOD
-#' @usage Tree.construct_MOD(origclass, origdata, Tree.Struct, id, rep, rep1, rep2,
+#' @usage TreeExt.construct(origclass, origdata, Tree.Struct, id, rep, rep1, rep2,
 #' projbest.node, splitCutoff.node, PPmethod, r = NULL, 
 #' lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot,...) 
 #' @param origclass original class 
@@ -29,8 +29,7 @@
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
-Tree.construct_MOD <- 
-  function(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,projbest.node,splitCutoff.node,PPmethod,
+TreeExt.construct <-function(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,projbest.node,splitCutoff.node,PPmethod,
            r = NULL, lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule, tot,...) {
     #mod fede
     # flag = FALSE
@@ -87,7 +86,7 @@ Tree.construct_MOD <-
       rep1<-rep1+1
       Tree.Struct.row[4]<-rep2
       rep2<-rep2+1
-      a<-findproj_MOD(origclass,origdata,PPmethod,q=1,weight=TRUE,lambda)
+      a<-findproj_Ext(origclass,origdata,PPmethod,q=1,weight=TRUE,lambda)
       #a<-findproj_modLDA(origclass,origdata )
       Tree.Struct.row[5]<-a$Index
       
@@ -107,7 +106,7 @@ Tree.construct_MOD <-
       
       #Tree.Struct<- Tree.Struct
       
-      b<-Tree.construct_MOD(t.class,t.data,Tree.Struct, 
+      b<-TreeExt.construct(t.class,t.data,Tree.Struct, 
                             Tree.Struct[id, 2],rep,rep1,rep2,projbest.node, 
                             splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,strule=strule,tot=tot,...)
       Tree.Struct<-b$Tree.Struct
@@ -126,7 +125,7 @@ Tree.construct_MOD <-
       t.data<-origdata[t.index,]
       n<-nrow(t.data)
       G<-length(table(t.class))
-      b<-Tree.construct_MOD(t.class,t.data,Tree.Struct, 
+      b<-TreeExt.construct(t.class,t.data,Tree.Struct, 
                             Tree.Struct[id,3],rep,rep1,rep2,projbest.node, 
                             splitCutoff.node,PPmethod,r,lambda,TOL,maxiter,strule=strule,tot=tot,...)
       Tree.Struct<-b$Tree.Struct

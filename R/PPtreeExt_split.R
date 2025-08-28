@@ -1,7 +1,7 @@
 #' Projection pursuit classification tree with random variable selection in each split
 #' 
 #' Find tree structure using various projection pursuit indices of classification in each split.
-#' @usage PPtree_splitMOD(form, data, PPmethod = 'LDA', 
+#' @usage PPtreeExt_split(form, data, PPmethod = 'LDA', 
 #' size.p = 1,  lambda = 0.1, entro , entroindiv,...) 
 #' @param form A character with the name of the class variable.
 #' @param data Data frame with the complete data set.
@@ -24,7 +24,7 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 #' @keywords tree
-PPtree_splitMOD <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro= TRUE, entroindiv = FALSE,...) {
+PPtreeExt_split <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro= TRUE, entroindiv = FALSE,...) {
   
      formula <- stats::as.formula(form)
      mf <- stats::model.frame(formula, data = data)
