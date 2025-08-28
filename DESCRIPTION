@@ -2,9 +2,25 @@ Package: PPtreeExt
 Type: Package
 Version: 1.0.0
 Title: Projection Pursuit Classification Tree extensions
-Author: Natalia da Silva, Eun-Kyung Lee, Di Cook
+Authors@R: 
+  c(person(given = "Natalia",
+           family = "da Silva",
+           role = c("aut", "cre"),
+           email = "natalia.dasilva@fcea.edu.uy",
+           comment = c(ORCID = "https://orcid.org/0000-0002-6031-7451")),
+            person(given = "Dianne",
+           family = "Cook",
+           role = "aut",
+           email = "dicook@monash.edu"
+           ),
+    person(given = "Eun-Kyung",
+           family = "Lee",
+           role = "aut",
+           email = "lee.eunk@gmail.com"
+           )
+   )
 Maintainer: Natalia da Silva <natalia.dasilva@fcea.edu.uy>
-Description: Projection pursuit classification tree algorithm extensions.
+Description: Projection pursuit classification tree algorithm extensions to PPTreeViz.
 LazyData: yes
 Depends:
     R (>= 3.2.0)
