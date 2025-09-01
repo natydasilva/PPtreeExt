@@ -29,37 +29,7 @@
 #' penguins_pda_proj$projbest
 PDAopt_Ext <-function(origclass, origdata, q = 1, weight = TRUE, lambda = 0.1, ...) {
     origdata <- as.matrix(origdata)
-    # class.table <- table(origclass)
-    # g <- length(class.table)
-    # class.name <- names(class.table)
-    # p <- ncol(data.std)
-    # n <- nrow(data.std)
-    # 
-    # mean.g <- matrix(apply(data.std, 2, function(x) {
-    #   tapply(x, origclass, mean, na.rm = TRUE)
-    # }),
-    # ncol = p)
-    # 
-    # mean.all <- matrix(apply(data.std, 2, mean), ncol = p)
-    # B <- matrix(0, ncol = p, nrow = p)
-    # W <- matrix(0, ncol = p, nrow = p)
-    # for (i in 1:length(class.table)) {
-    #   sel.id <- which(origclass == class.name[i])
-    #   temp.m1 <- mean.g[i, ] - mean.all
-    #   temp.m2 <- data.std[sel.id, ] -
-    #     matrix(1, length(sel.id), ncol = 1) %*% mean.g[i, , drop = FALSE]
-    #   gn1 <- ifelse(weight, length(sel.id), n / g)
-    #   B <- B + gn1 * t(temp.m1) %*% temp.m1
-    #   W <- W + gn1 * t(temp.m2) %*% temp.m2 / length(sel.id)
-    # }
-    # 
-    # W.t <- (1 - lambda) * W
-    # diag(W.t) <- diag(W)
-    # WB.t <- W.t + B
-    # opt <- eigen(MASS::ginv(WB.t) %*% B)
-    # 
-    # optVector <- matrix(as.numeric(opt$vectors[, 1:q]), ncol = q)
-    #proj.data <- origdata %*% optVector
+  
     optVector <- PDAopt(origclass = origclass, origdata=origdata , q=1,  weight=weight, lambda=lambda)
     optindex <-PDAindex2(origclass = origclass, origdata=origdata, proj = optVector, weight=weight, lambda=lambda )
     optobj <-

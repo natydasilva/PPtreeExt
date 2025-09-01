@@ -393,6 +393,9 @@ arma::vec PDAopt(arma::vec origclass,arma::mat origdata,int q=1,
 
 
 
+
+
+
 // [[Rcpp::export]]
 arma::uvec varselect(int p, int s){//p number of variables, s number of selected variables
   arma::uvec id = arma::linspace<uvec>(0, p-1,p); //integer sequence from 0 to p-1

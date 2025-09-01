@@ -20,34 +20,11 @@
 #' @export
 LDAopt_Ext <- function(origclass, origdata, q = 1, weight = TRUE, ...) {
   origdata <- as.matrix(origdata)
-  # class.table <- table(origclass)
-  # class.name <- names(class.table)
-  # p <- ncol(origdata)
-  # mean.g <- matrix(apply(origdata, 2, function(x) tapply(x, origclass, mean, na.rm = TRUE)), ncol = p)
-  # mean.all <- matrix(apply(origdata, 2, mean), ncol = p)
-  # B <- matrix(0, ncol = p, nrow = p)
-  # W <- matrix(0, ncol = p, nrow = p)
-  # g <- length(class.table)
-  # n <- length(origclass)
-  # for (i in 1:g) {
-  #   sel.id <- which(origclass == class.name[i])
-  #   temp.m1 <- mean.g[i, ] - mean.all
-  #   temp.m2 <- origdata[sel.id, ] - matrix(1, length(sel.id), ncol = 1) %*% mean.g[i, , drop = FALSE]
-  #   gn1 <- ifelse(weight, length(sel.id), n/g)
-  #   B <- B + gn1 * t(temp.m1) %*% temp.m1
-  #   W <- W + gn1 * t(temp.m2) %*% temp.m2/length(sel.id)
-  # }
-  # opt <- eigen(MASS::ginv(W + B) %*% B)
-  # optVector <- matrix(as.numeric(opt$vectors[, 1:q]), ncol = q)
-  # proj.data <- origdata %*% optVector
   optVector <- LDAopt(origclass = origclass, origdata = origdata, q = q, weight = weight )
   optindex <- LDAindex2(origclass = origclass, origdata = origdata, proj = optVector, weight = weight)
-  #optindex = 1
-  
-  
+
    optobj <- list(indexbest = optindex, projbest = optVector, 
                   origclass = origclass, origdata = origdata)
   class(optobj) <- append(class(optobj), "PPoptim")
   return(optobj)
-  #return(optVector)
 }
