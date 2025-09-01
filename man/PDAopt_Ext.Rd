@@ -37,7 +37,8 @@ Find the q-dimensional optimal projection using PDA projectin pursuit index
 \examples{
 data(penguins)
 penguins <- na.omit(penguins[, -c(2,7)])
-penguins_pda_proj <- PDAopt_Ext(penguins[,1],penguins[,-1], weight=TRUE, q=2, lambda=0.1)
+penguins_pda_proj <- PDAopt_Ext(origclass = penguins[,1], origdata = penguins[,-1], 
+weight=TRUE, q=1, lambda=0.1)
 penguins_pda_proj$indexbest
 penguins_pda_proj$projbest
 }

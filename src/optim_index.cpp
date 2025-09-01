@@ -194,10 +194,10 @@ double signC(double x) {
   cx_mat eigvec;
   arma::eig_gen(eigval, eigvec, B);
   int mm = eigval.index_max();
-  
-   arma::vec bestproj = real(eigvec.col(mm));
- 
-   return bestproj;
+
+  arma::vec bestproj = real(eigvec.col(mm));
+
+  return bestproj;
 }
 
 

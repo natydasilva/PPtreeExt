@@ -33,7 +33,7 @@ findproj_Ext <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = 
   
   
   if(PPmethod == "LDA"){
-    idx <- LDAopt_Ext(origclass, origdata,q,weight,lambda)
+    idx <- LDAopt_Ext(origclass, origdata,q , weight)
   }else{
     idx <- PDAopt_Ext(origclass, origdata, q,weight,lambda)
   }
@@ -58,8 +58,8 @@ findproj_Ext <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = 
   rm(n)
   
   list(
-    Index  = idx$indexbest, 
-    Alpha = idx$projbest, 
+    Index  = idx$indexbest,
+    Alpha = idx$projbest,
     C = cp, 
     IOindexL = projdata <= cp,
     IOindexR = projdata > cp
