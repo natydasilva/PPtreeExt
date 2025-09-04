@@ -20,13 +20,6 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 #' @keywords projection pursuit
-#' @examples
-#' data(penguins)
-#' penguins <- na.omit(penguins[, -c(2,7)])
-#' penguins_pda_proj <- PDAopt_Ext(origclass = penguins[,1], origdata = penguins[,-1], 
-#' weight=TRUE, q=1, lambda=0.1)
-#' penguins_pda_proj$indexbest
-#' penguins_pda_proj$projbest
 PDAopt_Ext <-function(origclass, origdata, q = 1, weight = TRUE, lambda = 0.1, ...) {
     origdata <- as.matrix(origdata)
   
