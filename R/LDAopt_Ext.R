@@ -19,6 +19,7 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 LDAopt_Ext <- function(origclass, origdata, q = 1, weight = TRUE, ...) {
+  
   origdata <- as.matrix(origdata)
   optVector <- LDAopt(origclass = origclass, origdata = origdata, q = q, weight = weight )
   optindex <- LDAindex2(origclass = origclass, origdata = origdata, proj = optVector, weight = weight)
