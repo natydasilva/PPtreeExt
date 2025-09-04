@@ -20,26 +20,27 @@ Authors@R:
            )
    )
 Maintainer: Natalia da Silva <natalia.dasilva@fcea.edu.uy>
-Description: Implements the projection pursuit tree algorithm for supervised classification and extends the original PPtreeViz implementation.
+Description: Implements extensions to the projection pursuit tree algorithm for supervised classification.
+License: GPL (>= 2)
+URL: https://github.com/natydasilva/PPtreeExt
 LazyData: yes
 Depends:
-    R (>= 3.2.0)
+    R (>= 4.3.0)
 Imports:
-    Rcpp (>= 0.12.7),
+    Rcpp (>= 1.1.0),
     ggplot2,
     shiny,
     MASS,
     gridExtra,
     MixSim,
     PPtreeViz
-License: LGPL-2.1
 Suggests:
     knitr,
     randomForest,
     rpart,
     GGally,
     RColorBrewer,
-    roxygen2 (>= 3.0.0),
+    roxygen2 (>= 7.3.0),
     rmarkdown, 
     rsample
 Encoding: UTF-8
