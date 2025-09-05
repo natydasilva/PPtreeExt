@@ -1,6 +1,6 @@
 Package: PPtreeExt
 Type: Package
-Version: 1.0.0
+Version: 0.1.0
 Title: Projection Pursuit Classification Tree Extensions
 Authors@R: 
   c(person(given = "Natalia",
