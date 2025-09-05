@@ -1,4 +1,4 @@
-# PPtreeExt 1.0.0
+# PPtreeExt 0.1.0
 
 * New CRAN submission.
 * Implements a projection pursuit tree for classification this method is an extension of PPtreeViz algoritm.

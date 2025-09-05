@@ -5,4 +5,4 @@
 
 # R CMD check results
 
-There were no ERRORs or WARNINGs or Note.
+There were no ERRORs or WARNINGs or Note.s
