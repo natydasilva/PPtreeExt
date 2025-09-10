@@ -23,7 +23,7 @@
 PDAopt_Ext <-function(origclass, origdata, q = 1, weight = TRUE, lambda = 0.1, ...) {
     origdata <- as.matrix(origdata)
   
-    optVector <- PDAopt(origclass = origclass, origdata=origdata , q=1,  weight=weight, lambda=lambda)
+    optVector <- PDAopt(origclass = origclass, origdata=origdata , q=q,  weight=weight, lambda=lambda)
     optindex <-PDAindex2(origclass = origclass, origdata=origdata, proj = optVector, weight=weight, lambda=lambda )
     optobj <-
       list(

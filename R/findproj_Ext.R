@@ -33,9 +33,9 @@ findproj_Ext <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = 
   
   
   if(PPmethod == "LDA"){
-    idx <- LDAopt_Ext(origclass, origdata,q , weight)
+    idx <- LDAopt_Ext(origclass, origdata, q , weight)
   }else{
-    idx <- PDAopt_Ext(origclass, origdata, q,weight,lambda)
+    idx <- PDAopt_Ext(origclass, origdata, q , weight,lambda)
   }
   projdata = apply(origdata, 1, function(x) sum(x*idx$projbest) )
   cp <- split_entro(origclass, projdata)
