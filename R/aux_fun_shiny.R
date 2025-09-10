@@ -14,7 +14,6 @@ simu3 <- function(mux1, mux2, muy1, muy2, muz1, muz2,
            n1 = 100, n2 = 100, n3 = 100
   ) {
     
-    #set.seed(666)
     bivn <- MASS::mvrnorm(n1, mu = c(mux1, mux2), Sigma = matrix(c(1, cor1, cor1, 1), 2))
     bivn2 <- MASS::mvrnorm(n2, mu = c(muy1, muy2), Sigma = matrix(c(1, cor2, cor2, 1), 2))
     bivn3 <- MASS::mvrnorm(n3, mu = c(muz1, muz2), Sigma = matrix(c(1, cor3, cor3, 1), 2))
