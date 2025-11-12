@@ -49,7 +49,7 @@ predict.PPtreeExtclass <- function(object, newdata, true.class = NULL,...) {
       i.class[i.class>0]<-1
       i.class<-1-i.class
       test.class<-test.class+IOindex*i.class*Tree.Struct[id, 3]
-      return(list(test.class=test.class,rep=rep))
+      return(list(test.class = test.class,rep=rep))
     } else{  
       IOindexL<-IOindex*test.class.index[rep,]
       IOindexR<-IOindex*(1-test.class.index[rep,])

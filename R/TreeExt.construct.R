@@ -29,8 +29,8 @@
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
-TreeExt.construct <-function(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,projbest.node,splitCutoff.node,PPmethod,
-           r = NULL, lambda=NULL,TOL,maxiter=50000,q=1,weight=TRUE,tol = .5,strule, tot,...) {
+TreeExt.construct <- function(origclass,origdata,Tree.Struct, id, rep, rep1, rep2, projbest.node, splitCutoff.node, PPmethod,
+           r = NULL, lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot,...) {
     #mod fede
     # flag = FALSE
     # if(!is.matrix(origdata)) {
@@ -44,7 +44,7 @@ TreeExt.construct <-function(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,pr
     if(length(Tree.Struct) == 0){
       #Tree.Struct<-matrix(1:(2*G-1),ncol=1)
       # Tree.Struct<- cbind(Tree.Struct,0,0,0,0)
-      Tree.Struct <- matrix(0, nrow=1, ncol=5)
+      Tree.Struct <- matrix(0, nrow = 1, ncol = 5)
     }
     if (id > nrow(Tree.Struct) ) {
       Tree.Struct <- rbind(Tree.Struct, matrix(0, nrow=id - nrow(Tree.Struct), ncol=5) )
@@ -52,21 +52,21 @@ TreeExt.construct <-function(origclass,origdata,Tree.Struct, id,rep,rep1,rep2,pr
     ##To see the effect of diferent rules
     #end.node = (G==1 | length(origclass)/tot <= .5| entropy(origclass)<tol)
     end.node <- 0
-    if(strule==1) {
+    if(strule == 1) {
       end.node <- 1*(G == 1)
-    }else if(strule==2) {
+    }else if(strule == 2) {
       end.node <- 1*(length(origclass)/tot <= .05)
     }else{
       end.node <- 1*(entropy(origclass) < tol)
     }
     #end.node = (G==1 | length(origclass) <= 30 | entropy(origclass)<tol)
     #,pure=TRUE,nodesize=FALSE,entronode=FALSE,tot,
-    cnd <- (end.node == 1) + (nrow(origdata) < 10)
+    cnd <- (end.node == 1) | (nrow(origdata) < 10)
     #Mod fede
     #cnd <- (end.node == 1) | (NROW(origdata) < 10) | !is.matrix(origdata) | flag
     
     
-    if( cnd > 0 ){
+    if( cnd  ){
       #if (nrow(origdata) > 0 ) {
       Tree.Struct[id,3] <- as.integer( names(g)[which.max(g)] )
       Tree.Struct[,1] <- 1:nrow(Tree.Struct)

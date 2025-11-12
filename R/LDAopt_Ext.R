@@ -1,6 +1,6 @@
 #' PP optimization using LDA index same as PPtree
 #' 
-#' Find the q-dimensional optimal projection using LDA projectin pursuit index
+#' Find the q-dimensional optimal projection using LDA projection pursuit index
 #' @title PP optimization using LDA index
 #' @usage LDAopt_Ext(origclass, origdata, q = 1, weight = TRUE,...) 
 #' @param origclass class information vector of data
