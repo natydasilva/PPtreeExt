@@ -80,7 +80,6 @@ PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1
   rm(g)
   rm(class.name)
   
-  
   splitCutoff.node<-NULL
   projbest.node<-NULL
   Tree.Struct<-NULL
@@ -99,6 +98,6 @@ PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1
   treeobj <- list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
                 splitCutoff.node=splitCutoff.node,origclass=origclass,
                 origdata = origdata,terms=Terms)
-  class(treeobj) <- append(class(treeobj),"PPtreeExtclass")
+  class(treeobj) <- append(class(treeobj),"PPtreeExtclass")  
   return(treeobj)
 }

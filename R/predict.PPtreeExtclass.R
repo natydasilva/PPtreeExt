@@ -20,7 +20,7 @@
 #' penguins_train <- training(penguins_spl)
 #' penguins_test <- testing(penguins_spl)
 #' penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
-#'   flipper_len + body_mass, data = penguins_train, PPmethod = "LDA")
+#' flipper_len + body_mass, data = penguins_train, PPmethod = "LDA")
 #' predict(object = penguins_ppt, newdata = penguins_test[,-1], true.class = penguins_test$species)
 
 predict.PPtreeExtclass <- function(object, newdata, true.class = NULL,...) {
