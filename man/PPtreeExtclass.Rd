@@ -4,8 +4,8 @@
 \alias{PPtreeExtclass}
 \title{Projection pursuit classification tree}
 \usage{
-PPtreeExtclass(formula,data, PPmethod = "LDA",weight = TRUE,
-                     r = 1,lambda = 0.1, energy = 0,maxiter = 50000, strule = 1,tot,...)
+PPtreeExtclass(formula, data, PPmethod = "LDA", weight = TRUE,
+                   lambda = 0.1,srule, tot, tol,...)
 }
 \arguments{
 \item{formula}{an object of class "formula"}
@@ -16,19 +16,14 @@ PPtreeExtclass(formula,data, PPmethod = "LDA",weight = TRUE,
 
 \item{weight}{weight flag in LDA, PDA and Lr index}
 
-\item{r}{r in Lr index}
-
 \item{lambda}{lambda in PDA index}
 
-\item{energy}{parameter for the probability to take new projection}
+\item{srule}{srule stopping rule flag; if TRUE use stopping rule, if FALSE stop
+only for pure or empty nodes}
 
-\item{maxiter}{maximum iteration number}
+\item{tot}{total number of observations}
 
-\item{strule}{select the stoping rule, 1 all observations in the node belongs 
-to the same class based, 2 node size is less than 5% of the total number of observations, 
-3 the entropy reduction is samaller than a treshold.}
-
-\item{tot}{total obs original class}
+\item{tol}{tolerance value for stopping rule}
 
 \item{...}{arguments to be passed to methods}
 }
@@ -50,10 +45,14 @@ classification in each split.
 }
 \examples{
 data(penguins)
-penguins <- na.omit(penguins[, -c(2,7)])
+penguins <- na.omit(penguins[, -c(2,7, 8)])
+require(rsample)
+penguins_spl <- rsample::initial_split(penguins, strata=species)
+penguins_train <- training(penguins_spl)
+penguins_test <- testing(penguins_spl)
 penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
-  flipper_len + body_mass, data = penguins, PPmethod = "PDA")
-penguins_ppt
+flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
+(penguins_train), tol=0.5 )
 }
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 

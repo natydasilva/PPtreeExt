@@ -5,8 +5,8 @@
 \title{Projection pursuit classification tree MOD}
 \usage{
 TreeExt.construct(origclass, origdata, Tree.Struct, id, rep, rep1, rep2,
-projbest.node, splitCutoff.node, PPmethod, r = NULL, 
-lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot,...)
+projbest.node, splitCutoff.node, PPmethod, 
+lambda = NULL, q = 1, weight = TRUE, srule=TRUE, tot=NULL, tol = .5,...)
 }
 \arguments{
 \item{origclass}{original class}
@@ -29,23 +29,17 @@ lambda = NULL, TOL, maxiter = 50000, q = 1, weight = TRUE, tol = .5, strule, tot
 
 \item{PPmethod}{method for projection pursuit; "LDA", "PDA"}
 
-\item{r}{r in Lr index}
-
 \item{lambda}{lambda in PDA index}
-
-\item{TOL}{tolerance value for optimization algorithm}
-
-\item{maxiter}{max number of iterations for optimization algorithm}
 
 \item{q}{numeric value with dimension of the projected data, if it is 1 then 1D projection is used}
 
 \item{weight}{weight flag in LDA, PDA}
 
+\item{srule}{stopping rule flag; if TRUE use stopping rule, if FALSE stop only for pure or empty nodes}
+
+\item{tot}{total number of observations}
+
 \item{tol}{tolerance value for entropy stopping rule for splitting a node}
-
-\item{strule}{select the stoping rule based in G=1 pure node}
-
-\item{tot}{total obs original class}
 
 \item{...}{additional arguments to pass trough}
 }

@@ -30,7 +30,7 @@ origdata  original data matrix  without class information
 PP optimization using LDA index same as PPtree
 }
 \details{
-Find the q-dimensional optimal projection using LDA projectin pursuit index
+Find the q-dimensional optimal projection using LDA projection pursuit index
 }
 \references{
 Lee, EK., Cook, D., Klinke, S., and Lumley, T.(2005) 
