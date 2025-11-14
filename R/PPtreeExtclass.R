@@ -2,20 +2,17 @@
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
 #' @title Projection pursuit classification tree 
-#' @usage PPtreeExtclass(formula,data, PPmethod = "LDA",weight = TRUE,
-#'                      r = 1,lambda = 0.1, energy = 0,maxiter = 50000, strule = 1,tot,...) 
+#' @usage PPtreeExtclass(formula, data, PPmethod = "LDA", weight = TRUE,
+#'                    lambda = 0.1,srule, tot, tol,...) 
 #' @param formula an object of class "formula"
 #' @param data data frame
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
 #' @param weight weight flag in LDA, PDA and Lr index
-#' @param r r in Lr index
 #' @param lambda lambda in PDA index
-#' @param energy parameter for the probability to take new projection
-#' @param maxiter maximum iteration number
-#' @param strule select the stoping rule, 1 all observations in the node belongs 
-#' to the same class based, 2 node size is less than 5% of the total number of observations, 
-#' 3 the entropy reduction is samaller than a treshold.
-#' @param tot total obs original class
+#' @param srule  srule stopping rule flag; if TRUE use stopping rule, if FALSE stop
+#' only for pure or empty nodes
+#' @param tot total number of observations
+#' @param tol tolerance value for stopping rule
 #' @param ... arguments to be passed to methods
 #' @return Tree.Struct tree structure of projection pursuit classification tree
 #' @return projbest.node 1 dimensional optimal projections of each node split
@@ -29,12 +26,16 @@
 #' @keywords tree
 #' @examples
 #' data(penguins)
-#' penguins <- na.omit(penguins[, -c(2,7)])
+#' penguins <- na.omit(penguins[, -c(2,7, 8)])
+#' require(rsample)
+#' penguins_spl <- rsample::initial_split(penguins, strata=species)
+#' penguins_train <- training(penguins_spl)
+#' penguins_test <- testing(penguins_spl)
 #' penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
-#'   flipper_len + body_mass, data = penguins, PPmethod = "PDA", strule = 3, tol=0.5)
-#' penguins_ppt
-PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1,
-        lambda = 0.1, energy = 0, maxiter = 50000, strule = 1, tot, ...){
+#' flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
+#' (penguins_train), tol=0.5 )
+PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE, 
+        lambda = 0.1, srule = TRUE, tot,tol, ...){
  
   data <- data.frame(data)
   
@@ -89,7 +90,8 @@ PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1
   rep<-1
   Tree.final <- TreeExt.construct(origclass, origdata, Tree.Struct, id, rep, rep1, 
                                       rep2, projbest.node, splitCutoff.node,
-                                      PPmethod, r, lambda, TOL, maxiter,strule = strule, tot=tot, ...)                            
+                                      PPmethod, lambda,srule, tot=tot, tol=tol,   ...)        
+  
   Tree.Struct <- Tree.final$Tree.Struct
   colnames(Tree.Struct)<-c("id","L.node.ID","R.F.node.ID","Coef.ID","Index")
   projbest.node<-Tree.final$projbest.node
@@ -98,6 +100,6 @@ PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE, r = 1
   treeobj <- list(Tree.Struct=Tree.Struct,projbest.node=projbest.node, 
                 splitCutoff.node=splitCutoff.node,origclass=origclass,
                 origdata = origdata,terms=Terms)
-  class(treeobj) <- append(class(treeobj),"PPtreeExtclass")  
+  class(treeobj) <- append(class(treeobj), c("PPtreeExtclass", "PPtreeclass"))  
   return(treeobj)
 }
