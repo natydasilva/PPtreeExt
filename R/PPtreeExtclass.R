@@ -35,7 +35,7 @@
 #' flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
 #' (penguins_train), tol=0.5 )
 PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE, 
-        lambda = 0.1, srule = TRUE, tot,tol, ...){
+        lambda = 0.1, srule = TRUE, tot = nrow(data), tol= 0.5, ...){
  
   data <- data.frame(data)
   
