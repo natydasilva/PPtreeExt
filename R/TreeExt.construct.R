@@ -110,7 +110,7 @@ TreeExt.construct <- function(origclass, origdata, Tree.Struct, id, rep, rep1,
     t.class <- t.class[t.index]
     t.data <- origdata[t.index, ]
     
-    cat("Node size:", length(origclass), "  tot:", tot, "  G:", G, "\n")
+    #cat("Node size:", length(origclass), "  tot:", tot, "  G:", G, "\n")
     
     b <- TreeExt.construct(origclass= t.class, origdata = t.data, Tree.Struct =Tree.Struct, id = Tree.Struct[id, 2],
                            rep = rep, rep1=rep1, rep2=rep2, projbest.node =projbest.node, splitCutoff.node = splitCutoff.node,
