@@ -5,7 +5,7 @@ using namespace arma;
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-arma::vec tableC(arma::vec x) {
+arma::vec tableC(arma::vec x) { // frquency count of unique values in a vector
   arma::vec values = arma::unique(x);
   arma::vec counts(values.size(), fill::zeros);
   
@@ -23,7 +23,7 @@ arma::vec tableC(arma::vec x) {
 
 
 // [[Rcpp::export]]
-double roundme(double x)
+double roundme(double x) 
 {
   if (x < 0.0)
     return (int)(x - 0.5);
@@ -426,7 +426,7 @@ List datanode(arma::mat origdata, double sizep){
 
 
 
-///Compute entropy 
+//Compute class entropy 
 // [[Rcpp::export]]
 double entropy(arma::vec origclass){
   int n = origclass.size();
@@ -442,7 +442,7 @@ double entropy(arma::vec origclass){
   
   for (int k = 0; k < g; k++) {
     double tot = 0.0;
-    for (int j=0; j<n; j++) {
+    for (int j = 0; j < n; j++) {
       if (origclass(j) == clval(k) ) tot++  ;  
     }
     pr_g(k) = tot/n; 
@@ -453,6 +453,7 @@ double entropy(arma::vec origclass){
   
 }
 
+//Best cut two groups minimizing the total entropy .
 // [[Rcpp::export]]
 double split_entro(arma::vec origclass, arma::colvec  projdata){
   int n = origclass.size();
@@ -460,14 +461,19 @@ double split_entro(arma::vec origclass, arma::colvec  projdata){
   int mmi = 1;
   
     for(int j = 0; j < n-1; j++){
+      //arma::uvec ordproj = sort_index(projdata);
       //double p = projdata(ordproj(j));
-      double p = projdata(j);
+      double p = projdata(j); // candidate split point
+      //divided the data in two groups
       arma::vec ei1aux = origclass( find( projdata <= p) );
       int ei1siz = ei1aux.size();
       arma::vec ei2aux = origclass( find( projdata > p) );
       int ei2siz = ei2aux.size();
-      double ei1 = (ei1siz/n)*entropy( ei1aux );
-      double ei2 = (ei2siz/n)*entropy( ei2aux) ;
+      //weighted entropy for each group
+      
+      double ei1 = ((double)ei1siz / (double)n) * entropy(ei1aux);
+      double ei2 = ((double)ei2siz / (double)n) * entropy(ei2aux);
+      
       entiall(j) = ei1 + ei2;
     }
     mmi = entiall.index_min();
@@ -475,8 +481,43 @@ double split_entro(arma::vec origclass, arma::colvec  projdata){
   
   double cp = projdata(mmi);
   return cp;
-  
+   
   }
+
+
+//Best cut two groups minimizing the total entropy .
+// [[Rcpp::export]]
+arma::vec  split_entro_prueba(arma::vec origclass, arma::colvec  projdata){
+  int n = origclass.size();
+  arma::vec entiall(n -1, fill::zeros);
+  int mmi = 1;
+  
+  for(int j = 0; j < n-1; j++){
+    //arma::uvec ordproj = sort_index(projdata);
+    //double p = projdata(ordproj(j));
+    double p = projdata(j); // candidate split point
+    //divided the data in two groups
+    arma::vec ei1aux = origclass( find( projdata <= p) );
+    int ei1siz = ei1aux.size();
+    arma::vec ei2aux = origclass( find( projdata > p) );
+    int ei2siz = ei2aux.size();
+    //weighted entropy for each group
+    
+    double ei1 = ((double)ei1siz / (double)n) * entropy(ei1aux);
+    double ei2 = ((double)ei2siz / (double)n) * entropy(ei2aux);
+    entiall(j) = ei1 + ei2;
+  }
+  
+  mmi = entiall.index_min();
+  //double cp = projdata(mmi);
+  
+  return entiall;
+
+}
+
+
+
+
 //--------First split,
 //--------the old algotithm redefine the problem in a two class problem, using the group mean to find the first partition (this is used inside findproj old versio)
 //--------if entro = true use the entropy to define the best partition (only consider g-1 partitions based on middle point between group means)

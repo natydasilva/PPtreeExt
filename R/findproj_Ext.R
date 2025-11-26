@@ -38,6 +38,9 @@ findproj_Ext <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = 
     idx <- PDAopt_Ext(origclass, origdata, q , weight,lambda)
   }
   projdata = apply(origdata, 1, function(x) sum(x*idx$projbest) )
+  
+  
+  #cp <- split_entro(origclass, projdata)
   cp <- split_entro(origclass, projdata)
   #pm <- mean(projdata)
   if ( cp == max(projdata) ) cp <- sort(projdata)[ length(projdata) - 1]

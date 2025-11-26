@@ -5,7 +5,7 @@
 \title{Projection pursuit classification tree}
 \usage{
 PPtreeExtclass(formula, data, PPmethod = "LDA", weight = TRUE,
-                   lambda = 0.1,srule, tot, tol,...)
+                   lambda = 0.1,srule, tot=nrow(data), tol =0.5,...)
 }
 \arguments{
 \item{formula}{an object of class "formula"}

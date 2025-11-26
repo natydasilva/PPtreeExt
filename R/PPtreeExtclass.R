@@ -3,7 +3,7 @@
 #' classification in each split.
 #' @title Projection pursuit classification tree 
 #' @usage PPtreeExtclass(formula, data, PPmethod = "LDA", weight = TRUE,
-#'                    lambda = 0.1,srule, tot, tol,...) 
+#'                    lambda = 0.1,srule, tot=nrow(data), tol =0.5,...) 
 #' @param formula an object of class "formula"
 #' @param data data frame
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
@@ -81,13 +81,13 @@ PPtreeExtclass <- function(formula, data, PPmethod = "LDA", weight = TRUE,
   rm(g)
   rm(class.name)
   
-  splitCutoff.node<-NULL
-  projbest.node<-NULL
-  Tree.Struct<-NULL
-  id<-1
-  rep1<-2
-  rep2<-1
-  rep<-1
+  splitCutoff.node <- NULL
+  projbest.node <- NULL
+  Tree.Struct <- NULL
+  id <- 1
+  rep1 <- 2
+  rep2 <- 1
+  rep <- 1
   Tree.final <- TreeExt.construct(origclass, origdata, Tree.Struct, id, rep, rep1, 
                                       rep2, projbest.node, splitCutoff.node,
                                       PPmethod, lambda,srule, tot=tot, tol=tol,   ...)        

@@ -151,6 +151,18 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// split_entro_prueba
+arma::vec split_entro_prueba(arma::vec origclass, arma::colvec projdata);
+RcppExport SEXP _PPtreeExt_split_entro_prueba(SEXP origclassSEXP, SEXP projdataSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type origclass(origclassSEXP);
+    Rcpp::traits::input_parameter< arma::colvec >::type projdata(projdataSEXP);
+    rcpp_result_gen = Rcpp::wrap(split_entro_prueba(origclass, projdata));
+    return rcpp_result_gen;
+END_RCPP
+}
 // split_relMOD
 List split_relMOD(arma::vec origclass, arma::colvec projdata, bool entro, bool entroindiv);
 RcppExport SEXP _PPtreeExt_split_relMOD(SEXP origclassSEXP, SEXP projdataSEXP, SEXP entroSEXP, SEXP entroindivSEXP) {
@@ -503,6 +515,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_PPtreeExt_datanode", (DL_FUNC) &_PPtreeExt_datanode, 2},
     {"_PPtreeExt_entropy", (DL_FUNC) &_PPtreeExt_entropy, 1},
     {"_PPtreeExt_split_entro", (DL_FUNC) &_PPtreeExt_split_entro, 2},
+    {"_PPtreeExt_split_entro_prueba", (DL_FUNC) &_PPtreeExt_split_entro_prueba, 2},
     {"_PPtreeExt_split_relMOD", (DL_FUNC) &_PPtreeExt_split_relMOD, 4},
     {"_PPtreeExt_findprojMOD", (DL_FUNC) &_PPtreeExt_findprojMOD, 6},
     {"_PPtreeExt_findproj1D", (DL_FUNC) &_PPtreeExt_findproj1D, 6},
