@@ -45,10 +45,6 @@ split_entro <- function(origclass, projdata) {
     .Call('_PPtreeExt_split_entro', PACKAGE = 'PPtreeExt', origclass, projdata)
 }
 
-split_entro_prueba <- function(origclass, projdata) {
-    .Call('_PPtreeExt_split_entro_prueba', PACKAGE = 'PPtreeExt', origclass, projdata)
-}
-
 split_relMOD <- function(origclass, projdata, entro, entroindiv) {
     .Call('_PPtreeExt_split_relMOD', PACKAGE = 'PPtreeExt', origclass, projdata, entro, entroindiv)
 }
