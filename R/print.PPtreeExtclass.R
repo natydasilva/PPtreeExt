@@ -6,7 +6,7 @@
 #' @param verbose something
 #' @param ... something
 #' @export
-print.PPtreeExtclass <- function(x,coef.print  = FALSE, cutoff.print=FALSE,
+print.PPtreeExtclass <- function(x, coef.print  = FALSE, cutoff.print=FALSE,
                                verbose = TRUE,...){
   PPtreeOBJ <- x
   TS <- PPtreeOBJ$Tree.Struct
@@ -62,18 +62,19 @@ print.PPtreeExtclass <- function(x,coef.print  = FALSE, cutoff.print=FALSE,
   }
   colnames(Alpha)<-colnames(PPtreeOBJ$origdata)
   rownames(Alpha)<-paste("proj",1:nrow(Alpha),sep="")  
-  # colnames(cut.off)<-paste("Rule",1:ncol(cut.off),sep="")
-  # rownames(cut.off)<-paste("cut",1:nrow(cut.off),sep="")
   TreePrint.output<-
     paste("=============================================================",                          
-          "\nProjection Pursuit Classification Tree result",                           
+          "\nProjection Pursuit Classification Tree Extension result",                           
           "\n=============================================================\n")
   for(i in 1:length(TreePrint))
     TreePrint.output<-paste(TreePrint.output,TreePrint[i],sep="\n")
   TreePrint.output<-paste(TreePrint.output,"\n",sep="")
   sample.data.X<-PPtreeOBJ$origdata
   sample.data.class<-PPtreeOBJ$origclass
-  error.rate<- PPtreeViz::PPclassify(PPtreeOBJ,sample.data.X)$predict.error
+  #error.rate<- PPtreeViz::PPclassify(PPtreeOBJ,sample.data.X)$predict.error
+  error.rate.aux <- predict.PPtreeExtclass(object = PPtreeOBJ, newdata = sample.data.X, 
+                                           true.class = sample.data.class)
+  error.rate <- error.rate.aux$predict.error
   colnames(Alpha)<-paste(1:ncol(Alpha),":\"",colnames(Alpha),"\"",sep="")
   if(verbose){
     cat(TreePrint.output)
@@ -87,9 +88,10 @@ print.PPtreeExtclass <- function(x,coef.print  = FALSE, cutoff.print=FALSE,
           "\n-------------------------------------------------------------\n")
       print(round(cut.off,4))
     }    
-    cat("\nError rates of various cutoff values",
+    cat("\nError rates",
         "\n-------------------------------------------------------------\n")
     print(round(error.rate,4))
+    
   }    
   return(invisible(TreePrint)) 
 }
