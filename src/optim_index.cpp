@@ -458,16 +458,18 @@ double entropy(arma::vec origclass){
 double split_entro(arma::vec origclass, arma::colvec  projdata){
   int n = origclass.size();
   arma::vec entiall(n -1, fill::zeros);
+  arma::vec pmall(n -1, fill::zeros);
+  arma::uvec ordproj = sort_index(projdata);
   int mmi = 1;
   
     for(int j = 0; j < n-1; j++){
-      //arma::uvec ordproj = sort_index(projdata);
       //double p = projdata(ordproj(j));
-      double p = projdata(j); // candidate split point
+      pmall(j) = (projdata(ordproj(j)) + projdata(ordproj(j+1) ))/ 2.0;
+      //double p = projdata(j); // candidate split point
       //divided the data in two groups
-      arma::vec ei1aux = origclass( find( projdata <= p) );
+      arma::vec ei1aux = origclass( find( projdata <= pmall(j)) );
       int ei1siz = ei1aux.size();
-      arma::vec ei2aux = origclass( find( projdata > p) );
+      arma::vec ei2aux = origclass( find( projdata > pmall(j)) );
       int ei2siz = ei2aux.size();
       //weighted entropy for each group
       
@@ -479,7 +481,8 @@ double split_entro(arma::vec origclass, arma::colvec  projdata){
     mmi = entiall.index_min();
   
   
-  double cp = projdata(mmi);
+  //double cp = projdata(mmi);
+  double cp = pmall(mmi);
   return cp;
    
   }
@@ -491,7 +494,7 @@ double split_entro(arma::vec origclass, arma::colvec  projdata){
 
 
 //--------First split,
-//--------the old algotithm redefine the problem in a two class problem, using the group mean to find the first partition (this is used inside findproj old versio)
+//--------the old algotithm redefine the problem in a two class problem, using the group mean to find the first partition (this is used inside findproj old version)
 //--------if entro = true use the entropy to define the best partition (only consider g-1 partitions based on middle point between group means)
 //-------- if entroindiv = true compute the best partition based on entropy between each observation.
 // [[Rcpp::export]]
