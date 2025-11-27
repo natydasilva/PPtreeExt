@@ -88,6 +88,7 @@ ppbound <- function(ru, data , test, meth, entro , title, simM = FALSE) {
   }
   
   if (meth == "Modified") {
+    #Esto esta mal?? estoy usando PPtreeViz
     pptree <- PPtreeExt_split(Sim ~ ., data = data, "LDA", entro = entro)
     ppred.sim <-
       PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
@@ -169,6 +170,8 @@ ppbound <- function(ru, data , test, meth, entro , title, simM = FALSE) {
   pl.pp
 }
 
+
+# Multiple splits PPtreeExt
 ppboundMOD <-
   function(data ,
            test,
@@ -463,7 +466,7 @@ ui <- shiny::fluidPage(shiny::mainPanel(
         )
       ),
       #shiny::numericInput("p", label = "number of dimensions", value = 5),
-      shiny::fluidRow(shiny::actionButton("simmaitra", "simula")),
+      shiny::fluidRow(shiny::actionButton("simmaitra", "OK")),
       shiny::fluidRow(shiny::plotOutput("plotsmaitra"))
       ##
       
@@ -498,18 +501,18 @@ server <- function(input, output) {
             title = "PPtreeExt: Subsetting clases"
           )
       }
-      if (input$modi == 2) {
-        #entropy mp groups
-        modpl <-
-          ppbound(
-            ru =  1, #as.numeric(input$rule),
-            data = dat.pl2,
-            test = dat.test,
-            meth = "Modified" ,
-            entro = TRUE,
-            title = "Modified 2 "
-          )
-      }
+      # if (input$modi == 2) {
+      #   #entropy mp groups
+      #   modpl <-
+      #     ppbound(
+      #       ru =  1, #as.numeric(input$rule),
+      #       data = dat.pl2,
+      #       test = dat.test,
+      #       meth = "Modified" ,
+      #       entro = TRUE,
+      #       title = "Modified 2 "
+      #     )
+      # }
       if (input$modi == 3) {
         modpl <-
           ppboundMOD(
@@ -672,8 +675,7 @@ server <- function(input, output) {
             K = shiny::isolate(as.numeric(input$K)),
             p = 2,
             # sph = FALSE,
-            # hom = TRUE,
-            # ecc = 0.90,
+            #ecc = 1,
             # PiLow = 1.0,
             # int = c(0.0, 1.0),
             # resN = 100,
