@@ -5,7 +5,7 @@
 \title{Projection pursuit classification tree}
 \usage{
 PPtreeExtclass(formula, data, PPmethod = "LDA", weight = TRUE,
-                   lambda = 0.1,srule, tot=nrow(data), tol =0.5,...)
+                   lambda = 0.1,srule, tot = nrow(data), tol = 0.5,...)
 }
 \arguments{
 \item{formula}{an object of class "formula"}
@@ -14,7 +14,7 @@ PPtreeExtclass(formula, data, PPmethod = "LDA", weight = TRUE,
 
 \item{PPmethod}{method for projection pursuit; "LDA", "PDA"}
 
-\item{weight}{weight flag in LDA, PDA and Lr index}
+\item{weight}{weight flag in LDA and PDA  index}
 
 \item{lambda}{lambda in PDA index}
 
@@ -52,7 +52,7 @@ penguins_train <- training(penguins_spl)
 penguins_test <- testing(penguins_spl)
 penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
 flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
-(penguins_train), tol=0.5 )
+(penguins_train), tol =  0.5 )
 }
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 

@@ -15,7 +15,7 @@ findproj_Ext(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda
 
 \item{q}{numeric value with dimension of the projected data, if it is 1 then 1D projection is used}
 
-\item{weight}{weight flag in LDA, PDA and Lr index}
+\item{weight}{weight flag in LDA, PDA or index}
 
 \item{lambda}{lambda in PDA index}
 }
@@ -23,7 +23,7 @@ findproj_Ext(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda
 1D projection for each node partition using entropy
 }
 \references{
-Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 
+Lee, YD, Cook, D., Park JW, and Lee, EK (2013) 
 PPtree: Projection Pursuit Classification Tree, 
 Electronic Journal of Statistics, 7:1369-1386.
 }

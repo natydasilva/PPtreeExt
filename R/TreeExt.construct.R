@@ -45,27 +45,12 @@ TreeExt.construct <- function(origclass, origdata, Tree.Struct, id, rep, rep1,
                                                5))
   }
   
-  
-  # if (length(origclass) == 0 || length(g) == 0) {
-  #   cnd <- TRUE
-  # } else {
-  #   if (srule) {
-  #     ent <- entropy(origclass)
-  #     if (length(ent) == 0 || is.na(ent)) ent <- 0
-  #     
-  #     cnd <- (G == 1) |
-  #       (length(origclass)/tot <= 0.05) |
-  #       (ent < tol)
-  #   } else {
-  #     cnd <- (G == 1)
-  #   }
-  # }
+
   
   if(srule){
    if( is.na(entropy(origclass))) ent <- 0 
    if (length(entropy(origclass)) == 0 ) ent <- 0
-    # ent <- entropy(origclass)
-  #if (length(ent) == 0 || is.na(entropy(origclass)) ent <- 0
+    
   cnd <- (G == 1) |
           (length(origclass)/tot <= 0.05) |
          (entropy(origclass) < tol)

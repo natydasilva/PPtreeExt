@@ -5,9 +5,9 @@
 #' @param origdata original data
 #' @param PPmethod method for projection pursuit; "LDA", "PDA"
 #' @param q numeric value with dimension of the projected data, if it is 1 then 1D projection is used
-#' @param weight weight flag in LDA, PDA and Lr index
+#' @param weight weight flag in LDA, PDA or index
 #' @param lambda lambda in PDA index
-#' @references Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 
+#' @references Lee, YD, Cook, D., Park JW, and Lee, EK (2013) 
 #' PPtree: Projection Pursuit Classification Tree, 
 #' Electronic Journal of Statistics, 7:1369-1386.
 #' @useDynLib PPtreeExt
@@ -40,9 +40,8 @@ findproj_Ext <- function(origclass, origdata, PPmethod = "LDA", q = 1, weight = 
   projdata = apply(origdata, 1, function(x) sum(x*idx$projbest) )
   
   
-  #cp <- split_entro(origclass, projdata)
   cp <- split_entro(origclass, projdata)
-  #pm <- mean(projdata)
+
   if ( cp == max(projdata) ) cp <- sort(projdata)[ length(projdata) - 1]
   
   class.table <- table(origclass)
