@@ -90,20 +90,18 @@ ppbound <- function(ru, data , test, meth, entro , title, simM = FALSE) {
   if (meth == "Modified") {
     #Esto esta mal?? estoy usando PPtreeViz
     pptree <- PPtreeExt_split(Sim ~ ., data = data, "LDA", entro = entro)
-    ppred.sim <-
-      PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
+    #ppred.sim <- PPtreeViz::PPclassify(pptree, test.data = grilla, Rule = ru)
+    ppred.sim <- predict(pptree, newdata  = grilla, Rule = ru)
     #grilla$pred <- paste("sim", ppred.sim[[2]], sep = "")
-    grilla$pred <- ppred.sim[[2]]
-    err <-
-      round(
-        PPtreeViz::PPclassify(
-          pptree,
-          test.data = test[, -1],
-          true.class = test[, 1],
-          Rule = ru
-        )[[1]] / nrow(test[, -1]),
-        3
-      ) * 100
+    grilla$pred <- ppred.sim
+    aux_test <- predict(
+      pptree,
+      newdata= test[, -1],
+      true.class = test[, 1],
+      Rule = ru
+    ) 
+    err <- round(1- sum(aux_test == test[, 1])/length(test[, 1]), 3) * 100
+      
     
   }
   
@@ -370,7 +368,7 @@ ui <- shiny::fluidPage(shiny::mainPanel(
           shiny::textInput(
             inputId = "cor2",
             label = "Correlations",
-            value = "0.95, 0.5, 0.75"
+            value = "0.95, 0.95, 0.95"
           )
         ) ,
         shiny::column(

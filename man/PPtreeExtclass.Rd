@@ -44,6 +44,7 @@ Find tree structure using various projection pursuit indices of
 classification in each split.
 }
 \examples{
+set.seed(666)
 data(penguins)
 penguins <- na.omit(penguins[, -c(2,7, 8)])
 require(rsample)
@@ -52,7 +53,7 @@ penguins_train <- training(penguins_spl)
 penguins_test <- testing(penguins_spl)
 penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
 flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
-(penguins_train), tol =  0.5 )
+(penguins_train), tol =  0.5 , srule = TRUE)
 }
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 

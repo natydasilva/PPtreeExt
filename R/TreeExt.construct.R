@@ -45,15 +45,21 @@ TreeExt.construct <- function(origclass, origdata, Tree.Struct, id, rep, rep1,
                                                5))
   }
   
-
-  
   if(srule){
-   if( is.na(entropy(origclass))) ent <- 0 
-   if (length(entropy(origclass)) == 0 ) ent <- 0
+    
+    if(is.na(entropy(origclass)) || length(entropy(origclass)) == 0) {
+      ent <- 0
+    }else{
+      ent <- entropy(origclass)
+    }
+
+    if(is.null(tot)) {
+      tot <- length(origclass)
+    } 
     
   cnd <- (G == 1) |
           (length(origclass)/tot <= 0.05) |
-         (entropy(origclass) < tol)
+         (ent < tol)
   }else{
   cnd <- (G==1)
   }
@@ -79,7 +85,7 @@ TreeExt.construct <- function(origclass, origdata, Tree.Struct, id, rep, rep1,
     rep1 <- rep1 + 1
     Tree.Struct.row[4] <- rep2
     rep2 <- rep2 + 1
-    a <- findproj_Ext(origclass, origdata, PPmethod, q = 1,  weight = TRUE, lambda)
+    a <- findproj_Ext(origclass, origdata, PPmethod, q = q,  weight = weight, lambda = lambda)
     Tree.Struct.row[5] <- a$Index
     
     Tree.Struct[id, ] <- Tree.Struct.row

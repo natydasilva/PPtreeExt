@@ -25,6 +25,7 @@
 #' @export
 #' @keywords tree
 #' @examples
+#' set.seed(666)
 #' data(penguins)
 #' penguins <- na.omit(penguins[, -c(2,7, 8)])
 #' require(rsample)
@@ -33,7 +34,7 @@
 #' penguins_test <- testing(penguins_spl)
 #' penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
 #' flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
-#' (penguins_train), tol =  0.5 )
+#' (penguins_train), tol =  0.5 , srule = TRUE)
 PPtreeExtclass <- function(formula,
                            data,
                            PPmethod = "LDA",
@@ -95,8 +96,11 @@ PPtreeExtclass <- function(formula,
   rep1 <- 2
   rep2 <- 1
   rep <- 1
-  Tree.final <- TreeExt.construct(origclass, origdata, Tree.Struct, id, rep, rep1, rep2,
-    projbest.node, splitCutoff.node, PPmethod, lambda, srule, tot = tot, tol = tol, ...)
+
+  Tree.final <- TreeExt.construct(origclass = origclass, origdata = origdata, Tree.Struct = Tree.Struct,
+    id = id, rep = rep, rep1 = rep1, rep2 = rep2, projbest.node = projbest.node, splitCutoff.node = splitCutoff.node, PPmethod = PPmethod, lambda = lambda, q = 1, weight = weight, srule = srule,  tot = tot, tol = tol, ...)
+  
+  
   
   Tree.Struct <- Tree.final$Tree.Struct
   colnames(Tree.Struct) <- c("id", "L.node.ID", "R.F.node.ID", "Coef.ID", "Index")

@@ -1,15 +1,15 @@
 #' Projection pursuit classification tree with random variable selection in each split
 #' 
 #' Find tree structure using various projection pursuit indices of classification in each split.
-#' @usage PPtreeExt_split(form, data, PPmethod = 'LDA', 
-#' size.p = 1,  lambda = 0.1, entro , entroindiv,...) 
-#' @param form A character with the name of the class variable.
+#' @usage PPtreeExt_split(formula, data, PPmethod = 'LDA', 
+#' size.p = 1,  lambda = 0.1, entro = FALSE, entroindiv = FALSE,...) 
+#' @param formula A character with the name of the class variable.
 #' @param data Data frame with the complete data set.
 #' @param PPmethod index to use for projection pursuit: 'LDA', 'PDA'
 #' @param size.p proportion of variables randomly sampled in each split, default is 1, returns a PPtree.
 #' @param lambda penalty parameter in PDA index and is between 0 to 1 . If \code{lambda = 0}, no penalty parameter is added and the PDA index is the same as LDA index. If \code{lambda = 1} all variables are treated as uncorrelated. The default value is \code{lambda = 0.1}.
-#' @param entro TRUE, compute the entropy method
-#' @param entroindiv TRUE, compute the entropy for each observation in 1D projection
+#' @param entro FALSE, compute the entropy method
+#' @param entroindiv FALSE, compute the entropy for each observation in 1D projection
 #' @param ... arguments to be passed to methods
 #' @return An object of class \code{PPtreeclass} with components
 #' \item{Tree.Struct}{Tree structure of projection pursuit classification tree}
@@ -24,9 +24,19 @@
 #' @importFrom Rcpp evalCpp
 #' @export
 #' @keywords tree
-PPtreeExt_split <- function(form, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro= TRUE, entroindiv = FALSE,...) {
+#' @examples
+#' data(penguins)
+#' penguins <- na.omit(penguins[, -c(2,7, 8)])
+#' require(rsample)
+#' penguins_spl <- rsample::initial_split(penguins, strata=species)
+#' penguins_train <- training(penguins_spl)
+#' penguins_test <- testing(penguins_spl)
+#' penguins_ppt2 <- PPtreeExt_split(species~bill_len + bill_dep +
+#' flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
+#' (penguins_train), tol =  0.5 , entro=TRUE)
+PPtreeExt_split <- function(formula, data,  PPmethod = "LDA", size.p = 1,  lambda = 0.1, entro = FALSE, entroindiv = FALSE,...) {
   
-     formula <- stats::as.formula(form)
+     #formula <- stats::as.formula(form)
      mf <- stats::model.frame(formula, data = data)
      origclass <- stats::model.response(mf)
     
