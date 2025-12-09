@@ -53,7 +53,7 @@ penguins_train <- training(penguins_spl)
 penguins_test <- testing(penguins_spl)
 penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
 flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
-(penguins_train), tol =  0.5 , srule = TRUE)
+(penguins_train), tol =  0.2 , srule = TRUE)
 }
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 

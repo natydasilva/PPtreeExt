@@ -28,70 +28,43 @@ devtools::install_github("natydasilva/PPtreeExt")
 ## Simple Example
 
 ```r
+set.seed(249)
 n <- nrow(iris)
 tot <- c(1:n)
 n.train <- round(n*0.9)
 train <- sample(tot,n.train)
 test <- tot[-train]
 Tree.result <- PPtreeExtclass(formula = Species~., data = iris[train,],
-PPmethod = "LDA", strule =3)
+PPmethod = "LDA",  srule = TRUE, tol = 0.1)
 Tree.result
 ============================================================= 
-Projection Pursuit Classification Tree result 
+Projection Pursuit Classification Tree Extension result 
 =============================================================
 
 1) root
    2)  proj1*X < cut1
-      4)* proj2*X < cut2  ->  "virginica"
+      4)  proj2*X < cut2
+         6)* proj3*X < cut3  ->  "virginica"
+         7)* proj3*X >= cut3  ->  "virginica"
       5)  proj2*X >= cut2
-         6)  proj3*X < cut3
-            8)  proj4*X < cut4
-               10)* proj5*X < cut5  ->  "versicolor"
-               11)  proj5*X >= cut5
-                  12)  proj6*X < cut6
-                     14)* proj7*X < cut7  ->  "versicolor"
-                     15)  proj7*X >= cut7
-                        16)* proj8*X < cut8  ->  "versicolor"
-                        17)  proj8*X >= cut8
-                           18)  proj9*X < cut9
-                              20)  proj10*X < cut10
-                                 22)* proj11*X < cut11  ->  "versicolor"
-                                 23)  proj11*X >= cut11
-                                    24)* proj12*X < cut12  ->  "versicolor"
-                                    25)* proj12*X >= cut12  ->  "setosa"
-                              21)* proj10*X >= cut10  ->  "setosa"
-                           19)* proj9*X >= cut9  ->  "setosa"
-                  13)* proj6*X >= cut6  ->  "setosa"
-            9)* proj4*X >= cut4  ->  "versicolor"
-         7)  proj3*X >= cut3
-            26)* proj13*X < cut13  ->  "virginica"
-            27)  proj13*X >= cut13
-               28)* proj14*X < cut14  ->  "versicolor"
-               29)  proj14*X >= cut14
-                  30)  proj15*X < cut15
-                     32)* proj16*X < cut16  ->  "virginica"
-                     33)  proj16*X >= cut16
-                        34)* proj17*X < cut17  ->  "virginica"
-                        35)  proj17*X >= cut17
-                           36)* proj18*X < cut18  ->  "virginica"
-                           37)  proj18*X >= cut18
-                              38)* proj19*X < cut19  ->  "versicolor"
-                              39)* proj19*X >= cut19  ->  "virginica"
-                  31)* proj15*X >= cut15  ->  "virginica"
-   3)* proj1*X >= cut1  ->  "virginica"
+         8)* proj4*X < cut4  ->  "versicolor"
+         9)* proj4*X >= cut4  ->  "virginica"
+   3)* proj1*X >= cut1  ->  "setosa"
 
-Error rates of various cutoff values 
+Error rates 
 -------------------------------------------------------------
-[1] NA
+[1] 1
 
- predict(object = Tree.result, newdata = iris[test,1:4], true.class = iris[test,5])
-$predict.error
+ pred <- predict(object = Tree.result, newdata = iris[test,1:4], true.class = iris[test,5])
+ 
+ 
+pred$predict.error
 [1] 0
 
-$predict.class
+pred$predict.class
  [1] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"     "versicolor"
- [7] "versicolor" "versicolor" "versicolor" "versicolor" "versicolor" "versicolor"
-[13] "versicolor" "virginica"  "virginica"
+ [7] "versicolor" "versicolor" "versicolor" "versicolor" "virginica"  "virginica" 
+[13] "virginica"  "virginica"  "virginica" 
 
 ```
 
