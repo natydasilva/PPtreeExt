@@ -20,7 +20,7 @@ Authors@R:
            )
    )
 Maintainer: Natalia da Silva <natalia.dasilva@fcea.edu.uy>
-Description: Implements extensions to the projection pursuit tree algorithm for supervised classification <https://doi.org/10.1214/13-EJS810>.
+Description: Implements extensions to the projection pursuit tree algorithm for supervised classification <doi:10.1214/13-EJS810>. The algorithm is changed in two ways: improving prediction boundaries by modifying the choice of split points-through class subsetting; and  increasing flexibility by allowing multiple splits per group. 
 License: GPL (>= 2)
 URL: https://github.com/natydasilva/PPtreeExt
 LazyData: yes

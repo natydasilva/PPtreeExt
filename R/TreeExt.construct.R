@@ -1,13 +1,13 @@
-#' Construct the projection pursuit classification tree with the extensions 
+#' Construct the projection pursuit classification tree extensions 
 #' 
 #' Find tree structure using various projection pursuit indices of 
 #' classification in each split.
-#' @title Projection pursuit classification tree MOD
+#' @title Projection pursuit classification tree extensions
 #' @usage TreeExt.construct(origclass, origdata, Tree.Struct, id, rep, rep1, rep2,
 #' projbest.node, splitCutoff.node, PPmethod, 
 #' lambda = NULL, q = 1, weight = TRUE, srule=TRUE, tot=NULL, tol = .5,...) 
-#' @param origclass original class 
-#' @param origdata original data
+#' @param origclass factor or numeric vector containing the class labels for each observation.
+#' @param origdata data frame with the original data without class variable
 #' @param Tree.Struct tree structure of projection pursuit classification tree
 #' @param id tree node id
 #' @param rep internal counter for nodes
@@ -23,6 +23,27 @@
 #' @param tot total number of observations
 #' @param tol tolerance value for entropy stopping rule for splitting a node
 #' @param ... additional arguments to pass trough
+#' @return
+#' A list containing the complete tree structure and node information:
+#'   \item{Tree.Struct}{A matrix where each row represents a node in the projection pursuit classification tree. The matrix has 5 columns:
+#'     \itemize{
+#'       \item Column 1: Node ID
+#'       \item Column 2: ID of the left child node (or 0 if terminal node)
+#'       \item Column 3: ID of the right child node, or the predicted class label if terminal node
+#'       \item Column 4: Projection index (which projection vector is used at this node)
+#'       \item Column 5: Optimization criterion value for the projection at this node
+#'     }
+#'   }
+#'   \item{projbest.node}{A matrix where each row contains the optimal projection coefficients (Alpha vector) for each split node.}
+#'   \item{splitCutoff.node}{A matrix/vector containing the optimal cutpoint values used at each split node.}
+#'   \item{rep}{Integer counter tracking the current node being processed (internal use).}
+#'   \item{rep1}{Integer counter for assigning child node IDs (internal use).}
+#'   \item{rep2}{Integer counter for tracking projection indices (internal use).}
+#' @details
+#' This function recursively constructs a binary classification tree using projection pursuit. 
+#' At each node, it finds the optimal projection direction that best separates classes, 
+#' determines a cutpoint, and creates child nodes until stopping criteria are met 
+#' (pure nodes, small node size, or low entropy).
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
 #' @export
@@ -30,7 +51,7 @@ TreeExt.construct <- function(origclass, origdata, Tree.Struct, id, rep, rep1,
                               rep2, projbest.node, splitCutoff.node,
                               PPmethod, lambda = NULL,
                                q = 1, weight = TRUE,
-                              srule=TRUE, tot = NULL, tol = .5,...) {
+                              srule = TRUE, tot = NULL, tol = .5,...) {
   
   origclass <- as.integer(origclass)
   origdata <- as.matrix(origdata)

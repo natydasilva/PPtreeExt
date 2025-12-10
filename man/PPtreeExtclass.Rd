@@ -8,40 +8,103 @@ PPtreeExtclass(formula, data, PPmethod = "LDA", weight = TRUE,
                    lambda = 0.1,srule, tot = nrow(data), tol = 0.5,...)
 }
 \arguments{
-\item{formula}{an object of class "formula"}
+\item{formula}{An object of class \code{"formula"} of the form \code{class ~ x1 + x2 + ...} 
+where \code{class} is the factor variable containing class labels and 
+\code{x1, x2, ...} are the predictor variables. Interaction terms (using \code{*}) 
+are not supported.}
 
-\item{data}{data frame}
+\item{data}{Data frame containing both the class variable and predictor variables 
+specified in the formula.}
 
-\item{PPmethod}{method for projection pursuit; "LDA", "PDA"}
+\item{PPmethod}{Character string specifying the projection pursuit index to use. 
+Either \code{"LDA"} (Linear Discriminant Analysis, default) or \code{"PDA"} 
+(Penalized Discriminant Analysis).}
 
-\item{weight}{weight flag in LDA and PDA  index}
+\item{weight}{Logical indicating whether to use weighted index calculation in LDA 
+and PDA. When \code{TRUE} (default), class proportions are accounted for in the 
+optimization.}
 
-\item{lambda}{lambda in PDA index}
+\item{lambda}{Numeric penalty parameter for the PDA index, ranging from 0 to 1. 
+Default is 0.1. Only used when \code{PPmethod = "PDA"}.}
 
-\item{srule}{srule stopping rule flag; if TRUE use stopping rule, if FALSE stop
-only for pure or empty nodes}
+\item{srule}{Logical flag for stopping rule. If \code{TRUE} (default), uses entropy-based 
+and size-based stopping criteria. If \code{FALSE}, stops only when nodes are pure 
+(single class) or empty.}
 
-\item{tot}{total number of observations}
+\item{tot}{Integer specifying the total number of observations in the original dataset. 
+Default is \code{nrow(data)}. Used in conjunction with stopping rules to determine 
+minimum node sizes.}
 
-\item{tol}{tolerance value for stopping rule}
+\item{tol}{Numeric tolerance value for the entropy-based stopping rule. Nodes with 
+entropy below this threshold will not be split further. Default is 0.5. Lower 
+values create deeper trees.}
 
-\item{...}{arguments to be passed to methods}
+\item{...}{Additional arguments to be passed to internal tree construction methods.}
 }
 \value{
-Tree.Struct tree structure of projection pursuit classification tree
-
-projbest.node 1 dimensional optimal projections of each node split
-
-splitCutoff.node cutoff values of each node split
-
-origclass original class
-
-origdata original data
+An object of class \code{c("PPtreeExtclass", "PPtreeclass")}, which is a list containing:
+\item{Tree.Struct}{A matrix defining the tree structure. Each row represents a node 
+  with 5 columns: node ID, left child node ID, right/final node ID (class label if 
+  terminal node), coefficient ID (projection index), and optimization index value.}
+\item{projbest.node}{A matrix where each row contains the optimal 1-dimensional 
+  projection coefficients for each split node. Each row has length equal to 
+  \code{ncol(origdata)}, defining the projection direction used at that node.}
+\item{splitCutoff.node}{A numeric vector or matrix containing the cutoff values 
+  (thresholds) used at each split node for classification decisions.}
+\item{origclass}{Factor vector of the original class labels from the input data.}
+\item{origdata}{Matrix of the original predictor variables (without the class variable).}
+\item{terms}{The terms object from the model frame, preserving the formula structure.}
 }
 \description{
-Construct the projection pursuit classification tree extensions
-Find tree structure using various projection pursuit indices of 
-classification in each split.
+Projection Pursuit Classification Tree with Extensions
+}
+\details{
+Constructs a projection pursuit classification tree using various projection pursuit 
+indices (LDA or PDA) at each split. This extended version includes customizable 
+stopping rules based on entropy and node size criteria.
+
+
+This function builds a binary classification tree where each split is determined by 
+finding an optimal projection of the data onto a one-dimensional space using either 
+LDA or PDA indices. The algorithm works as follows:
+
+\subsection{Tree Construction Process}{
+\enumerate{
+  \item At each node, find the optimal 1D projection that best separates classes
+  \item Project the data onto this direction and find an optimal cutpoint
+  \item Split observations based on the cutpoint into left and right child nodes
+  \item Recursively repeat until stopping criteria are met
+}
+}
+
+\subsection{Stopping Rules}{
+When \code{srule = TRUE}, a node stops splitting if any of the following conditions hold:
+\itemize{
+  \item The node is pure (contains only one class)
+  \item The node contains fewer than 5\% of the total observations (\code{n/tot <= 0.05})
+  \item The node entropy is below the tolerance threshold (\code{entropy < tol})
+}
+
+When \code{srule = FALSE}, splitting only stops for pure or empty nodes, potentially 
+creating deeper, more complex trees.
+}
+
+\subsection{Projection Methods}{
+\itemize{
+  \item \strong{LDA}: Suitable for most classification problems with moderate dimensionality
+  \item \strong{PDA}: Recommended for high-dimensional data (p > n) or data with multicollinearity
+}
+}
+
+The \code{tol} parameter controls tree complexity: smaller values allow more splits 
+(deeper trees with potentially better training accuracy but higher risk of overfitting), 
+while larger values create simpler trees (better generalization but potentially 
+underfitting).
+}
+\note{
+This function does not support interaction terms in the formula. Use only 
+additive terms (e.g., \code{y ~ x1 + x2}) and not multiplicative terms (e.g., 
+\code{y ~ x1 * x2}).
 }
 \examples{
 set.seed(666)
@@ -56,8 +119,12 @@ flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
 (penguins_train), tol =  0.2 , srule = TRUE)
 }
 \references{
-Lee, YD, Cook, D., Park JW, and Lee, EK(2013) 
+Lee, YD, Cook, D., Park JW, and Lee, EK (2013) 
 PPtree: Projection Pursuit Classification Tree, 
 Electronic Journal of Statistics, 7:1369-1386.
+}
+\seealso{
+\code{\link{TreeExt.construct}}, \code{\link{PPtreeExt_split}}, 
+  \code{\link{findproj_Ext}}, \code{\link{predict.PPtreeExtclass}}
 }
 \keyword{tree}

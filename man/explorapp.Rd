@@ -18,4 +18,5 @@ Shiny app to compare PPtree, PPtreeExt and rpart boundaries in 2D with different
 if(interactive()){
 explorapp(ui,server)
 }
+
 }

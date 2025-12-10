@@ -1,5 +1,5 @@
 # Test Environments
-* local OS X (Sequoia) install, R 4.5.0
+* local OS X (Tahoe) install, R 4.5.2
 * win-builder (devel and release)
 
 

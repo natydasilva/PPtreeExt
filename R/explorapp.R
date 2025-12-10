@@ -10,6 +10,7 @@
 #' if(interactive()){
 #' explorapp(ui,server)
 #' }
+#' 
 explorapp <-function(ui,server){
   
   X1 <- NULL
@@ -18,7 +19,22 @@ explorapp <-function(ui,server){
   Sim <- NULL
   pred <- NULL
   predict <- NULL
-  #column <- NULL
+
+# Function to simulate multivariate (bivariate) normal distributions
+#  simu3(mux1, mux2, muy1, muy2, muz1, muz2, cor1, cor2, cor3, n1 = 100, n2 = 100, n3 = 100) 
+#  mux1 mean of X1 for class 1
+#  mux2 mean of X2 for class 1
+#  muy1 mean of X1 for class 2
+#  muy2 mean of X2 for class 2
+#  muz1 mean of X1 for class 3
+#  muz2 mean of X2 for class 3
+#  cor1 correlation for class 1
+#  cor2 correlation for class 2
+#  cor3 correlation for class 3
+#  n1 number of samples for class 1
+#  n2 number of samples for class 2
+#  n3 number of samples for class 3
+#  data.frame with dimension (n1+n2+n3)x(3)
   
 simu3 <- 
   function(mux1,
@@ -41,9 +57,20 @@ simu3 <-
   d1 <- data.frame(Sim = "sim1", bivn)
   d2 <- data.frame(Sim = "sim2", bivn2)
   d3 <- data.frame(Sim = "sim3", bivn3)
-  rbind(d1, d2, d3)
+  return(rbind(d1, d2, d3))
 }
 
+
+# Description: Function to generate grid values for plotting decision boundaries for modification 1
+#  modifying the choice of split points-through class subsetting
+# ppbound(ru, data , test, meth, entro , title, simM = FALSE)
+# ru = split rule = {1, 2, 3, 4, 5, 6, 7, 8}
+# data data frame with the simulated dataset 
+# test data frame simulated test data 
+# entro logical; if TRUE use entropy in the modified PPtreeExt
+# meth character; method to use "Original" for PPtree, "Rpart" for rpart, "Modified" for PPtreeExt with subsetting classes
+# title character; title for the plot
+# simM logical; if TRUE use shapes and colors for classes, if FALSE use only colors
 
 ppbound <- function(ru, data , test, meth, entro , title, simM = FALSE) {
   grilla <-
@@ -79,12 +106,6 @@ ppbound <- function(ru, data , test, meth, entro , title, simM = FALSE) {
         predict(rpart.mod, newdata = test[, -1], type = "class") , test[, 1]
       ))) / nrow(test[, -1]), 3) * 100
     
-  }
-  
-  if (entro) {
-    mod = 2
-  } else{
-    mod = 1
   }
   
   if (meth == "Modified") {
@@ -165,11 +186,19 @@ ppbound <- function(ru, data , test, meth, entro , title, simM = FALSE) {
       )
   }
   
-  pl.pp
+  return(pl.pp)
 }
 
+# Description: Function to generate grid values for plotting decision boundaries for modification 2
+#  modification: multiple splits
+# ppboundMOD(data , test, meth, entro , entroindiv, title, simM = FALSE, strule, tot)
+# data data frame with the simulated dataset 
+# test data frame simulated test data 
+# entro logical; if TRUE use entropy in the modified PPtreeExt
+# entroindiv logical; if TRUE use individual entropy stopping rule in PPtreeExt
+# meth character; method to use "MOD" for PPtreeExt with multiple splits
+# title character; title for the plot
 
-# Multiple splits PPtreeExt
 ppboundMOD <-
   function(data ,
            test,
@@ -270,7 +299,7 @@ ppboundMOD <-
         )
       
     }
-    pl.pp
+   return( pl.pp)
   }
 
 # UI ----------------------------------------------------------------------

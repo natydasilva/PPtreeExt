@@ -1,12 +1,33 @@
-#' Print PPtreeExtclass object
+#' Print Method for PPtreeExtclass Objects
 #' 
-#' @param x something
-#' @param coef.print something
-#' @param cutoff.print something
-#' @param verbose something
-#' @param ... something
+#' Prints a summary of a fitted projection pursuit classification tree, including 
+#' the tree structure, optionally the projection coefficients and cutoff values, 
+#' and the training error rate.
+#' 
+#' @param x An object of class \code{"PPtreeExtclass"} from 
+#'   \code{\link{PPtreeExtclass}} or \code{\link{PPtreeExt_split}}.
+#' @param coef.print Logical indicating whether to print the projection coefficients 
+#'   for each split node. Default is \code{FALSE}.
+#' @param cutoff.print Logical indicating whether to print the cutoff values for 
+#'   each split node. Default is \code{FALSE}.
+#' @param verbose Logical indicating whether to print the tree structure and error 
+#'   rate. If \code{FALSE}, the function returns the tree structure invisibly without 
+#'   printing. Default is \code{TRUE}.
+#' @param ... Additional arguments (currently not used).
+#' @details
+#' The function traverses the tree structure stored in \code{x$Tree.Struct} and 
+#' creates a hierarchical text representation. When \code{coef.print = TRUE}, 
+#' the projection coefficients (linear combinations of features) used at each 
+#' split are displayed. When \code{cutoff.print = TRUE}, the threshold values 
+#' used to determine left/right splits are shown.
+#' 
+#' The training error rate is computed by applying the fitted tree to the 
+#' original training data.
+#' 
+#' @seealso \code{\link{PPtreeExtclass}}, \code{\link{PPtreeExt_split}}, 
+#'   \code{\link{predict.PPtreeExtclass}}
 #' @export
-print.PPtreeExtclass <- function(x, coef.print  = FALSE, cutoff.print=FALSE,
+print.PPtreeExtclass <- function(x, coef.print  = FALSE, cutoff.print = FALSE,
                                verbose = TRUE,...){
   PPtreeOBJ <- x
   TS <- PPtreeOBJ$Tree.Struct

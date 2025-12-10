@@ -2,29 +2,35 @@
 % Please edit documentation in R/predict.PPtreeExtclass.R
 \name{predict.PPtreeExtclass}
 \alias{predict.PPtreeExtclass}
-\title{predict PPtreeExt}
+\title{Predict Method for Projection Pursuit Classification Tree Extensions}
 \usage{
 \method{predict}{PPtreeExtclass}(object, newdata, true.class = NULL, ...)
 }
 \arguments{
-\item{object}{PPtreeclass object}
+\item{object}{An object of class \code{"PPtreeExtclass"} from 
+\code{\link{PPtreeExtclass}} or \code{\link{PPtreeExt_split}}.}
 
-\item{newdata}{the test dataset}
+\item{newdata}{A data frame or matrix containing the predictor variables for 
+which predictions are to be made. Must contain the same variables (in the same 
+order) as used in the training data, but without the class variable.}
 
-\item{true.class}{true class of test dataset if available}
+\item{true.class}{Optional vector of true class labels for the test data. 
+If provided, prediction error will be calculated. Can be either numeric or 
+factor. Default is \code{NULL}.}
 
-\item{...}{arguments to be passed to methods}
+\item{...}{Additional arguments (currently not used).}
 }
 \value{
-A list with:
-\describe{
-  \item{predict.class }{predicted class}
-  \item{predict.error}{number of the prediction errors}
-}
+A list with two components:
+\item{predict.class}{A character vector of predicted class labels for each 
+  observation in \code{newdata}.}
+\item{predict.error}{Integer count of prediction errors (misclassifications). 
+  Only computed when \code{true.class} is provided; otherwise returns \code{NA}.}
 }
 \description{
-Predict Predict method for projection pursuit 
-classification tree Extension and calculate prediction error.
+Predicts class labels for new observations using a fitted projection pursuit 
+classification tree and optionally calculates prediction error when true class 
+labels are provided.
 }
 \examples{
 data(penguins)

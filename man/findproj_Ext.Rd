@@ -2,25 +2,75 @@
 % Please edit documentation in R/findproj_Ext.R
 \name{findproj_Ext}
 \alias{findproj_Ext}
-\title{1D projection for each node partition using entropy}
+\title{Find Optimal Projection for Class Separation}
 \usage{
-findproj_Ext(origclass, origdata, PPmethod = "LDA", q = 1, weight = TRUE, lambda = .1)
+findproj_Ext(
+  origclass,
+  origdata,
+  PPmethod = "LDA",
+  q = 1,
+  weight = TRUE,
+  lambda = 0.1
+)
 }
 \arguments{
-\item{origclass}{original class}
+\item{origclass}{Factor or numeric vector containing the class labels for each observation.}
 
-\item{origdata}{original data}
+\item{origdata}{Numeric matrix or data frame containing the predictor variables. Each row represents an observation and each column represents a variable.}
 
-\item{PPmethod}{method for projection pursuit; "LDA", "PDA"}
+\item{PPmethod}{Character string specifying the projection pursuit method. 
+Either \code{"LDA"} (Linear Discriminant Analysis, default) or \code{"PDA"} 
+(Penalized Discriminant Analysis).}
 
-\item{q}{numeric value with dimension of the projected data, if it is 1 then 1D projection is used}
+\item{q}{Integer specifying the dimension of the projected data. Default is 1 
+for 1D projection.}
 
-\item{weight}{weight flag in LDA, PDA or index}
+\item{weight}{Logical indicating whether to use weighted LDA index calculation. 
+Default is \code{TRUE}.}
 
-\item{lambda}{lambda in PDA index}
+\item{lambda}{Numeric penalty parameter for the PDA method. Default is 0.1. 
+Only used when \code{PPmethod = "PDA"}.}
+}
+\value{
+A list with the following components:
+\item{Index}{Numeric value representing the optimization criterion achieved by 
+  the best projection. Higher values indicate better class separation.}
+\item{Alpha}{Numeric vector of length \code{ncol(origdata)} containing the optimal 
+  projection direction coefficients. This vector defines the linear combination 
+  of original variables that maximizes class separation.}
+\item{C}{Numeric scalar representing the optimal cutpoint (threshold) on the 
+  projected data. This value is determined using entropy-based splitting and 
+  divides observations into two groups for classification.}
+\item{IOindexL}{Logical vector of length \code{nrow(origdata)} indicating which 
+  observations have projected values less than or equal to the cutpoint C 
+  (\code{projdata <= C}). These observations are assigned to the left node/class.}
+\item{IOindexR}{Logical vector of length \code{nrow(origdata)} indicating which 
+  observations have projected values greater than the cutpoint C (\code{projdata > C}). 
+  These observations are assigned to the right node/class.}
 }
 \description{
-1D projection for each node partition using entropy
+Finds an optimal 1D projection of multivariate data that best separates classes 
+using Linear Discriminant Analysis (LDA) or Penalized Discriminant Analysis (PDA), 
+then determines a cutpoint for classification based on entropy splitting.
+}
+\details{
+This function performs projection pursuit to find a one-dimensional projection 
+that optimally separates classes in multivariate data. The process involves:
+\enumerate{
+  \item Finding the optimal projection direction using either LDA or PDA
+  \item Projecting all observations onto this direction
+  \item Determining an optimal cutpoint using entropy-based splitting
+  \item Creating binary classification indicators based on the cutpoint
+}
+
+The cutpoint is calculated to minimize the weighted entropy of the resulting split. 
+In edge cases where the cutpoint equals the maximum projected value, the function 
+uses the second-largest value to ensure a valid split.
+}
+\note{
+The vectors \code{IOindexL} and \code{IOindexR} are complementary 
+  (mutually exclusive and exhaustive), meaning every observation is assigned 
+  to exactly one group.
 }
 \references{
 Lee, YD, Cook, D., Park JW, and Lee, EK (2013) 

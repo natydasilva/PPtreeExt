@@ -1,15 +1,22 @@
-#' Predict Predict method for projection pursuit 
-#' classification tree Extension and calculate prediction error.
-#' @title predict PPtreeExt
-#' @param object PPtreeclass object 
-#' @param newdata the test dataset
-#' @param true.class true class of test dataset if available
-#' @param ... arguments to be passed to methods
-#' @return A list with:
-#' \describe{
-#'   \item{predict.class }{predicted class}
-#'   \item{predict.error}{number of the prediction errors}
-#' }
+#' Predict Method for Projection Pursuit Classification Tree Extensions
+#' 
+#' Predicts class labels for new observations using a fitted projection pursuit 
+#' classification tree and optionally calculates prediction error when true class 
+#' labels are provided.
+#' @param object An object of class \code{"PPtreeExtclass"} from 
+#'   \code{\link{PPtreeExtclass}} or \code{\link{PPtreeExt_split}}.
+#' @param newdata A data frame or matrix containing the predictor variables for 
+#'   which predictions are to be made. Must contain the same variables (in the same 
+#'   order) as used in the training data, but without the class variable.
+#' @param true.class Optional vector of true class labels for the test data. 
+#'   If provided, prediction error will be calculated. Can be either numeric or 
+#'   factor. Default is \code{NULL}.
+#' @param ... Additional arguments (currently not used).
+#' @return A list with two components:
+#' \item{predict.class}{A character vector of predicted class labels for each 
+#'   observation in \code{newdata}.}
+#' \item{predict.error}{Integer count of prediction errors (misclassifications). 
+#'   Only computed when \code{true.class} is provided; otherwise returns \code{NA}.}
 #' @export
 #' @keywords tree
 #' @examples
