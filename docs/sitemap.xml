@@ -2,17 +2,16 @@
 <url><loc>/404.html</loc></url>
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
-<url><loc>/reference/LDAopt_MOD.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/LDAopt_Ext.html</loc></url>
 <url><loc>/reference/NCI60.html</loc></url>
-<url><loc>/reference/PDAopt_MOD.html</loc></url>
-<url><loc>/reference/PPTreeclass_MOD.html</loc></url>
-<url><loc>/reference/PPclassify_MOD.html</loc></url>
-<url><loc>/reference/PPtree_splitMOD.html</loc></url>
-<url><loc>/reference/Tree.construct_MOD.html</loc></url>
-<url><loc>/reference/Tree.construct_MOD_fedeprueba.html</loc></url>
+<url><loc>/reference/PDAopt_Ext.html</loc></url>
+<url><loc>/reference/PPtreeExt_split.html</loc></url>
+<url><loc>/reference/PPtreeExtclass.html</loc></url>
+<url><loc>/reference/TreeExt.construct.html</loc></url>
 <url><loc>/reference/crab.html</loc></url>
 <url><loc>/reference/explorapp.html</loc></url>
-<url><loc>/reference/findproj_MOD.html</loc></url>
+<url><loc>/reference/findproj_Ext.html</loc></url>
 <url><loc>/reference/fishcatch.html</loc></url>
 <url><loc>/reference/glass.html</loc></url>
 <url><loc>/reference/image.html</loc></url>
@@ -21,7 +20,9 @@
 <url><loc>/reference/lymphoma.html</loc></url>
 <url><loc>/reference/olive.html</loc></url>
 <url><loc>/reference/parkinson.html</loc></url>
-<url><loc>/reference/print.PPtreeclassMOD.html</loc></url>
+<url><loc>/reference/plot.PPtreeExtclass.html</loc></url>
+<url><loc>/reference/predict.PPtreeExtclass.html</loc></url>
+<url><loc>/reference/print.PPtreeExtclass.html</loc></url>
 <url><loc>/reference/wine.html</loc></url>
 </urlset>
 

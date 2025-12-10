@@ -107,7 +107,7 @@ additive terms (e.g., \code{y ~ x1 + x2}) and not multiplicative terms (e.g.,
 \code{y ~ x1 * x2}).
 }
 \examples{
-set.seed(666)
+set.seed(234)
 data(penguins)
 penguins <- na.omit(penguins[, -c(2,7, 8)])
 require(rsample)

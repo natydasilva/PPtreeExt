@@ -28,43 +28,58 @@ devtools::install_github("natydasilva/PPtreeExt")
 ## Simple Example
 
 ```r
-set.seed(249)
-n <- nrow(iris)
-tot <- c(1:n)
-n.train <- round(n*0.9)
-train <- sample(tot,n.train)
-test <- tot[-train]
-Tree.result <- PPtreeExtclass(formula = Species~., data = iris[train,],
-PPmethod = "LDA",  srule = TRUE, tol = 0.1)
-Tree.result
+set.seed(234)
+data(penguins)
+penguins <- na.omit(penguins[, -c(2,7, 8)])
+require(rsample)
+penguins_spl <- rsample::initial_split(penguins, strata=species)
+penguins_train <- training(penguins_spl)
+penguins_test <- testing(penguins_spl)
+penguins_ppt <- PPtreeExtclass(species~bill_len + bill_dep +
+flipper_len + body_mass, data = penguins_train, PPmethod = "LDA", tot=nrow
+(penguins_train), tol =  0.2 , srule = TRUE)
 ============================================================= 
 Projection Pursuit Classification Tree Extension result 
 =============================================================
 
 1) root
-   2)  proj1*X < cut1
-      4)  proj2*X < cut2
-         6)* proj3*X < cut3  ->  "virginica"
-         7)* proj3*X >= cut3  ->  "virginica"
-      5)  proj2*X >= cut2
-         8)* proj4*X < cut4  ->  "versicolor"
-         9)* proj4*X >= cut4  ->  "virginica"
-   3)* proj1*X >= cut1  ->  "setosa"
+   2)* proj1*X < cut1  ->  "Gentoo"
+   3)  proj1*X >= cut1
+      4)* proj2*X < cut2  ->  "Adelie"
+      5)* proj2*X >= cut2  ->  "Chinstrap"
 
 Error rates 
 -------------------------------------------------------------
 [1] 1
 
- pred <- predict(object = Tree.result, newdata = iris[test,1:4], true.class = iris[test,5])
+pred<- predict(object = penguins_ppt, newdata = penguins_test[,-1], true.class = penguins_test$species)
  
  
 pred$predict.error
-[1] 0
+[1] 2
 
 pred$predict.class
- [1] "setosa"     "setosa"     "setosa"     "setosa"     "setosa"     "versicolor"
- [7] "versicolor" "versicolor" "versicolor" "versicolor" "virginica"  "virginica" 
-[13] "virginica"  "virginica"  "virginica" 
+  [1] "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"   
+ [7] "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"   
+[13] "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"   
+[19] "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"   
+[25] "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"   
+[31] "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"    "Adelie"   
+[37] "Adelie"    "Adelie"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"   
+[43] "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"   
+[49] "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"   
+[55] "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"   
+[61] "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"    "Gentoo"   
+[67] "Gentoo"    "Gentoo"    "Gentoo"    "Chinstrap" "Chinstrap" "Chinstrap"
+[73] "Chinstrap" "Chinstrap" "Adelie"    "Chinstrap" "Chinstrap" "Chinstrap"
+[79] "Chinstrap" "Chinstrap" "Chinstrap" "Chinstrap" "Chinstrap" "Adelie"   
+[85] "Chinstrap" "Chinstrap"
 
 ```
+
+```r
+plot(penguins_ppt)
+```
+
+<img src="man/figures/small.png" alt="PPtreeExt: Penguins data " />
 

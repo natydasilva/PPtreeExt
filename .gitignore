@@ -8,3 +8,4 @@ R/TEST_APP.R
 *.so
 man/.DS_Store
 
+docs

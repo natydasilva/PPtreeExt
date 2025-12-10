@@ -95,7 +95,7 @@
 #' @export
 #' @keywords tree
 #' @examples
-#' set.seed(666)
+#' set.seed(234)
 #' data(penguins)
 #' penguins <- na.omit(penguins[, -c(2,7, 8)])
 #' require(rsample)
