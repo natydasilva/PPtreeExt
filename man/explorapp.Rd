@@ -11,6 +11,9 @@ explorapp(ui, server)
 
 \item{server}{server function}
 }
+\value{
+No return value, called for side effects. Shinyapp is launched.
+}
 \description{
 Shiny app to compare PPtree, PPtreeExt and rpart boundaries in 2D with different simulation scenarios
 }

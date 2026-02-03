@@ -74,7 +74,7 @@
 
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(grid)
 #' # Example with penguins dataset
 #' data(penguins)

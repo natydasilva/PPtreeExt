@@ -98,7 +98,7 @@ For very large trees (>50 terminal nodes), consider:
 }
 }
 \examples{
-\dontrun{
+\donttest{
 library(grid)
 # Example with penguins dataset
 data(penguins)

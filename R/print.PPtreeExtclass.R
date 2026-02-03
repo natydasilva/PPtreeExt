@@ -14,6 +14,7 @@
 #'   rate. If \code{FALSE}, the function returns the tree structure invisibly without 
 #'   printing. Default is \code{TRUE}.
 #' @param ... Additional arguments (currently not used).
+#' @return The object x, invisibly
 #' @details
 #' The function traverses the tree structure stored in \code{x$Tree.Struct} and 
 #' creates a hierarchical text representation. When \code{coef.print = TRUE}, 

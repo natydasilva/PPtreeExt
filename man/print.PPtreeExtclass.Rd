@@ -22,6 +22,9 @@ printing. Default is \code{TRUE}.}
 
 \item{...}{Additional arguments (currently not used).}
 }
+\value{
+The object x, invisibly
+}
 \description{
 Prints a summary of a fitted projection pursuit classification tree, including 
 the tree structure, optionally the projection coefficients and cutoff values, 

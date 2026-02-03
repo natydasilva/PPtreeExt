@@ -5,6 +5,7 @@
 #' @param server server function
 #' @useDynLib PPtreeExt
 #' @importFrom Rcpp evalCpp
+#' @return No return value, called for side effects. Shinyapp is launched. 
 #' @export
 #' @examples
 #' if(interactive()){
