@@ -23,6 +23,12 @@ Install the development version from GitHub:
 # install.packages("devtools")
 devtools::install_github("natydasilva/PPtreeExt")
 ```
+
+or R-universe"
+```r
+install.packages('PPtreeExt', repos = c('https://natydasilva.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
 ---
 
 ## Simple Example
